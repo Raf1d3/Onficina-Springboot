@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <title>Onficina</title>
+</head>
+
+<body>
+  <nav th:fragment="menu" class="mt-10">
+    <!-- 1o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Perfil', ~{::#pessoa-icon})}"></button>
+
+      <!-- Opcoes do 1o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#cadastrar-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', '/', ~{::#pesquisar-icon})}">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Meu veiculo', ~{::#carro-icon})}"></button>
+
+      <!-- Opcoes do 2o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/vacinas/cadastrar}, ~{::#cadastrar-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', @{/vacinas/abrirpesquisar}, ~{::#pesquisar-icon})}">
+        </div>
+        <!-- 3a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todos', @{/vacinas}, ~{::#pesquisar-icon})}">
+        </div>
+      </div>
+    </div>
+
+    <!-- 3o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Manutenções', ~{::#manutencao-icon})}"></button>
+
+      <!-- Opcoes do 3o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/', ~{::#cadastrar-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/', ~{::#pesquisar-icon})}">
+        </div>
+      </div>
+    </div>
+
+    <!-- 4o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Oficinas', ~{::#lote-icon})}"></button>
+
+      <!-- Opcoes do 4o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/', ~{::#cadastrar-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/', ~{::#pesquisar-icon})}">
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 5o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Avaliações', ~{::#pesquisar-icon})}"></button>
+
+      <!-- Opcoes do 5o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#pdf-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', '/', ~{::#pdf-icon})}"></div>
+        <!-- 3a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', '/', ~{::#pdf-icon})}">
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 5o Item Menu -->
+    <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Relatórios', ~{::#relatorios-icon})}"></button>
+
+      <!-- Opcoes do 5o Item Menu -->
+      <div x-show="open" class="space-y-4 ps-10">
+        <!-- 1a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#pdf-icon})}">
+        </div>
+        <!-- 2a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', '/', ~{::#pdf-icon})}"></div>
+        <!-- 3a Opcao -->
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', '/', ~{::#pdf-icon})}">
+        </div>
+      </div>
+    </div>
+
+  </nav>
+
+
+  <svg id="manutencao-icon" fill="#99a1af" width="16" height="16" version="1.1" class="bi bi-person-raised-hand"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 427.323 427.323"
+    xml:space="preserve">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <g>
+        <path
+          d="M373.679,263.601c-55.111-51.291-110.833-105.896-169.762-152.797c13.082-57.855-31.26-127.056-99.707-107.389 c-6.248,1.796-9.031,6.674-9.226,11.737c-4.207,4.381-6.28,10.681-2.629,16.393c10.553,16.512,30.867,30.324,48.187,43.168 c-3.764,3.399-7.563,6.757-11.313,10.166c-3.824,3.475-7.651,6.948-11.472,10.425l-5.736,5.212 c-3.544,6.439-5.701,7.459-6.471,3.06c-3.453-0.999-15.049-13.271-18.767-16.083c-9.355-7.083-18.722-14.007-28.782-20.06 c-5.179-3.116-10.053-0.204-11.867,4.135c-0.437,0.164-0.991-0.001-1.368,0.275c-27.247,19.989-17.748,73.064,8.066,90.04 c25.301,16.636,66.447,19.65,97.889,8.753c49.894,62.49,108.493,132.423,171.243,181.466c21.402,16.729,56.583,25.425,71.46,2.155 C424.664,326.104,399.42,287.558,373.679,263.601z M378.355,340.455c-6.482,4.772-14.387,5.319-23.046,2.992 c-0.516-1.167-1.349-2.206-2.774-2.742c-10.28-3.879-18.443-22.19-11.628-31.533c6.937-9.519,18.232-6.784,28.09-6.061 c0.887,0.065,1.657-0.354,2.462-0.634C377.606,314.727,380.647,327.457,378.355,340.455z">
+        </path>
+        <path
+          d="M194.213,264.78c2.704-3.6,1.447-9.787-1.641-12.732c-5.827-5.566-11.56-11.116-17.974-16 c-3.641-2.778-7.39-0.988-9.591,2.111c-1.54,0.105-3.037,0.605-4.214,1.555c-12.836,10.371-26.433,23.792-36.952,37.238 c-12.483-4.069-28.285-7.8-29.461,4.113c-29.584,20.679-54.143,48.868-80.85,72.997c-5.43,4.908-3.405,13.507,2.205,17.121 c20.776,13.372,37.269,29.351,50.741,50.08c4.402,6.773,13.527,8.238,19.509,2.512c31.367-30.032,79.601-65.696,66.102-112.561 c0.443-0.311,0.906-0.488,1.333-0.885C168.472,296.382,181.899,281.185,194.213,264.78z">
+        </path>
+        <path
+          d="M412.29,45.041c-13.418-26.02-45.3-21.835-65.29-6.552c-29.043,22.208-63.145,51.65-84.972,80.842 c-1.993,2.667-1.422,5.838,0.138,8.485c-1.217,2.5-1.551,5.418,0.824,8.112c7.808,8.851,16.691,16.71,25.119,24.958 c7.446,7.286,14.103,15.172,25.165,14.478c2.154-0.135,3.871-0.934,5.352-1.981c0.155-0.011,0.287,0.055,0.438,0.038 c32.215-3.517,47.551-37.674,68.79-58.256C406.369,97.221,426.243,72.091,412.29,45.041z">
+        </path>
+      </g>
+    </g>
+  </svg>
+
+
+  <svg id="carro-icon" viewBox="0 0 24 24" width="16" height="16" class="bi bi-person-raised-hand"
+    xmlns="http://www.w3.org/2000/svg">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M6.77988 6.77277C6.88549 6.32018 7.28898 6 7.75372 6H16.2463C16.711 6 17.1145 6.32018 17.2201 6.77277L17.7398 9H17H7H6.26019L6.77988 6.77277ZM2 11H2.99963C2.37194 11.8357 2 12.8744 2 14V15C2 16.3062 2.83481 17.4175 4 17.8293V20C4 20.5523 4.44772 21 5 21H6C6.55228 21 7 20.5523 7 20V18H17V20C17 20.5523 17.4477 21 18 21H19C19.5523 21 20 20.5523 20 20V17.8293C21.1652 17.4175 22 16.3062 22 15V14C22 12.8744 21.6281 11.8357 21.0004 11H22C22.5523 11 23 10.5523 23 10C23 9.44772 22.5523 9 22 9H21C20.48 9 20.0527 9.39689 20.0045 9.90427L19.9738 9.77277L19.1678 6.31831C18.851 4.96054 17.6405 4 16.2463 4H7.75372C6.35949 4 5.14901 4.96054 4.8322 6.31831L4.02616 9.77277L3.99548 9.90426C3.94729 9.39689 3.51999 9 3 9H2C1.44772 9 1 9.44772 1 10C1 10.5523 1.44772 11 2 11ZM7 11C5.34315 11 4 12.3431 4 14V15C4 15.5523 4.44772 16 5 16H6H18H19C19.5523 16 20 15.5523 20 15V14C20 12.3431 18.6569 11 17 11H7ZM6 13.5C6 12.6716 6.67157 12 7.5 12C8.32843 12 9 12.6716 9 13.5C9 14.3284 8.32843 15 7.5 15C6.67157 15 6 14.3284 6 13.5ZM16.5 12C15.6716 12 15 12.6716 15 13.5C15 14.3284 15.6716 15 16.5 15C17.3284 15 18 14.3284 18 13.5C18 12.6716 17.3284 12 16.5 12Z"
+        fill="#99a1af"></path>
+    </g>
+  </svg>
+
+
+
+  <svg id="pessoa-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-person-raised-hand" viewBox="0 0 16 16">
+    <path
+      d="M6 6.207v9.043a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H6.236a1 1 0 0 1-.447-.106l-.33-.165A.83.83 0 0 1 5 2.488V.75a.75.75 0 0 0-1.5 0v2.083c0 .715.404 1.37 1.044 1.689L5.5 5c.32.32.5.754.5 1.207" />
+    <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+  </svg>
+
+  <svg id="pesquisar-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-search" viewBox="0 0 16 16">
+    <path
+      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+  </svg>
+
+  <svg id="cadastrar-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-archive-fill" viewBox="0 0 16 16">
+    <path
+      d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1M.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8z" />
+  </svg>
+
+  <svg id="aplicacao-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-heart-pulse-fill" viewBox="0 0 16 16">
+    <path
+      d="M1.475 9C2.702 10.84 4.779 12.871 8 15c3.221-2.129 5.298-4.16 6.525-6H12a.5.5 0 0 1-.464-.314l-1.457-3.642-1.598 5.593a.5.5 0 0 1-.945.049L5.889 6.568l-1.473 2.21A.5.5 0 0 1 4 9z" />
+    <path
+      d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8z" />
+  </svg>
+
+  <svg id="relatorios-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-file-bar-graph-fill" viewBox="0 0 16 16">
+    <path
+      d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-2 11.5v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z" />
+  </svg>
+
+  <svg id="vacina-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-droplet-fill" viewBox="0 0 16 16">
+    <path
+      d="M8 16a6 6 0 0 0 6-6c0-1.655-1.122-2.904-2.432-4.362C10.254 4.176 8.75 2.503 8 0c0 0-6 5.686-6 10a6 6 0 0 0 6 6M6.646 4.646l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448c.82-1.641 1.717-2.753 2.093-3.13" />
+  </svg>
+
+  <svg id="lote-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-boxes"
+    viewBox="0 0 16 16">
+    <path
+      d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z" />
+  </svg>
+
+  <svg id="pdf-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    class="bi bi-file-richtext-fill" viewBox="0 0 16 16">
+    <path
+      d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M7 4.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047l1.888.974V7.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V7s1.54-1.274 1.639-1.208M5 9h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1" />
+  </svg>
+
+</body>
+
+</html>

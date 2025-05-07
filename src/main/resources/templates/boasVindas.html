@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" />
+    <title>Onficina</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    main.introducao {
+        text-align: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        max-width: 800px;
+        width: 100%;
+    }
+
+    .main-text h1 {
+        font-size: 2.5rem;
+        color: #222;
+    }
+
+    .main-text h2 {
+        font-size: 1.5rem;
+        color: #444;
+    }
+
+    .main-text p {
+        font-size: 1rem;
+        margin: 10px 0;
+    }
+
+    .main-text a {
+        display: inline-block;
+        margin: 5px 10px;
+        text-decoration: none;
+        color: #3366cc;
+        font-weight: bold;
+    }
+
+    .main-text a:hover {
+        text-decoration: underline;
+    }
+
+    .main-text img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+    }
+</style>
+<body>
+    <main class="introducao">
+        <div id="text-main" class="">
+            <div class="main-text">
+                <h1>Bem vindo a Onficina!</h1>
+                <h2>Sua oficina mais perto de você!</h2>
+                <p>Orçamento para manutenções e compras de peças para
+                    veículos de forma rápida e segura!</p>
+
+                <p>
+                    <a th:href="@{login}">
+                        Login
+                    </a>
+                </p>
+                <p>
+                    <a class="texto_profissional" th:href="@{cadastro}">
+                        Cadastro
+                    </a>
+                </p>
+
+
+            </div>
+            <img th:src="@{/images/carro.png}" class="mt-10 mx-auto block" alt="Carro modelo" />
+        </div>
+    </main>
+</body>
+
+</html>

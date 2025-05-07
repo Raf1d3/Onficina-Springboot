@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-onficinaApplication<onficina>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "web.onficina.onficinaApplication",
+            "projectName": "onficina",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ControleVacinacaoApplication<onficina>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "web.onficina.ControleVacinacaoApplication",
+            "projectName": "onficina",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-OnfinaApplication<onficina>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "web.onficina.OnfinaApplication",
+            "projectName": "onficina",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
