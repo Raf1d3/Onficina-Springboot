@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,7 @@
         background: white;
         padding: 30px;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 500px;
         text-align: center;
@@ -75,15 +76,30 @@
 
     a:hover {
         text-decoration: underline;
+
     }
+
+    .error {
+            color: red;
+            font-size: 1.0em;
+        }
+
 </style>
+
 <body>
     <div class="container">
         <h2>Cadastro</h2>
-        <form th:action="@{/cadastro}" method="post">
+
+
+        <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+            <div th:if="${#fields.hasErrors('*')}">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}" class="error"></p>
+            </div>
+            
             <input type="text" name="nome" placeholder="Nome" required />
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="senha" placeholder="Senha" required />
+
             <select name="tipo" required>
                 <option value="" disabled selected>Selecione o tipo de usuário</option>
                 <option value="CLIENTE">Cliente</option>
@@ -94,4 +110,5 @@
         <a th:href="@{/login}">Já tem conta? Faça login</a>
     </div>
 </body>
+
 </html>

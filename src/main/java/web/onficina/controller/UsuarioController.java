@@ -6,14 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import web.onficina.model.modelOnficina.Usuario;
 import web.onficina.repository.UsuarioRepository;
 import web.onficina.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 public class UsuarioController {
@@ -40,37 +43,37 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@ModelAttribute Usuario usuario) {
-        usuarioService.salvar(usuario);
+    public String cadastrarUsuario(
+            @Valid Usuario usuario,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            logger.trace(">>>>>>>>>>>>>>>> Deu erro");
+            return "usuario/cadastro"; // volta com mensagens de erro
+        }
+
+        usuarioRepository.save(usuario);
+
+        redirectAttributes.addFlashAttribute("mensagem", "Usuário cadastrado com sucesso!");
         return "redirect:/login";
     }
+    
 
     @PostMapping("/login")
     public String loginUsuario(@ModelAttribute Usuario usuario, Model model, HttpSession session) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuario.getEmail());
+        Optional<Usuario> usuarioBanco = usuarioRepository.findByEmail(usuario.getEmail());
 
-        if (usuarioOptional.isPresent()) {
-            Usuario usuarioBanco = usuarioOptional.get();
-
-            if (usuario.getSenha().equals(usuarioBanco.getSenha())) {
-                // Login bem-sucedido
-                model.addAttribute("usuarioLogado", usuarioBanco);
-                logger.trace(">>>>>>>>>>>>>>>> usuario Logado");
-                session.setAttribute("usuarioLogado", usuarioBanco);
-                return "redirect:/painel";
-            } else {
-                // Senha incorreta
-                model.addAttribute("erro", "Senha incorreta!");
-                logger.trace(">>>>>>>>>>>>>>>> Senha incorreta!");
-                return "usuario/login";
-            }
-        } else {
-            // Usuário não encontrado
-            model.addAttribute("erro", "Usuário não encontrado!");
-            logger.trace(">>>>>>>>>>>>>>>> Usuário não encontrado!");
-            return "usuario/login";
+        if (usuarioBanco.isPresent() && usuario.getSenha().equals(usuarioBanco.get().getSenha())) {
+            session.setAttribute("usuarioLogado", usuarioBanco.get());
+            return "redirect:/painel";
         }
+
+        model.addAttribute("erro", "Email ou senha inválidos.");
+        return "usuario/login";
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

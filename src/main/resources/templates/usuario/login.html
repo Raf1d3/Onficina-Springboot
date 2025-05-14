@@ -72,6 +72,15 @@
 <body>
     <div class="container">
         <h2>Login</h2>
+        
+        <div th:if="${mensagem}" style="color:green;">
+            <p th:text="${mensagem}"></p>
+        </div>
+
+        <div th:if="${erro}" style="color:red;">
+            <p th:text="${erro}"></p>
+        </div>
+
         <form th:action="@{/login}" method="post">
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="senha" placeholder="Senha" required />

@@ -12,22 +12,33 @@ import java.io.Serializable;
 import org.hibernate.annotations.DynamicUpdate;
 import jakarta.persistence.Table;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 @Entity
 @Table(name = "usuario")
 @DynamicUpdate
 public class Usuario implements Serializable {
 
     public enum TipoUsuario {
-        ADMIN,
         CLIENTE,
-        FUNCIONARIO
+        OFICINA
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotEmpty(message = "Nome é obrigatório")
     private String nome;
+
+    @NotEmpty(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
+    
+    @NotEmpty(message = "Senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
     @Enumerated(EnumType.STRING)
