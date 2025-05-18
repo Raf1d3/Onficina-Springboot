@@ -17,14 +17,19 @@ import jakarta.persistence.Table;
 public class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@SequenceGenerator(name="gerador2", sequenceName="pessoa_codigo_seq", allocationSize=1)
-	@GeneratedValue(generator="gerador2", strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "gerador2", sequenceName = "pessoa_codigo_seq", allocationSize = 1)
+	@GeneratedValue(generator = "gerador2", strategy = GenerationType.SEQUENCE)
 	private Long codigo;
+
+	@Column(nullable = false)
 	private String nome;
+
+	@Column(nullable = false, unique = true)
 	private String cpf;
-	@Column(name = "data_nascimento")
+
+	@Column(name = "data_nascimento", nullable = false)
 	private LocalDate dataNascimento;
 
 	public Long getCodigo() {

@@ -36,7 +36,7 @@ public class Usuario implements Serializable {
     @NotEmpty(message = "Email é obrigatório")
     @Email(message = "Email inválido")
     private String email;
-    
+
     @NotEmpty(message = "Senha é obrigatória")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
@@ -68,7 +68,6 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    
     public TipoUsuario getTipo() {
         return tipo;
     }
@@ -102,6 +101,11 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "nome=" + nome + ", email=" + email + ", tipo=" + tipo;
+    }
+
+    public String getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
     }
 
 }
