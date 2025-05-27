@@ -104,14 +104,6 @@
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 
-		<!-- Adiciona dependências para facilitar o desenvolvimento -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- Adiciona as dependências de Bean Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -123,6 +115,14 @@
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.9.0</version>
+		</dependency>
+
+		<!-- Adiciona dependências para facilitar o desenvolvimento -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- Adiciona a dependência do Spring Boot Actuator -->

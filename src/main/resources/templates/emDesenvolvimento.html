@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Em Desenvolvimento</title>
+</head>
+<body>
+    <main layout:fragment="conteudo" th:fragment="conteudo" id="main" class="flex flex-col align-middle justify-center w-full m-10">
+      <img th:src="@{/images/emDesenvolvimento.jpg}" class="mx-auto block mt-5" alt="Pagina em contrução" />
+      <h3 class="text-center mt-5 mb-5">Página em Desenvolvimento. </h3>
+      <p class="text-center mt-5 mb-5">Estamos trabalhando para trazer esta funcionalidade em breve.</p>
+      <a class="block text-center mt-5 mb-5 text-blue-600 hover:underline" th:href="@{/painel}">Volte para a página principal.</a>
+    </main>
+
+</body>
+</html>

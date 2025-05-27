@@ -22,4 +22,9 @@ public class IndexController {
 		return "index";
 	}
 
+	@GetMapping("/emDesenvolvimento")
+	public String EmDesenvolvimento() {
+		return "emDesenvolvimento :: conteudo";
+	}
+
 }

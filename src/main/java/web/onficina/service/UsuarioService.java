@@ -3,7 +3,7 @@ package web.onficina.service;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import web.onficina.model.modelOnficina.Usuario;
+import web.onficina.model.Usuario;
 import web.onficina.repository.UsuarioRepository;
 
 
@@ -28,11 +28,6 @@ public class UsuarioService {
 
     public void remover(Long codigo) {
         usuarioRepository.deleteById(codigo);
-    }
-
-    public void desativar(Long codigo) {
-        Usuario usuario = usuarioRepository.findById(codigo).get();
-        usuarioRepository.save(usuario);
     }
 
     

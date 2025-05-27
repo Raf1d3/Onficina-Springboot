@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import web.onficina.model.modelOnficina.Usuario;
+import web.onficina.model.Usuario;
 import web.onficina.repository.UsuarioRepository;
 import web.onficina.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 @Controller
 public class UsuarioController {
 
-    private static final Logger logger = LoggerFactory.getLogger(VacinaController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 
     private UsuarioRepository usuarioRepository;
     private UsuarioService usuarioService;
@@ -50,11 +50,11 @@ public class UsuarioController {
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            logger.trace(">>>>>>>>>>>>>>>> Deu erro");
+            logger.trace(">>>>>>>>>>>>>>>> Cadastro invalido");
             return "usuario/cadastro"; // volta com mensagens de erro
         }
 
-        usuarioRepository.save(usuario);
+        usuarioService.salvar(usuario);
 
         redirectAttributes.addFlashAttribute("mensagem", "Usuário cadastrado com sucesso!");
         return "redirect:/login";
@@ -63,6 +63,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public String loginUsuario(@ModelAttribute Usuario usuario, Model model, HttpSession session) {
+        
         Optional<Usuario> usuarioBanco = usuarioRepository.findByEmail(usuario.getEmail());
 
         if (usuarioBanco.isPresent() && usuario.getSenha().equals(usuarioBanco.get().getSenha())) {

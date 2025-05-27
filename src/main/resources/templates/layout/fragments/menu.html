@@ -18,12 +18,10 @@
       <!-- Opcoes do 1o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#cadastrar-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', '/', ~{::#pesquisar-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', '/emDesenvolvimento', ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -37,15 +35,16 @@
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/vacinas/cadastrar}, ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/veiculo/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', @{/vacinas/abrirpesquisar}, ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/veiculo/listar}, ~{::#pesquisar-icon})}">
         </div>
+
         <!-- 3a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todos', @{/vacinas}, ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/veiculo/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -59,11 +58,11 @@
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/', ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/emDesenvolvimento', ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/', ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/emDesenvolvimento', ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -77,11 +76,11 @@
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/', ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/emDesenvolvimento', ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/', ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/emDesenvolvimento', ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -95,12 +94,13 @@
       <!-- Opcoes do 5o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#pdf-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', '/', ~{::#pdf-icon})}"></div>
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        </div>
         <!-- 3a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', '/', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', '/emDesenvolvimento', ~{::#pdf-icon})}">
         </div>
       </div>
     </div>
@@ -114,12 +114,13 @@
       <!-- Opcoes do 5o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#pdf-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', '/', ~{::#pdf-icon})}"></div>
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        </div>
         <!-- 3a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', '/', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', '/emDesenvolvimento', ~{::#pdf-icon})}">
         </div>
       </div>
     </div>
@@ -192,12 +193,6 @@
     class="bi bi-file-bar-graph-fill" viewBox="0 0 16 16">
     <path
       d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-2 11.5v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z" />
-  </svg>
-
-  <svg id="vacina-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-    class="bi bi-droplet-fill" viewBox="0 0 16 16">
-    <path
-      d="M8 16a6 6 0 0 0 6-6c0-1.655-1.122-2.904-2.432-4.362C10.254 4.176 8.75 2.503 8 0c0 0-6 5.686-6 10a6 6 0 0 0 6 6M6.646 4.646l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448c.82-1.641 1.717-2.753 2.093-3.13" />
   </svg>
 
   <svg id="lote-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-boxes"
