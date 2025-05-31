@@ -9,8 +9,22 @@
 </head>
 
 <body>
+  <div th:fragment="inputtextsimples (texto, atributo)">
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <div class="relative w-full md:w-1/2">
+      <input type="text" th:name="${atributo}" th:id="${atributo}" class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
+    </div>
+  </div>
+
+  <div th:fragment="inputdatasimples (texto, atributo)">
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <div class="relative w-full md:w-1/2">
+      <input type="text" th:name="${atributo}" th:id="${atributo}" class="componentedata block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" readonly />
+    </div>
+  </div>
+
   <div th:fragment="inputtext (texto, atributo)">
-    <label for="nome" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
     <div class="relative w-full md:w-1/2">
       <input type="text" th:field="*{__${atributo}__}" class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none" th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}" />
       <div th:if="${#fields.hasErrors('__${atributo}__')}" class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center">
@@ -21,11 +35,11 @@
         </svg>
       </div>
     </div>
-    <p th:if="${#fields.hasErrors('__${atributo}__')}" th:each="erro : ${#fields.errors('__${atributo}__')}" th:text="${erro} + '. '" class="text-sm text-red-600 mt-2"></p>
+    <p th:if="${#fields.hasErrors('__${atributo}__')}" th:each="erro : ${#fields.errors('__${atributo}__')}" th:text="${erro}" class="text-sm text-red-600 mt-2"></p>
   </div>
 
   <div th:fragment="inputdata (texto, atributo)">
-    <label for="nome" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
     <div class="relative w-full md:w-1/2">
       <input type="text" th:field="*{__${atributo}__}" class="componentedata block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none" th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}" readonly />
       <div th:if="${#fields.hasErrors('__${atributo}__')}" class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center">
@@ -40,7 +54,7 @@
   </div>
 
   <div th:fragment="inputpassword (texto, atributo)">
-    <label for="nome" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
     <div class="relative w-full md:w-1/2">
       <input type="password" th:field="*{__${atributo}__}" class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none" th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}" />
       <div th:if="${#fields.hasErrors('__${atributo}__')}" class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center">
@@ -55,7 +69,7 @@
   </div>
 
   <div th:fragment="inputemail (texto, atributo)">
-    <label for="nome" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
+    <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6">Nome</label>
     <div class="relative w-full md:w-1/2">
       <input type="email" th:field="*{__${atributo}__}" class="block w-full px-4 py-3 text-gray-500 disabled:opacity-50 disabled:pointer-events-none" th:classappend="${#fields.hasErrors('__${atributo}__') ? ' border-red-300 rounded-lg focus:border-red-500 focus:ring-red-500' : ' border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500'}" />
       <div th:if="${#fields.hasErrors('__${atributo}__')}" class="end-0 absolute items-center inset-y-0 flex pointer-events-none pe-3 justify-center">

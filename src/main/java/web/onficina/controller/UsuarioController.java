@@ -36,13 +36,13 @@ public class UsuarioController {
         return "usuario/login";
     }
 
-    @GetMapping("/cadastro")
-    public String cadastro(Model model) {
+    @GetMapping("/cadastrar")
+    public String cadastrar(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "usuario/cadastro";
+        return "usuario/cadastrar";
     }
 
-    @PostMapping("/cadastro")
+    @PostMapping("/cadastrar")
     public String cadastrarUsuario(
             @Valid Usuario usuario,
             BindingResult result,
@@ -51,7 +51,7 @@ public class UsuarioController {
 
         if (result.hasErrors()) {
             logger.trace(">>>>>>>>>>>>>>>> Cadastro invalido");
-            return "usuario/cadastro"; // volta com mensagens de erro
+            return "usuario/cadastrar"; // volta com mensagens de erro
         }
 
         usuarioService.salvar(usuario);
