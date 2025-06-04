@@ -91,7 +91,7 @@
         <h2>Cadastro</h2>
 
 
-        <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+        <form th:action="@{/cadastrar}" th:object="${usuario}" method="post">
             <div th:if="${#fields.hasErrors('*')}">
                 <p th:each="err : ${#fields.errors('*')}" th:text="${err}" class="error"></p>
             </div>
