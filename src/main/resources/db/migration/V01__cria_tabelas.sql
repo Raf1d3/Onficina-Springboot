@@ -23,9 +23,7 @@ CREATE TABLE public.oficina (
     cnpj TEXT NOT NULL,
     endereco TEXT NOT NULL,
     telefone TEXT NOT NULL,
-    nota_media DOUBLE PRECISION,
-    usuario_id BIGINT NOT NULL,
-    CONSTRAINT fk_usuario FOREIGN KEY(usuario_id) REFERENCES public.usuario(id)
+    nota_media DOUBLE PRECISION
 );
 
 CREATE TABLE public.manutencao (
@@ -36,14 +34,13 @@ CREATE TABLE public.manutencao (
     tipo_manutencao TEXT NOT NULL,
     status_manutencao TEXT NOT NULL,
     tipo_servico TEXT NOT NULL,
-    valor_servico DOUBLE PRECISION,
+    descricao_outro_servico TEXT,
+    valor_servico BIGINT,
     data_proxima_manutencao DATE,
     veiculo_id BIGINT NOT NULL,
-    oficina_id BIGINT NOT NULL,
-    usuario_id BIGINT NOT NULL,
+    oficina_id BIGINT,
     CONSTRAINT fk_veiculo FOREIGN KEY(veiculo_id) REFERENCES public.veiculo(id),
-    CONSTRAINT fk_oficina FOREIGN KEY(oficina_id) REFERENCES public.oficina(id),
-    CONSTRAINT fk_usuario FOREIGN KEY(usuario_id) REFERENCES public.usuario(id)
+    CONSTRAINT fk_oficina FOREIGN KEY(oficina_id) REFERENCES public.oficina(id)
 );
 
 CREATE TABLE public.avaliacao (
@@ -59,3 +56,4 @@ CREATE TABLE public.avaliacao (
     CONSTRAINT fk_usuario FOREIGN KEY(usuario_id) REFERENCES public.usuario(id), 
     CONSTRAINT fk_manutencao FOREIGN KEY(manutencao_id) REFERENCES public.manutencao(id)
 );
+

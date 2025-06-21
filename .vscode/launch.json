@@ -12,10 +12,10 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-ControleVacinacaoApplication<onficina>",
+            "name": "Spring Boot-Application<onficina>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "web.onficina.ControleVacinacaoApplication",
+            "mainClass": "web.onficina.Application",
             "projectName": "onficina",
             "args": "",
             "envFile": "${workspaceFolder}/.env"

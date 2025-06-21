@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>manutencaos</title>
+</head>
+
+<body>
+    <!-- conteudo principal -->
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
+
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Pesquisar</h2>
+
+        <div class="hidden md:flex flex-col mt-5">
+            <div class="overflow-x-auto">
+                <div class="min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></div>
+                                    
+                                    <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${pagina.vazia}">
+                                    <td colspan="4" class="px-5">Nenhum manutencao encontrado</td>
+                                </tr>
+                                <tr th:each="manutencao : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
+                                    <td th:text="${manutencao.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
+                                        <a th:hx-get="@{/manutencao/alterar/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
+                                        <a th:hx-get="@{/manutencao/remover/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover o manutencao: ' + manutencao.modelo + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+
+        <div th:each="manutencao : ${manutencaos}" class="md:hidden flex flex-col mt-5">
+            <div class="overflow-x-auto">
+                <div class="min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <div class="m-3">
+                            <p th:text="${manutencao.id}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+    <!-- !conteudo principal -->
+
+</body>
+
+</html>
