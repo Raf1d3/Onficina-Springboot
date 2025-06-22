@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Veiculos</title>
+    <title>manutencaos</title>
 </head>
 
 <body>
@@ -21,28 +21,21 @@
                             <thead>
                                 <tr>
                                     <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'placa', 'Placa', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'marca', 'Marca', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'modelo', 'Modelo', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'ano', 'Ano', '')}"></div>
+                                    
                                     <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:if="${pagina.vazia}">
-                                    <td colspan="4" class="px-5">Nenhum veiculo encontrado</td>
+                                    <td colspan="4" class="px-5">Nenhum manutencao encontrado</td>
                                 </tr>
-                                <tr th:each="veiculo : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
-                                    <td th:text="${veiculo.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
-                                    <td th:text="${veiculo.placa}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">ABC-1234</td>
-                                    <td th:text="${veiculo.marca}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">chevrolet</td>
-                                    <td th:text="${veiculo.modelo}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">corvette</td>
-                                    <td th:text="${veiculo.ano}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">2021</td>
+                                <tr th:each="manutencao : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
+                                    <td th:text="${manutencao.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
-                                        <a th:hx-get="@{/veiculo/alterar/{id}(id=${veiculo.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
+                                        <a th:hx-get="@{/manutencao/alterar/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
-                                        <a th:hx-get="@{/veiculo/remover/{id}(id=${veiculo.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover o veiculo: ' + veiculo.modelo + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
+                                        <a th:hx-get="@{/manutencao/remover/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover o manutencao: ' + manutencao.modelo + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -54,16 +47,12 @@
 
         <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
 
-        <div th:each="veiculo : ${veiculos}" class="md:hidden flex flex-col mt-5">
+        <div th:each="manutencao : ${manutencaos}" class="md:hidden flex flex-col mt-5">
             <div class="overflow-x-auto">
                 <div class="min-w-full inline-block align-middle">
                     <div class="border rounded-xl overflow-hidden shadow">
                         <div class="m-3">
-                            <p th:text="${veiculo.id}"></p>
-                            <p th:text="${veiculo.placa}"></p>
-                            <p th:text="${veiculo.marca}"></p>
-                            <p th:text="${veiculo.modelo}"></p>
-                            <p th:text="${veiculo.ano}"></p>
+                            <p th:text="${manutencao.id}"></p>
                         </div>
                     </div>
                 </div>

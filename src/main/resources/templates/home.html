@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutmarketing}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title>Sua Oficina Online</title>
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+    <div class="text-center py-20 md:py-32 bg-white">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                Gerencie sua oficina e seus veículos com <span class="text-blue-600">facilidade</span>.
+            </h1>
+            <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                A plataforma completa para proprietários de veículos e donos de oficinas otimizarem o controle de manutenções e serviços.
+            </p>
+            <div class="mt-10">
+                <a th:href="@{/cadastrar}" class="py-3 px-8 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
+                    Comece Agora
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Tudo que você precisa em um só lugar</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Controle de Manutenções</h3>
+                    <p class="text-gray-600">Registre cada serviço, troca de óleo ou reparo. Nunca mais perca uma data de revisão.</p>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Histórico Completo do Veículo</h3>
+                    <p class="text-gray-600">Tenha todo o histórico do seu carro na palma da mão, valorizando-o na hora da venda.</p>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-3">Conexão com Oficinas</h3>
+                    <p class="text-gray-600">Encontre e avalie oficinas parceiras, agende serviços e receba orçamentos online.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

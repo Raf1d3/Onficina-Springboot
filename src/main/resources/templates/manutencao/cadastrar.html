@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Cadastrar Veiculo</title>
+</head>
+
+<body>
+    <!-- conteudo principal -->
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Cadastrar</h2>
+
+        <form th:action="@{/manutencao/cadastrar}" method="post" th:object="${manutencao}">
+            <label for="veiculo">Veículo:</label>
+            <select id="veiculo" name="veiculo.id" class="form-control">
+                <option value="">Selecione um veículo</option>
+                <th:block th:each="veiculo : ${veiculos}">
+                    <option th:value="${veiculo.id}" th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}"></option>
+                </th:block>
+            </select>
+
+            <!-- Data início -->
+            <label for="dataInicioManutencao" class="block text-gray-700 font-medium mb-2">Data Início</label>
+            <input type="datetime-local" th:field="*{dataInicioManutencao}"
+                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
+
+            <!-- Descrição -->
+            <label for="descricao" class="mt-5 block text-gray-700 font-medium mb-2">Descrição</label>
+            <input type="text" th:field="*{descricao}"
+                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
+
+            <!-- Observação -->
+            <label for="observacao" class="mt-5 block text-gray-700 font-medium mb-2">Observação</label>
+            <textarea th:field="*{observacao}"
+                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500"></textarea>
+
+
+            <!-- Tipo Manutenção -->
+            <label for="tipoManutencao" class="mt-5 block text-gray-700 font-medium mb-2">Tipo de Manutenção</label>
+            <select th:field="*{tipoManutencao}" class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <option value="">Selecione</option>
+                <option th:value="PREVENTIVA">Preventiva</option>
+                <option th:value="CORRETIVA">Corretiva</option>
+            </select>
+
+            <!-- Status Manutenção -->
+            <label for="statusManutencao" class="mt-5 block text-gray-700 font-medium mb-2">Status da Manutenção</label>
+            <select th:field="*{statusManutencao}" class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg">
+                <option value="">Selecione</option>
+                <option th:value="AGENDADA">Agendada</option>
+                <option th:value="EM_ANDAMENTO">Em andamento</option>
+                <option th:value="FINALIZADA">Finalizada</option>
+            </select>
+
+
+            <!-- Tipo de Serviço -->
+            <label class="mt-5 block text-gray-700 font-medium mb-2">Tipo de Serviço</label>
+            <select id="tipoServico" th:field="*{tipoServico}" class="w-1/2 py-3 px-4 border-gray-300 rounded-lg"
+                onchange="toggleOutroServico()">
+                <option value="">Selecione</option>
+                <option value="TROCA_OLEO">Troca de Óleo</option>
+                <option value="TROCA_PNEUS">Troca de Pneus</option>
+                <option value="ALINHAMENTO">Alinhamento</option>
+                <option value="BALANCEAMENTO">Balanceamento</option>
+                <option value="REPARO_FREIOS">Reparo de Freios</option>
+                <option value="TROCA_BATERIA">Troca de Bateria</option>
+                <option value="OUTRO">Outro</option>
+            </select>
+
+            <!-- Campo extra para 'OUTRO' -->
+            <div id="outroServicoDiv" style="display:none;" class="mt-5">
+                <label class="block text-gray-700 font-medium mb-2">Descreva o serviço</label>
+                <input type="text" id="outroServico" th:field="*{descricaoOutroServico}" name="outroServico"
+                    class="w-1/2 py-3 px-4 border-gray-300 rounded-lg" />
+            </div>
+
+            <!-- Valor do Serviço -->
+            <label for="valorServico" class="mt-5 block text-gray-700 font-medium mb-2">Valor do Serviço</label>
+            <input type="number" step="0.01" th:field="*{valorServico}"
+                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
+
+            <!-- Data Próxima Manutenção -->
+            <label for="dataProximaManutencao" class="mt-5 block text-gray-700 font-medium mb-2">Data da Próxima
+                Manutenção</label>
+            <input type="datetime-local" th:field="*{dataProximaManutencao}"
+                class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500" />
+
+            <button type="submit"
+                class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+                Cadastrar
+            </button>
+        </form>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+        <script>
+            function toggleOutroServico() {
+                const select = document.getElementById('tipoServico');
+                const outroDiv = document.getElementById('outroServicoDiv');
+                if (select !== null) {
+                    if (select.value === 'OUTRO') {
+                        outroDiv.style.display = 'block';
+                    } else {
+                        outroDiv.style.display = 'none';
+                    }
+                }
+            }
+        </script>
+    </main>
+</body>
+</html>

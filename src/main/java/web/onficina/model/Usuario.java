@@ -1,48 +1,50 @@
 package web.onficina.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import java.io.Serializable;
-
-import org.hibernate.annotations.DynamicUpdate;
 import jakarta.persistence.Table;
-
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import web.onficina.service.EmailUsuarioUnicoService;
+import web.onficina.validation.UniqueValueAttribute;
 
 @Entity
 @Table(name = "usuario")
-@DynamicUpdate
+@UniqueValueAttribute(attribute = "email", service = EmailUsuarioUnicoService.class, message = "Já existe um usuário com esse email cadastrado")
 public class Usuario implements Serializable {
 
-    public enum TipoUsuario {
-        CLIENTE,
-        OFICINA
-    }
-    
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="geradorUsuario", sequenceName="usuario_id_seq", allocationSize=1)
+    @GeneratedValue(generator="geradorUsuario", strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @NotEmpty(message = "Nome é obrigatório")
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotEmpty(message = "Email é obrigatório")
+    @NotBlank(message = "Email é obrigatório")
     @Email(message = "Email inválido")
     private String email;
 
-    @NotEmpty(message = "Senha é obrigatória")
+    @NotBlank(message = "Senha é obrigatória")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    private TipoUsuario tipo;
+    private boolean ativo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_papel")
+    @NotNull(message = "O usuário deve escolher um tipo")
+    private Papel papel;
 
     public Long getId() {
         return id;
@@ -72,13 +74,21 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public TipoUsuario getTipo() {
-        return tipo;
-    }
+    public boolean isAtivo() {
+		return ativo;
+	}
 
-    public void setTipo(TipoUsuario tipo) {
-        this.tipo = tipo;
-    }
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+    public void setPapel(Papel papel) {
+		this.papel = papel;
+	}
+
+    public Papel getPapel() {
+		return papel;
+	}
 
     @Override
     public int hashCode() {
@@ -104,7 +114,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "nome=" + nome + ", email=" + email + ", tipo=" + tipo;
+        return "nome=" + nome + ", email=" + email + "\nativo: " + ativo;
     }
 
 }

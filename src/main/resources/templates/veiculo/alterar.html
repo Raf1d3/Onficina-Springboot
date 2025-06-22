@@ -10,7 +10,7 @@
 <body>
     <!-- conteudo principal -->
     <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
-
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Alterar</h2>
 
         <form th:hx-post="@{/veiculo/alterar}" hx-target="#main" hx-swap="outerHTML" th:object="${veiculo}" class="w-2/3 mt-10">

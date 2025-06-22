@@ -25,8 +25,8 @@ public class VeiculoService {
         veiculoRepository.save(veiculo);
     }
 
-    public void remover(Long codigo) {
-        veiculoRepository.deleteById(codigo);
+    public void remover(Long id) {
+        veiculoRepository.deleteById(id);
     }
 
 
