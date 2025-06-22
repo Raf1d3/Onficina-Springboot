@@ -17,9 +17,17 @@
         <form th:action="@{/manutencao/cadastrar}" method="post" th:object="${manutencao}">
             <label for="veiculo">Veículo:</label>
             <select id="veiculo" name="veiculo.id" class="form-control">
-                <option value="">Selecione um veículo</option>
+                <option value="" disabled>Selecione um veículo</option>
                 <th:block th:each="veiculo : ${veiculos}">
                     <option th:value="${veiculo.id}" th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}"></option>
+                </th:block>
+            </select>
+
+             <label for="oficina">Oficina:</label>
+            <select id="oficina" name="oficina.id" class="form-control">
+                <option value="" disabled>Selecione uma oficina</option>
+                <th:block th:each="oficina: ${oficina}">
+                    <option th:each="oficina : ${oficinas}" th:value="${oficina.id}" th:text="${oficina.nome}"></option>
                 </th:block>
             </select>
 

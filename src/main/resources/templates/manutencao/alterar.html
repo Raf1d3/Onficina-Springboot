@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Alterar Manutenção</title>
+</head>
+<body>
+
+<main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
+    <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Alterar Manutenção</h2>
+
+<form th:action="@{/manutencao/alterar}" method="post" th:object="${manutencao}">
+    <input type="hidden" th:field="*{id}" />
+
+    <div th:replace="~{layout/fragments/forms :: inputselectsimples('Veículo', 'veiculo.id', 'veiculos', 'placa', 'id')}"></div>
+    <div th:replace="~{layout/fragments/forms :: inputselectsimples('Oficina', 'oficina.id', 'oficinas', 'nome', 'id')}"></div>
+
+    <div th:replace="~{layout/fragments/forms :: inputtext('Descrição', 'descricao')}"></div>
+    <div th:replace="~{layout/fragments/forms :: inputtext('Observação', 'observacao')}"></div>
+
+    <div th:replace="~{layout/fragments/forms :: inputselectenum('Tipo de Manutenção', 'tipoManutencao', 'tipos')}"></div>
+    <div th:replace="~{layout/fragments/forms :: inputselectenum('Status da Manutenção', 'statusManutencao', 'status')}"></div>
+
+    <div th:replace="~{layout/fragments/forms :: inputdata('Data Início', 'dataInicioManutencao')}"></div>
+    <div th:replace="~{layout/fragments/forms :: inputdata('Data Próxima Manutenção', 'dataProximaManutencao')}"></div>
+
+    <div th:replace="~{layout/fragments/forms :: inputtext('Valor do Serviço', 'valorServico')}"></div>
+
+    <button type="submit">Salvar</button>
+</form>
+
+</main>
+
+</body>
+</html>
