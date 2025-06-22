@@ -1,10 +1,19 @@
+CREATE TABLE public.papel
+(
+    id bigserial PRIMARY KEY,
+    nome text NOT NULL UNIQUE
+);
+
 CREATE TABLE public.usuario (
     id BIGSERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL,
-    tipo TEXT NOT NULL
+    ativo boolean,
+    id_papel bigint NOT NULL,
+    CONSTRAINT fk_papel FOREIGN KEY (id_papel) REFERENCES public.papel (id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE public.veiculo (
     id BIGSERIAL PRIMARY KEY,

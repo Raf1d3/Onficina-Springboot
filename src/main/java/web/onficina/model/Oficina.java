@@ -2,33 +2,37 @@ package web.onficina.model;
 
 import java.util.Objects;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "oficina")
 public class Oficina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="geradorOficina", sequenceName="oficina_id_seq", allocationSize=1)
+    @GeneratedValue(generator="geradorOficina", strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @Column(nullable = false)
+    @NotBlank(message = "CNPJ é obrigatório")
+    @CNPJ(message = "CNPJ inválido")
     private String cnpj;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Endereço é obrigatório")
     private String endereco;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
 
     @Column(name = "nota_media")

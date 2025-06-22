@@ -52,6 +52,29 @@
         <a href="#" class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600"> Login </a>
         -->
         <!-- <a th:href="@{/logout}" class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600"> Logout </a> -->
+      <div class="hidden items-center md:flex" th:fragment="usuariologinlogout" id="usuariologinlogout"
+        hx-swap-oob="true">
+        <!-- botao login -->
+        <div sec:authorize="!isAuthenticated()">
+          <a th:hx-get="@{/login}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
+            class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
+            Login </a>
+        </div>
+        <!-- nome do usuario -->
+        <div sec:authorize="isAuthenticated()"
+          th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
+
+          <div class="text-sm text-gray-300 md:text-xl">
+            <span th:text="${nomeUsuario}"></span>
+          </div>
+
+        </div>
+        <!-- botao logout -->
+        <div sec:authorize="isAuthenticated()">
+          <a th:hx-post="@{/logout}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
+            class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
+            Logout </a>
+        </div>
       </div>
 
       <!-- Botao Usuario -->
@@ -81,7 +104,11 @@
     <!-- Mobile Menu Usuario -->
     <div id="menu-usuario"
       class="absolute bottom-0 left-0 top-0 hidden min-h-screen w-full flex-col items-end space-y-3 self-end bg-gray-800 py-1 pr-12 pt-20 text-lg text-gray-400">
+<<<<<<< HEAD
       <!-- <div class="text-sm text-gray-300 md:text-xl" th:text="'Olá, ' + ${session.usuarioLogado.nome}"></div> -->
+=======
+      <div class="text-gray-300">Ola, admin</div>
+>>>>>>> main
       <a href="#"
         class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
         Login </a>
