@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <title>manutencaos</title>
-</head>
+</head>#
 
 <body>
     <!-- conteudo principal -->
     <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
-
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Pesquisar</h2>
 
         <div class="hidden md:flex flex-col mt-5">

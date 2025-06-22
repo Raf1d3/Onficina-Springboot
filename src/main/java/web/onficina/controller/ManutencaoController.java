@@ -1,5 +1,6 @@
 package web.onficina.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,19 +24,15 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxLocation;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 
 import org.springframework.ui.Model;
-import org.springframework.data.domain.Sort;
 
 import web.onficina.notificacao.NotificacaoSweetAlert2;
 import web.onficina.notificacao.TipoNotificaoSweetAlert2;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-// import web.onficina.filter.ManutencaoFilter;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.model.Manutencao;
-import web.onficina.pagination.PageWrapper;
 import web.onficina.repository.ManutencaoRepository;
+import web.onficina.repository.UsuarioRepository;
 import web.onficina.repository.VeiculoRepository;
 import web.onficina.service.ManutencaoService;
 
@@ -45,46 +42,39 @@ public class ManutencaoController {
 
     private static final Logger logger = LoggerFactory.getLogger(ManutencaoController.class);
 
-    private ManutencaoRepository manutencaoRepository;
-    private ManutencaoService manutencaoService;
-    private VeiculoRepository veiculoRepository;
+    private final ManutencaoRepository manutencaoRepository;
+    private final ManutencaoService manutencaoService;
+    private final VeiculoRepository veiculoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public ManutencaoController(ManutencaoRepository manutencaoRepository, ManutencaoService manutencaoService, VeiculoRepository veiculoRepository) {
+    public ManutencaoController(ManutencaoRepository manutencaoRepository, ManutencaoService manutencaoService,
+            VeiculoRepository veiculoRepository, UsuarioRepository usuarioRepository) {
         this.manutencaoRepository = manutencaoRepository;
         this.manutencaoService = manutencaoService;
         this.veiculoRepository = veiculoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/cadastrar")
-    public String mostrarFormularioCadastro(Model model, HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
-        if (usuarioLogado == null) {
-            model.addAttribute("erro", "Usuário não está logado.");
-            return "redirect:/login";
-        }
-
-        List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioId(usuarioLogado.getId());
-
-        model.addAttribute("veiculos", veiculos);
+    public String mostrarFormularioCadastro(Model model) {
         model.addAttribute("manutencao", new Manutencao());
 
         return "manutencao/cadastrar :: formulario";
     }
 
     @PostMapping("/cadastrar")
-    public String salvar(@Valid Manutencao manutencao, BindingResult result, 
+    public String salvar(@Valid Manutencao manutencao, BindingResult result,
             Model model, RedirectAttributes redirectAttributes,
-            HttpSession session) {
+            Principal principal) {
         if (result.hasErrors()) {
             return "manutencao/cadastrar :: formulario";
         }
 
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        String email = principal.getName();
+        Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
 
         if (usuarioLogado == null) {
-            redirectAttributes.addFlashAttribute("erro", "Usuário não está logado.");
-            return "redirect:/login";
+            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
         Optional<Veiculo> optVeiculo = veiculoRepository.findById(manutencao.getVeiculo().getId());
@@ -92,13 +82,12 @@ public class ManutencaoController {
             redirectAttributes.addFlashAttribute("erro", "Veículo inválido.");
             return "redirect:/manutencao/cadastrar";
         }
-    
         manutencao.setVeiculo(optVeiculo.get());
 
         manutencaoService.salvar(manutencao);
-        redirectAttributes.addFlashAttribute("notificacao", 
-    new NotificacaoSweetAlert2("Manutenção cadastrada com sucesso!", 
-    TipoNotificaoSweetAlert2.SUCCESS, 4000));
+        redirectAttributes.addFlashAttribute("notificacao",
+                new NotificacaoSweetAlert2("Manutenção cadastrada com sucesso!",
+                        TipoNotificaoSweetAlert2.SUCCESS, 4000));
 
         return "redirect:/manutencao/listar";
     }
@@ -106,16 +95,16 @@ public class ManutencaoController {
     // @HxRequest
     // @GetMapping("/listar")
     // public String listar(ManutencaoFilter filtro, Model model,
-    //         @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-    //         HttpServletRequest request) {
+    // @PageableDefault(size = 7) @SortDefault(sort = "id", direction =
+    // Sort.Direction.ASC) Pageable pageable,
+    // HttpServletRequest request) {
 
-    //     Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
-    //     PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
+    // Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
+    // PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
 
-    //     model.addAttribute("pagina", paginaWrapper);
-    //     return "manutencao/listar :: tabela";
+    // model.addAttribute("pagina", paginaWrapper);
+    // return "manutencao/listar :: tabela";
     // }
-
 
     @HxRequest
     @GetMapping("/abrirpesquisar")
@@ -123,20 +112,20 @@ public class ManutencaoController {
         return "manutencao/pesquisar :: formulario";
     }
 
-
     // @HxRequest
     // @GetMapping("/pesquisar")
     // public String pesquisar(ManutencaoFilter filtro, Model model,
-    //         @PageableDefault(size = 5) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-    //         HttpServletRequest request) {
+    // @PageableDefault(size = 5) @SortDefault(sort = "id", direction =
+    // Sort.Direction.ASC) Pageable pageable,
+    // HttpServletRequest request) {
 
-    //     Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
-    //     PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
+    // Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
+    // PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
 
-    //     model.addAttribute("pagina", paginaWrapper);
-    //     return "manutencao/listar :: tabela";
+    // model.addAttribute("pagina", paginaWrapper);
+    // return "manutencao/listar :: tabela";
     // }
-    
+
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model) {
@@ -150,36 +139,27 @@ public class ManutencaoController {
         }
     }
 
-    // @HxRequest
-    // @PostMapping("/alterar")
-    // public String alterar(@Valid Manutencao manutencao, BindingResult resultado,
-    //         RedirectAttributes redirectAttributes, HttpSession session) {
-    //     if (resultado.hasErrors()) {
-    //         logger.info("A manutenção recebida para cadastrar não é válida.");
-    //         logger.info("Erros encontrados:");
-    //         for (FieldError erro : resultado.getFieldErrors()) {
-    //             logger.info("{}", erro);
-    //         }
-    //         for (ObjectError erro : resultado.getGlobalErrors()) {
-    //             logger.info("{}", erro);
-    //         }
-    //         return "manutencao/alterar :: formulario";
-    //     } else {
+    @HxRequest
+     @PostMapping("/alterar")
+     public String alterar(@Valid Manutencao manutencao, BindingResult resultado,
+             RedirectAttributes redirectAttributes) {
+         if (resultado.hasErrors()) {
+             logger.info("A manutenção recebida para cadastrar não é válida.");
+             logger.info("Erros encontrados:");
+             for (FieldError erro : resultado.getFieldErrors()) {
+                 logger.info("{}", erro);
+             }
+             for (ObjectError erro : resultado.getGlobalErrors()) {
+                 logger.info("{}", erro);
+             }
+             return "manutencao/alterar :: formulario";
+         } else {
 
-    //         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
-    //         if (usuarioLogado == null) {
-    //             redirectAttributes.addFlashAttribute("erro", "Usuário não está logado.");
-    //             return "redirect:/login";
-    //         }
-
-    //         manutencao.setProprietario(usuarioLogado);
-
-    //         manutencaoService.alterar(manutencao);
-    //         redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2("Manutenção alterada com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));  // redirect
-    //         return "redirect:/manutencao/listar";
-    //     }
-    // }
+             manutencaoService.alterar(manutencao);
+             redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2("Manutenção alterada com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
+             return "redirect:/manutencao/listar";
+         }
+     }
 
     @HxRequest
     @HxLocation(path = "/mensagem", target = "#main", swap = "outerHTML")

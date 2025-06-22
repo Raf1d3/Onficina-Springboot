@@ -57,6 +57,10 @@
 		<!-- <AsyncLogger name="org.hibernate" level="error" additivity="false">
 			<AppenderRef ref="File" />
 		</AsyncLogger> -->
+				<!-- Log Spring Security -->
+		<AsyncLogger name="org.springframework.security" level="debug" additivity="false">
+			<AppenderRef ref="Console"/>
+		</AsyncLogger>
         <AsyncLogger name="org.apache.catalina.startup.DigesterFactory" level="error" />
 		<AsyncLogger name="org.apache.catalina.util.LifecycleBase" level="error" />
 		<AsyncLogger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />

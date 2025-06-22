@@ -7,6 +7,7 @@
 </head>
 <body>
     <main layout:fragment="conteudo" th:fragment="conteudo" id="main" class="flex flex-col align-middle justify-center w-full m-10">
+      <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
       <img th:src="@{/images/emDesenvolvimento.jpg}" class="mx-auto block mt-5" alt="Pagina em contrução" />
       <h3 class="text-center mt-5 mb-5">Página em Desenvolvimento. </h3>
       <p class="text-center mt-5 mb-5">Estamos trabalhando para trazer esta funcionalidade em breve.</p>

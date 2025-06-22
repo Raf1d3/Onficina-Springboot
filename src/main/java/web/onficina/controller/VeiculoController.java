@@ -1,5 +1,6 @@
 package web.onficina.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -27,12 +28,12 @@ import org.springframework.data.domain.Sort;
 import web.onficina.notificacao.NotificacaoSweetAlert2;
 import web.onficina.notificacao.TipoNotificaoSweetAlert2;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import web.onficina.filter.VeiculoFilter;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.pagination.PageWrapper;
+import web.onficina.repository.UsuarioRepository;
 import web.onficina.repository.VeiculoRepository;
 import web.onficina.service.VeiculoService;
 
@@ -42,12 +43,15 @@ public class VeiculoController {
 
     private static final Logger logger = LoggerFactory.getLogger(VeiculoController.class);
 
-    private VeiculoRepository veiculoRepository;
-    private VeiculoService veiculoService;
+    private final VeiculoRepository veiculoRepository;
+    private final VeiculoService veiculoService;
+    private final UsuarioRepository usuarioRepository;
 
-    public VeiculoController(VeiculoRepository veiculoRepository, VeiculoService veiculoService) {
+    public VeiculoController(VeiculoRepository veiculoRepository, VeiculoService veiculoService,
+            UsuarioRepository usuarioRepository) {
         this.veiculoRepository = veiculoRepository;
         this.veiculoService = veiculoService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/cadastrar")
@@ -58,24 +62,24 @@ public class VeiculoController {
     }
 
     @PostMapping("/cadastrar")
-    public String salvar(@Valid Veiculo veiculo, BindingResult result, 
+    public String salvar(@Valid Veiculo veiculo, BindingResult result,
             Model model, RedirectAttributes redirectAttributes,
-            HttpSession session) {
+            Principal principal) {
+
         if (result.hasErrors()) {
             return "veiculo/cadastrar :: formulario";
         }
 
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
+        String email = principal.getName();
+        Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
         if (usuarioLogado == null) {
-            redirectAttributes.addFlashAttribute("erro", "Usuário não está logado.");
-            return "redirect:/login";
+            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
         veiculo.setProprietario(usuarioLogado);
 
         veiculoService.salvar(veiculo);
-        model.addAttribute("mensagem", "Veículo cadastrado com sucesso!");
+        redirectAttributes.addAttribute("mensagem", "Veículo cadastrado com sucesso!");
         return "redirect:/veiculo/listar";
     }
 
@@ -92,13 +96,11 @@ public class VeiculoController {
         return "veiculo/listar :: tabela";
     }
 
-
     @HxRequest
     @GetMapping("/abrirpesquisar")
     public String abrirPaginaPesquisa() {
         return "veiculo/pesquisar :: formulario";
     }
-
 
     @HxRequest
     @GetMapping("/pesquisar")
@@ -112,7 +114,7 @@ public class VeiculoController {
         model.addAttribute("pagina", paginaWrapper);
         return "veiculo/listar :: tabela";
     }
-    
+
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model) {
@@ -129,7 +131,9 @@ public class VeiculoController {
     @HxRequest
     @PostMapping("/alterar")
     public String alterar(@Valid Veiculo veiculo, BindingResult resultado,
-            RedirectAttributes redirectAttributes, HttpSession session) {
+            RedirectAttributes redirectAttributes,
+            Principal principal) {
+
         if (resultado.hasErrors()) {
             logger.info("O veiculo recebido para cadastrar não é válido.");
             logger.info("Erros encontrados:");
@@ -142,17 +146,18 @@ public class VeiculoController {
             return "veiculo/alterar :: formulario";
         } else {
 
-            Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
+            String email = principal.getName();
+            Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
             if (usuarioLogado == null) {
-                redirectAttributes.addFlashAttribute("erro", "Usuário não está logado.");
-                return "redirect:/login";
+                throw new IllegalStateException(
+                        "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
 
             veiculo.setProprietario(usuarioLogado);
 
             veiculoService.alterar(veiculo);
-            redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2("Veiculo alterado com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));  // redirect
+            redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2(
+                    "Veiculo alterado com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
             return "redirect:/veiculo/listar";
         }
     }
@@ -163,9 +168,8 @@ public class VeiculoController {
     public String remover(@PathVariable("id") Long id, RedirectAttributes attributes) {
         veiculoService.remover(id);
         attributes.addFlashAttribute("notificacao",
-                new NotificacaoSweetAlert2("Veiculo removido com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000)); // redirect
+                new NotificacaoSweetAlert2("Veiculo removido com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
         return "redirect:/veiculo/listar";
     }
-
 
 }
