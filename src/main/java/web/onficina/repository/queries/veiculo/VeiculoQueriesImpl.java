@@ -25,7 +25,7 @@ public class VeiculoQueriesImpl implements VeiculoQueries {
 
     @Override
     public Page<Veiculo> pesquisar(VeiculoFilter filtro, Pageable pageable) {
-        StringBuilder jpql = new StringBuilder("select v from Veiculo v");
+        StringBuilder queryVeiculos = new StringBuilder("select v from Veiculo v");
         StringBuilder condicoes = new StringBuilder(" where 1=1");
 
         if (StringUtils.hasText(filtro.getPlaca())) {
@@ -40,10 +40,10 @@ public class VeiculoQueriesImpl implements VeiculoQueries {
             condicoes.append(" and lower(v.marca) like :marca");
         }
 
-        jpql.append(condicoes);
-        //PaginacaoUtil.prepararOrdemJPQL(jpql, pageable);
+        queryVeiculos.append(condicoes);
+        PaginacaoUtil.prepararOrdemJPQL(queryVeiculos, "v", pageable);
 
-        TypedQuery<Veiculo> query = em.createQuery(jpql.toString(), Veiculo.class);
+        TypedQuery<Veiculo> query = em.createQuery(queryVeiculos.toString(), Veiculo.class);
         PaginacaoUtil.prepararIntervalo(query, pageable);
 
         if (StringUtils.hasText(filtro.getPlaca())) {
