@@ -14,7 +14,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import web.onficina.filter.VeiculoFilter;
 import web.onficina.model.Veiculo;
-import web.onficina.repository.pagination.PaginacaoUtil;
+import web.onficina.pagination.PaginacaoUtil;
 
 public class VeiculoQueriesImpl implements VeiculoQueries {
 
@@ -41,7 +41,7 @@ public class VeiculoQueriesImpl implements VeiculoQueries {
         }
 
         jpql.append(condicoes);
-        PaginacaoUtil.prepararOrdemJPQL(jpql, pageable);
+        //PaginacaoUtil.prepararOrdemJPQL(jpql, pageable);
 
         TypedQuery<Veiculo> query = em.createQuery(jpql.toString(), Veiculo.class);
         PaginacaoUtil.prepararIntervalo(query, pageable);

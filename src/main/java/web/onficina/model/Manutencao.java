@@ -1,5 +1,6 @@
 package web.onficina.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -38,6 +39,9 @@ public class Manutencao {
         OUTRO
     }
 
+    @Column(name = "descricao_outro_servico")
+    private String descricaoOutroServico;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -61,22 +65,19 @@ public class Manutencao {
     private TipoServico tipoServico;
 
     @Column(name = "valor_servico", nullable = false)
-    private double valorServico;
+    private BigDecimal valorServico;
 
     @Column(name = "data_proxima_manutencao")
     private LocalDateTime dataProximaManutencao;
 
     @ManyToOne
-    @JoinColumn(name = "oficina_id", nullable = false)
+    @JoinColumn(name = "oficina_id", nullable = true)
     private Oficina oficina;
 
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario proprietario;
 
     public long getId() {
         return id;
@@ -134,11 +135,19 @@ public class Manutencao {
         this.tipoServico = tipoServico;
     }
 
-    public double getValorServico() {
+    public String getDescricaoOutroServico() {
+        return descricaoOutroServico;
+    }
+
+    public void setDescricaoOutroServico(String descricaoOutroServico) {
+        this.descricaoOutroServico = descricaoOutroServico;
+    }
+
+    public BigDecimal getValorServico() {
         return valorServico;
     }
 
-    public void setValorServico(double valorServico) {
+    public void setValorServico(BigDecimal valorServico) {
         this.valorServico = valorServico;
     }
 
@@ -166,14 +175,6 @@ public class Manutencao {
         this.veiculo = veiculo;
     }
 
-    public Usuario getProprietario() {
-        return proprietario;
-    }
-
-    public void setProprietario(Usuario proprietario) {
-        this.proprietario = proprietario;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);
@@ -191,15 +192,16 @@ public class Manutencao {
         return Objects.equals(id, other.id);
     }
 
-    @Override
-    public String toString() {
-        return "Manutencao:\n" +
-               "tipo=" + tipoManutencao + "\n" +
-               "status=" + statusManutencao + "\n" +
-               "servico=" + tipoServico + "\n" +
-               "valor=" + valorServico + "\n" +
-               "veiculo=" + veiculo.getId() + "\n" +
-               "oficina=" + oficina.getId();
-    }
+@Override
+public String toString() {
+    return "Manutencao:\n" +
+           "tipo=" + tipoManutencao + "\n" +
+           "status=" + statusManutencao + "\n" +
+           "servico=" + tipoServico + "\n" +
+           "valor=" + valorServico + "\n" +
+           "veiculo=" + (veiculo != null ? veiculo.getId() : "null") + "\n" +
+           "oficina=" + (oficina != null ? oficina.getId() : "null");
+}
+
 
 }

@@ -14,19 +14,8 @@
     <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Crie sua Conta</h1>
 
 
-<<<<<<< Updated upstream:src/main/resources/templates/usuario/cadastro.html
-        <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
-            <div th:if="${#fields.hasErrors('*')}">
-                <p th:each="err : ${#fields.errors('*')}" th:text="${err}" class="error"></p>
-            </div>
-            
-            <input type="text" name="nome" placeholder="Nome" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="senha" placeholder="Senha" required />
-=======
     <form th:action="@{/cadastrar}" th:object="${usuario}" method="post" hx-target="#main" hx-swap="outerHTML"
       class="space-y-5">
->>>>>>> Stashed changes:src/main/resources/templates/usuario/cadastrar.html
 
       <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
 
@@ -71,7 +60,7 @@
     <p class="mt-6 text-center text-sm text-gray-600">
       Já tem uma conta?
       <a th:href="@{/login}" class="font-medium text-blue-600 hover:text-blue-500">
-        Faça logingit
+        Faça login
       </a>
     </p>
 

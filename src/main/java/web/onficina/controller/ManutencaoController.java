@@ -24,18 +24,13 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxLocation;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 
 import org.springframework.ui.Model;
-import org.springframework.data.domain.Sort;
 
 import web.onficina.notificacao.NotificacaoSweetAlert2;
 import web.onficina.notificacao.TipoNotificaoSweetAlert2;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-// import web.onficina.filter.ManutencaoFilter;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.model.Manutencao;
-import web.onficina.pagination.PageWrapper;
 import web.onficina.repository.ManutencaoRepository;
 import web.onficina.repository.UsuarioRepository;
 import web.onficina.repository.VeiculoRepository;

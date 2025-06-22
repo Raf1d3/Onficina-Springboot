@@ -38,10 +38,6 @@ public class Oficina {
     @Column(name = "nota_media")
     private Double notaMedia;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
     public long getId() {
         return id;
     }
@@ -90,14 +86,6 @@ public class Oficina {
         this.notaMedia = notaMedia;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);
@@ -122,8 +110,7 @@ public class Oficina {
                "cnpj=" + cnpj + "\n" +
                "endereco=" + endereco + "\n" +
                "telefone=" + telefone + "\n" +
-               "notaMedia=" + notaMedia + "\n" +
-               "usuario=" + usuario.getId();
+               "notaMedia=" + notaMedia + "\n";
     }
 
 }
