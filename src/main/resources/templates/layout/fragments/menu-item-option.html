@@ -11,12 +11,14 @@
 <body>
 
     <!-- Opcao -->
-    <div th:fragment="menu-item-option(texto, url, svg)" class="flex items-center hover:text-white">
-        <!-- Imagem -->
-        <svg th:replace="${svg}"></svg>
-        <!-- Texto -->
-        <a th:text="${texto}" th:hx-get="${url}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true" class="cursor-pointer px-2 text-gray-400 hover:text-white">Cadastrar</a>
-    </div>
+<div th:fragment="menu-item-option(texto, url, svg)" 
+     class="flex w-full cursor-pointer justify-start bg-text-gray-400 hover:bg-gray-700 rounded-md focus:outline-none items-center p-4"
+     th:hx-get="${url}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true">
+    <!-- Imagem -->
+    <svg th:replace="${svg}"></svg>
+    <!-- Texto -->
+    <a th:text="${texto}" class="cursor-pointer px-2 text-gray-400 hover:text-white" x-show="sidebarOpen"></a>
+</div>
 
 </body>
 
