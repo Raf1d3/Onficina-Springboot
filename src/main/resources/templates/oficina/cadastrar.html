@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Cadastrar Oficina</title>
+</head>
+
+<body>
+    <!-- conteudo principal -->
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Cadastrar</h2>
+
+        <form th:hx-post="@{/oficina/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${oficina}"
+            class="w-2/3 mt-10">
+
+            <div th:if="${#fields.hasAnyErrors()}" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
+                role="alert">
+                <span class="font-medium">Por favor, corrija os erros abaixo.</span>
+            </div>
+
+            <div class="flex flex-col">
+                <label for="nome" class="block text-gray-700 font-medium mb-2">Nome</label>
+                <input type="text" th:field="${oficina.nome}"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
+                    th:classappend="${#fields.hasErrors('nome')} ? 'border-red-500' : 'border-gray-300'"/>
+                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-sm text-red-600 mt-1"></p>
+
+                <label for="cnpj" class="mt-5 block text-gray-700 font-medium mb-2">CNPJ</label>
+                <input type="text" th:field="${oficina.cnpj}"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
+                    th:classappend="${#fields.hasErrors('cnpj')} ? 'border-red-500' : 'border-gray-300'"/>
+                    <p th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="text-sm text-red-600 mt-1"></p>
+
+                <label for="endereco" class="mt-5 block text-gray-700 font-medium mb-2">Endereço</label>
+                <input type="text" th:field="${oficina.endereco}"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
+                    th:classappend="${#fields.hasErrors('endereco')} ? 'border-red-500' : 'border-gray-300'"/>
+                    <p th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="text-sm text-red-600 mt-1"></p>
+
+                <label for="telefone" class="mt-5 block text-gray-700 font-medium mb-2">Telefone</label>
+                <input type="text" th:field="${oficina.telefone}"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
+                    th:classappend="${#fields.hasErrors('telefone')} ? 'border-red-500' : 'border-gray-300'"/>
+                    <p th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="text-sm text-red-600 mt-1"></p>
+                <div>
+                    <button type="submit"
+                        class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">Cadastrar</button>
+                </div>
+            </div>
+        </form>
+
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+    <!-- !conteudo principal -->
+
+</body>
+
+</html>

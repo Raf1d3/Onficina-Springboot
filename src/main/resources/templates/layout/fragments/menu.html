@@ -18,15 +18,14 @@
       <!-- Opcoes do 1o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#cadastrar-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', '/emDesenvolvimento', ~{::#pesquisar-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', @{/emDesenvolvimento}, ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
 
-    
     <!-- 2o Item Menu -->
      <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Meu veiculo', @{/veiculo/listar}, ~{::#carro-icon})}"></div>
     <!-- <div x-data="{ open: false }">
@@ -59,7 +58,7 @@
         </div>
         <!-- 2a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', @{/manutencao/listar}, ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', @{/emDesenvolvimento}, ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -73,11 +72,15 @@
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', '/emDesenvolvimento', ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/oficina/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
         <!-- 2a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', '/emDesenvolvimento', ~{::#pesquisar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/oficina/listar}, ~{::#pesquisar-icon})}">
+        </div>
+        <!-- 3a Opcao -->
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/oficina/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
     </div>
@@ -91,13 +94,13 @@
       <!-- Opcoes do 5o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
         <!-- 3a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
       </div>
     </div>
@@ -111,13 +114,13 @@
       <!-- Opcoes do 5o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
         <!-- 1a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
         <!-- 2a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
         <!-- 3a Opcao -->
-        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', '/emDesenvolvimento', ~{::#pdf-icon})}">
+        <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
       </div>
     </div>

@@ -12,9 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import web.onficina.service.CnpjOficinaUnicoService;
+import web.onficina.service.EmailUsuarioUnicoService;
+import web.onficina.validation.UniqueValueAttribute;
 
 @Entity
 @Table(name = "oficina")
+@UniqueValueAttribute(attribute = "cnpj", service = CnpjOficinaUnicoService.class, message = "Já existe uma oficina com esse CNPJ cadastrado")
 public class Oficina {
 
     @Id
@@ -36,7 +40,7 @@ public class Oficina {
     private String telefone;
 
     @Column(name = "nota_media")
-    private Double notaMedia;
+    private Double notaMedia = 0.0;
 
     public long getId() {
         return id;
