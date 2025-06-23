@@ -54,10 +54,10 @@
 <body class="bg-[#1B1F27] text-white" x-data="{ sidebarOpen: false }">
   <div class="min-h-screen flex flex-col">
     <div th:replace="~{layout/fragments/header :: header}"></div>
-   <section class="flex flex-1 pt-16 md:pt-20"> 
+   <section class="flex flex-1 py-16 "> 
   <div th:replace="~{layout/fragments/sidebar :: sidebar}"></div>
 
-  <main class="flex-1 p-4  mx-10 transition-all duration-300"
+  <main class="flex-1 mx-10 transition-all duration-300"
          :class="sidebarOpen ? 'ml-72' : 'ml-20'">
     
     <th:block layout:fragment="conteudo"></th:block>

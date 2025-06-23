@@ -10,7 +10,7 @@
 
 <body>
 
-    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10"
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full"
         x-data="{ view: 'grid' }">
 
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Meus Veículos</h2>
@@ -27,7 +27,7 @@
                 </a>
             </div>
 
-            <div class="hidden md:flex items-center gap-2 p-1 rounded-lg bg-gray-800">
+            <div class="md:flex items-center gap-2 p-1 rounded-lg bg-gray-800">
                 <button @click="view = 'grid'"
                     :class="{ 'bg-blue-600 text-white': view === 'grid', 'text-gray-400 hover:bg-gray-700': view !== 'grid' }"
                     class="p-2 rounded-md transition-colors duration-200" title="Visualização em Grade">
@@ -56,16 +56,18 @@
         <div x-show="view === 'grid'" th:unless="${pagina.vazia}"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
             <div th:each="veiculo : ${pagina.conteudo}"
-                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
-                <img th:src="@{/images/carro.png}" alt="Imagem do Veículo" class="w-full h-40 object-cover">
-                <div class="p-6 flex flex-col flex-grow">
+                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 flex flex-col">
+                <img th:src="@{/images/generic-car.png}" alt="Imagem do Veículo" class="w-full h-40 object-cover">
+                <div class="flex flex-col flex-grow">
                     <div class="flex-grow">
                         <p class="text-sm text-gray-400">Placa</p>
                         <h3 class="text-xl font-semibold text-white mb-2" th:text="${veiculo.placa}"></h3>
                         <p class="text-sm text-gray-400">Marca / Modelo</p>
                         <p class="text-white mb-2" th:text="${veiculo.marca} + ' / ' + ${veiculo.modelo}"></p>
                         <p class="text-sm text-gray-400">Ano</p>
-                        <p class="text-white" th:text="${veiculo.ano}"></p>
+                        <p class="text-white mb-2" th:text="${veiculo.ano}"></p>
+                        <p class="text-sm text-gray-400">Cor</p>
+                        <p class="text-white" th:text="${veiculo.cor}"></p>
                     </div>
                     <div class="mt-6 border-t border-gray-700 pt-4 flex justify-end items-center space-x-3">
                         <div th:replace="~{:: vehicleActions(vehicle=${veiculo})}"></div>
@@ -77,12 +79,12 @@
         <div x-show="view === 'row'" th:unless="${pagina.vazia}" class="flex flex-col space-y-4 mt-5">
             <div th:each="veiculo : ${pagina.conteudo}"
                 class="bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4">
-                <img th:src="@{/images/carro.png}" alt="Imagem do Veículo"
+                <img th:src="@{/images/generic-car.png}" alt="Imagem do Veículo"
                     class="w-16 h-16 rounded-full object-cover flex-shrink-0">
                 <div class="flex-grow">
                     <p class="text-lg font-bold text-white" th:text="${veiculo.placa}"></p>
                     <p class="text-sm text-gray-400"
-                        th:text="${veiculo.marca} + ' ' + ${veiculo.modelo} + ' &middot; ' + ${veiculo.ano}"></p>
+                        th:text="${veiculo.marca} + ' ' + ${veiculo.modelo} + ' &middot; ' + ${veiculo.ano} + ' &middot; ' + ${veiculo.cor}"></p>
                 </div>
                 <div class="flex-shrink-0">
                     <div th:replace="~{:: vehicleActions(vehicle=${veiculo})}"></div>

@@ -9,52 +9,68 @@
 </head>
 
 <body>
-    <!-- conteudo principal -->
-    <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
-        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
-        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Cadastrar</h2>
+<main layout:fragment="conteudo" th:fragment="formulario" id="main">
 
-        <form th:hx-post="@{/veiculo/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${veiculo}"
-            class="w-2/3 mt-10">
+    <div>
+        <h2 class="text-2xl font-semibold text-white md:text-3xl">Cadastrar Novo Veículo</h2>
+        <p class="mt-2 text-gray-400">Preencha as informações abaixo para adicionar um novo veículo à sua conta.</p>
 
-            <div class="flex flex-col">
-                <label for="placa" class="block text-gray-700 font-medium mb-2">Placa</label>
-                <input type="text" th:field="${veiculo.placa}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
+        <div class="mt-8 bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
+            <form th:hx-post="@{/veiculo/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${veiculo}">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
 
-                <label for="marca" class="mt-5 block text-gray-700 font-medium mb-2">Marca</label>
-                <input type="text" th:field="${veiculo.marca}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
+                    <div class="md:col-span-2">
+                        <label for="placa" class="block text-sm font-medium mb-2 text-gray-300">Placa</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1Zm1 2A.5.5 0 0 1 5.5 4h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1Zm0 3A.5.5 0 0 1 5.5 7h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1Z"/>
+                                    <path d="M2 1a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-1H2Zm12 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12Z"/>
+                                </svg>
+                            </div>
+                            <input type="text" th:field="*{placa}" placeholder="ABC-1234" class="py-3 px-4 ps-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
 
-                <label for="modelo" class="mt-5 block text-gray-700 font-medium mb-2">Modelo</label>
-                <input type="text" th:field="${veiculo.modelo}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
+                    <div>
+                        <label for="marca" class="block text-sm font-medium mb-2 text-gray-300">Marca</label>
+                        <input type="text" th:field="*{marca}" placeholder="Ex: Chevrolet" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                    </div>
 
-                <label for="ano" class="mt-5 block text-gray-700 font-medium mb-2">Ano</label>
-                <input type="text" th:field="${veiculo.ano}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
+                    <div>
+                        <label for="modelo" class="block text-sm font-medium mb-2 text-gray-300">Modelo</label>
+                        <input type="text" th:field="*{modelo}" placeholder="Ex: Onix" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                    </div>
 
-                <label for="cor" class="mt-5 block text-gray-700 font-medium mb-2">Cor</label>
-                <input type="text" th:field="${veiculo.cor}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
-
-                <div>
-                    <button type="submit"
-                        class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">Cadastrar</button>
+                    <div>
+                        <label for="ano" class="block text-sm font-medium mb-2 text-gray-300">Ano</label>
+                        <input type="number" th:field="*{ano}" placeholder="Ex: 2023" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label for="cor" class="block text-sm font-medium mb-2 text-gray-300">Cor</label>
+                        <input type="text" th:field="*{cor}" placeholder="Ex: Preto" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                    </div>
                 </div>
-            </div>
-        </form>
 
-
-        <div th:if="${notificacao != null}" th:object="${notificacao}">
-            <input type="hidden" id="mensagem" th:value="*{mensagem}">
-            <input type="hidden" id="tipo" th:value="*{tipo}">
-            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+                <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end">
+                    <button type="submit"
+                            class="py-2 px-5 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                        Cadastrar Veículo
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
 
-    </main>
-    <!-- !conteudo principal -->
+    <div th:if="${notificacao != null}" th:object="${notificacao}">
+        <input type="hidden" id="mensagem" th:value="*{mensagem}">
+        <input type="hidden" id="tipo" th:value="*{tipo}">
+        <input type="hidden" id="intervalo" th:value="*{intervalo}">
+    </div>
 
+</main>
 </body>
 
 </html>
