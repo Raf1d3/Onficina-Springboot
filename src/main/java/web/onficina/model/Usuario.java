@@ -45,6 +45,7 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "id_papel")
     @NotNull(message = "O usuário deve escolher um tipo")
     private Papel papel;
+    
 
     public Long getId() {
         return id;

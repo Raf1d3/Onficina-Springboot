@@ -13,7 +13,7 @@
   <div th:fragment="header">
     <!-- Header -->
 <header
-  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-gradient-to-r from-[#1B1F27]/50 to-[#1B1F27]/90 backdrop-blur-lg px-4 transition-all duration-300 h-14"
+  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-gradient-to-r from-bg-gray-900/50 to-[#1B1F27]/90 backdrop-blur-lg px-4 transition-all duration-300 h-14"
   :class="sidebarOpen ? 'md:ml-0' : 'md:ml-0'">
 
       <!-- Botao Hamburger -->
@@ -49,7 +49,7 @@
 <div sec:authorize="isAuthenticated()"
      th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
 
-    <a th:href="@{/usuario/perfil}" class="p-2 hover:bg-gray-700 rounded-full block">
+    <a th:href="@{/perfil}" class="p-2 hover:bg-gray-700 rounded-full block">
         <div class="flex items-center">
             <span
                 class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-semibold uppercase"
@@ -63,7 +63,7 @@
           <!-- botao logout -->
           <div sec:authorize="isAuthenticated()">
             <a th:hx-post="@{/logout}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
-              class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
+              class="cursor-pointer  ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
               Logout </a>
           </div>
         </div>

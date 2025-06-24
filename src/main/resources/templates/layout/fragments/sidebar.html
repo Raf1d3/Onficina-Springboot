@@ -11,7 +11,7 @@
 <body>
 
 <aside th:fragment="sidebar" 
-  class="fixed h-full top-5 left-0 z-30 bg-[#1B1F27] text-gray-400 transition-all duration-300 overflow-y-auto"
+  class="fixed h-full top-5 left-0 z-30 bg-gray-900 text-gray-400 transition-all duration-300 overflow-y-auto"
   :class="sidebarOpen ? 'w-72' : 'w-20'">
   <div class="h-full pl-3 flex">
     <th:block th:replace="~{layout/fragments/menu :: menu}"></th:block>

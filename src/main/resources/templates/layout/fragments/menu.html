@@ -11,22 +11,18 @@
 <body>
   <nav th:fragment="menu" class="mt-10">
     <!-- 1o Item Menu -->
-    <div x-data="{ open: false }">
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Perfil', ~{::#pessoa-icon})}"></button>
-
-      <!-- Opcoes do 1o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/perfil}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', @{/emDesenvolvimento}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 2o Item Menu -->
      <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Meu veiculo', @{/veiculo/listar}, ~{::#carro-icon})}"></div>
