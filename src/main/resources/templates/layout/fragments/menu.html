@@ -64,26 +64,22 @@
     </div>
 
     <!-- 4o Item Menu -->
-    <div x-data="{ open: false }">
+      <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Oficinas', @{/oficina/listar}, ~{::#lote-icon})}"></div>
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Oficinas', ~{::#lote-icon})}"></button>
-
-      <!-- Opcoes do 4o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/oficina/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/oficina/listar}, ~{::#pesquisar-icon})}">
         </div>
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/oficina/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- 5o Item Menu -->

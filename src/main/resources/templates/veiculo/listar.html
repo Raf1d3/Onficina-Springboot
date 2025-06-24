@@ -56,12 +56,12 @@
         <div x-show="view === 'grid'" th:unless="${pagina.vazia}"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
             <div th:each="veiculo : ${pagina.conteudo}"
-                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 flex flex-col">
+                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden  flex flex-col p-6">
                 <img th:src="@{/images/generic-car.png}" alt="Imagem do Veículo" class="w-full h-40 object-cover">
                 <div class="flex flex-col flex-grow">
                     <div class="flex-grow">
-                        <p class="text-sm text-gray-400">Placa</p>
-                        <h3 class="text-xl font-semibold text-white mb-2" th:text="${veiculo.placa}"></h3>
+                        <p class="text-sm text-gray-400">Placa &middot; id</p>
+                        <h3 class="text-xl font-semibold text-white mb-2" th:text="${veiculo.placa} + ' &middot; ' + ${veiculo.id}"></h3>
                         <p class="text-sm text-gray-400">Marca / Modelo</p>
                         <p class="text-white mb-2" th:text="${veiculo.marca} + ' / ' + ${veiculo.modelo}"></p>
                         <p class="text-sm text-gray-400">Ano</p>

@@ -56,8 +56,8 @@
                 </span>
               </div>
             </button>
-
           </div>
+          
           <!-- botao logout -->
           <div sec:authorize="isAuthenticated()">
             <a th:hx-post="@{/logout}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
