@@ -16,9 +16,9 @@
 
         <form th:hx-post="@{/manutencao/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${manutencao}">
             <div>
-                <label for="veiculo" class="block text-sm font-medium text-gray-700">Veículo*</label>
+                <label for="veiculo" class="block text-gray-700 font-medium mb-2">Veículo*</label>
                 <select id="veiculo" name="veiculo.id" required
-                    class="mt-1 block w-full md:w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500">
                     <option value="">Selecione um veículo</option>
                     <th:block th:each="veiculo : ${veiculos}">
                         <option th:value="${veiculo.id}" th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}">
@@ -29,10 +29,10 @@
             </div>
 
             <div>
-                <label for="oficina" class="block text-sm font-medium text-gray-700">Oficina</label>
+                <label for="oficina" class="block text-gray-700 font-medium mb-2">Oficina</label>
                 <select id="oficina" name="oficina.id"
-                    class="mt-1 block w-full md:w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Selecione uma própria</option>
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500">
+                    <option value="">Selecione uma Oficina</option>
                     <th:block th:each="oficina : ${oficinas}">
                         <option th:value="${oficina.id}" th:text="${oficina.nome}"></option>
                     </th:block>

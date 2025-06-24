@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>avaliacaos</title>
+</head>
+
+<body>
+    <!-- conteudo principal -->
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Pesquisar</h2>
+
+        <div class="hidden md:flex flex-col mt-5">
+            <div class="overflow-x-auto">
+                <div class="min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'manutencao.id', 'Manutencao', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'oficina.nome', 'Oficina', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'proprietario.nome', 'Proprietário', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'nota', 'Nota', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'comentario', 'Comentario', '')}"></div>
+                                    <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${pagina.vazia}">
+                                    <td colspan="4" class="px-5">Nenhuma avaliação encontrada</td>
+                                </tr>
+                                <tr th:each="avaliacao : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
+                                    <td th:text="${avaliacao.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
+                                    <td th:text="${avaliacao.manutencao.id + ' - ' + avaliacao.manutencao.descricao}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">0 - troca de pneus</td>
+                                    <td th:text="${avaliacao.oficina?.nome}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">ABC multimarcas</td>
+                                    <td th:text="${avaliacao.proprietario.nome}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Joel</td>
+                                    <td th:text="${avaliacao.nota}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">4</td>
+                                    <td th:text="${avaliacao.comentario}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Muito bom!</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
+                                        <a th:hx-get="@{/avaliacao/alterar/{id}(id=${avaliacao.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
+                                        <a th:hx-get="@{/avaliacao/remover/{id}(id=${avaliacao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover a avaliação: ' + avaliacao.manutencao.id + ' - ' + avaliacao.manutencao.descricao + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+
+        <div th:each="avaliacao : ${avaliacaos}" class="md:hidden flex flex-col mt-5">
+            <div class="overflow-x-auto">
+                <div class="min-w-full inline-block align-middle">
+                    <div class="border rounded-xl overflow-hidden shadow">
+                        <div class="m-3">
+                            <p th:text="${avaliacao.id}"></p>
+                            <p th:text="${avaliacao.manutencao.id + ' - ' + avaliacao.manutencao.descricao}"></p>
+                            <p th:text="${avaliacao.oficina?.nome}"></p>
+                            <p th:text="${avaliacao.proprietario.nome}"></p>
+                            <p th:text="${avaliacao.nota}"></p>
+                            <p th:text="${avaliacao.comentario}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+    <!-- !conteudo principal -->
+
+</body>
+
+</html>
