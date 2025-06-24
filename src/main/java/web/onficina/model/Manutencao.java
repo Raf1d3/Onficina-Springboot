@@ -41,9 +41,6 @@ public class Manutencao {
         OUTRO
     }
 
-    @Column(name = "descricao_outro_servico")
-    private String descricaoOutroServico;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -67,6 +64,9 @@ public class Manutencao {
     @Column(name = "tipo_servico", nullable = false)
     private TipoServico tipoServico;
 
+    @Column(name = "descricao_outro_servico")
+    private String descricaoOutroServico;
+
     @Column(name = "valor_servico", nullable = false)
     private BigDecimal valorServico;
 
@@ -81,7 +81,6 @@ public class Manutencao {
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
-
 
     public long getId() {
         return id;
@@ -196,16 +195,15 @@ public class Manutencao {
         return Objects.equals(id, other.id);
     }
 
-@Override
-public String toString() {
-    return "Manutencao:\n" +
-           "tipo=" + tipoManutencao + "\n" +
-           "status=" + statusManutencao + "\n" +
-           "servico=" + tipoServico + "\n" +
-           "valor=" + valorServico + "\n" +
-           "veiculo=" + (veiculo != null ? veiculo.getId() : "null") + "\n" +
-           "oficina=" + (oficina != null ? oficina.getId() : "null");
-}
-
+    @Override
+    public String toString() {
+        return "Manutencao:\n" +
+                "tipo=" + tipoManutencao + "\n" +
+                "status=" + statusManutencao + "\n" +
+                "servico=" + tipoServico + "\n" +
+                "valor=" + valorServico + "\n" +
+                "veiculo=" + (veiculo != null ? veiculo.getId() : "null") + "\n" +
+                "oficina=" + (oficina != null ? oficina.getId() : "null");
+    }
 
 }

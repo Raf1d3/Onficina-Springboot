@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/manutencao/**").hasAnyRole("cliente", "oficina")
                         .requestMatchers("/oficina/**").hasAnyRole("cliente", "oficina")
                         .requestMatchers("/perfil/**").hasAnyRole("cliente", "oficina")
+                        .requestMatchers("/avaliacao/**").hasAnyRole("cliente", "oficina")
                         
                         // .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
                         .anyRequest().authenticated())

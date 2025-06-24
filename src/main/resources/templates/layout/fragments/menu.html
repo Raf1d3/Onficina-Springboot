@@ -87,13 +87,13 @@
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Avaliações', ~{::#pesquisar-icon})}"></button>
       <div x-show="open" class="space-y-4 ps-10">
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/avaliacao/cadastrar}, ~{::#pdf-icon})}">
         </div>
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pendentes', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/avaliacao/listar}, ~{::#pdf-icon})}">
         </div>
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Todas', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/avaliacao/abrirpesquisar}, ~{::#pdf-icon})}">
         </div>
       </div>
     </div> -->
