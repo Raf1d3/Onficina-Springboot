@@ -82,6 +82,8 @@
 
 
     <!-- 5o Item Menu -->
+     <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Oficinas', @{/avaliacao/listar}, ~{::#pdf-icon})}"></div>
+     
     <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Avaliações', ~{::#pesquisar-icon})}"></button>
