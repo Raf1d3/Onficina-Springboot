@@ -72,7 +72,8 @@ public class AvaliacaoController {
             throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
-        List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
+        List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                .findAllByVeiculo_Proprietario_Id(proprietario.getId());
 
         model.addAttribute("manutencoes", manutencoesDoUsuario);
         model.addAttribute("avaliacao", new Avaliacao());
@@ -85,8 +86,8 @@ public class AvaliacaoController {
             Model model, RedirectAttributes redirectAttributes,
             Principal principal) {
 
-            String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+        String email = principal.getName();
+        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
         if (result.hasErrors()) {
 
             if (proprietario == null) {
@@ -94,8 +95,9 @@ public class AvaliacaoController {
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
 
-            List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
-            
+            List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
+
             model.addAttribute("manutencoes", manutencoesDoUsuario);
 
             return "avaliacao/cadastrar :: formulario";
@@ -128,12 +130,18 @@ public class AvaliacaoController {
 
     @HxRequest
     @GetMapping("/abrirpesquisar")
-    public String abrirPaginaPesquisa(Model model) {
+    public String abrirPaginaPesquisa(Model model, Principal principal) {
 
-        List<Oficina> todasAsOficinas = oficinaRepository.findAll();
-        List<Manutencao> todasAsManutencoes = manutencaoRepository.findAll();
-        model.addAttribute("manutencoes", todasAsManutencoes);
-        model.addAttribute("oficinas", todasAsOficinas);
+        String email = principal.getName();
+        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+        if (proprietario == null) {
+            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+        }
+
+        List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
+        model.addAttribute("manutencao", manutencoesDoUsuario);
+        model.addAttribute("proprietario", usuarioRepository.findAll());
 
 
         return "avaliacao/pesquisar :: formulario";
@@ -156,52 +164,59 @@ public class AvaliacaoController {
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model, Principal principal) {
-        Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(id);
-        if (avaliacao != null) {
+        Optional<Avaliacao> avaliacaoOpt = avaliacaoRepository.findById(id);
+        if (avaliacaoOpt != null) {
             String email = principal.getName();
             Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+            Avaliacao avaliacao = avaliacaoOpt.get();
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
-            List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
+            List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
 
             model.addAttribute("manutencoes", manutencoesDoUsuario);
-            return "avaliacao/alterar :: formulario";
+            model.addAttribute("avaliacao", avaliacao);
+            return "avaliacao/alterar :: formulario";   
         } else {
             model.addAttribute("mensagem", "Não existe uma avaliação com esse código");
             return "mensagem :: texto";
         }
     }
 
-
     @HxRequest
     @PostMapping("/alterar")
     public String alterar(@Valid Avaliacao avaliacao, BindingResult resultado,
             RedirectAttributes redirectAttributes, Principal principal, Model model) {
-        if (resultado.hasErrors()) {
+
             String email = principal.getName();
             Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+        if (resultado.hasErrors()) {
+
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
 
-            List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
+            List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
             model.addAttribute("manutencoes", manutencoesDoUsuario);
-
+            model.addAttribute("avaliacao", avaliacao);
             return "manutencao/alterar :: formulario";
         } else {
 
+            avaliacao.setProprietario(proprietario);
             avaliacaoService.alterar(avaliacao);
             redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2(
                     "Avaliação alterada com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
             return "redirect:/avaliacao/listar";
         }
     }
-
 
     @HxRequest
     @HxLocation(path = "/mensagem", target = "#main", swap = "outerHTML")
@@ -214,7 +229,3 @@ public class AvaliacaoController {
     }
 
 }
-
-
-
-
