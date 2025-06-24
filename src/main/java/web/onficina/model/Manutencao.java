@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -46,6 +48,7 @@ public class Manutencao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "data_inicio_manutencao")
     private LocalDateTime dataInicioManutencao;
 
@@ -67,6 +70,7 @@ public class Manutencao {
     @Column(name = "valor_servico", nullable = false)
     private BigDecimal valorServico;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "data_proxima_manutencao")
     private LocalDateTime dataProximaManutencao;
 

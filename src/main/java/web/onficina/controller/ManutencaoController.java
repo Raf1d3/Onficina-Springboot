@@ -36,7 +36,9 @@ import web.onficina.model.Veiculo;
 import web.onficina.filter.ManutencaoFilter;
 import web.onficina.filter.VeiculoFilter;
 import web.onficina.model.Manutencao;
+import web.onficina.model.Oficina;
 import web.onficina.repository.ManutencaoRepository;
+import web.onficina.repository.OficinaRepository;
 import web.onficina.repository.UsuarioRepository;
 import web.onficina.repository.VeiculoRepository;
 import web.onficina.service.ManutencaoService;
@@ -51,18 +53,35 @@ public class ManutencaoController {
     private final ManutencaoService manutencaoService;
     private final VeiculoRepository veiculoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final OficinaRepository oficinaRepository;
 
     public ManutencaoController(ManutencaoRepository manutencaoRepository, ManutencaoService manutencaoService,
-            VeiculoRepository veiculoRepository, UsuarioRepository usuarioRepository) {
+            VeiculoRepository veiculoRepository, UsuarioRepository usuarioRepository,
+            OficinaRepository oficinaRepository) {
         this.manutencaoRepository = manutencaoRepository;
         this.manutencaoService = manutencaoService;
         this.veiculoRepository = veiculoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.oficinaRepository = oficinaRepository;
     }
 
     @GetMapping("/cadastrar")
-    public String mostrarFormularioCadastro(Model model) {
+    public String mostrarFormularioCadastro(Model model, Principal principal) {
+
+        String email = principal.getName();
+        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+        if (proprietario == null) {
+            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+        }
+
+        List<Veiculo> veiculosDoUsuario = veiculoRepository.findAllByProprietarioId(proprietario.getId());
+
+        List<Oficina> todasAsOficinas = oficinaRepository.findAll();
+
         model.addAttribute("manutencao", new Manutencao());
+        model.addAttribute("veiculos", veiculosDoUsuario);
+        model.addAttribute("oficinas", todasAsOficinas);
 
         return "manutencao/cadastrar :: formulario";
     }
@@ -72,22 +91,21 @@ public class ManutencaoController {
             Model model, RedirectAttributes redirectAttributes,
             Principal principal) {
         if (result.hasErrors()) {
+
+            String email = principal.getName();
+            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+            if (proprietario == null) {
+                throw new IllegalStateException(
+                        "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+            }
+
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
+            model.addAttribute("oficinas", oficinaRepository.findAll());
+
             return "manutencao/cadastrar :: formulario";
-        }
 
-        String email = principal.getName();
-        Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
-
-        if (usuarioLogado == null) {
-            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
-
-        Optional<Veiculo> optVeiculo = veiculoRepository.findById(manutencao.getVeiculo().getId());
-        if (!optVeiculo.isPresent() || !optVeiculo.get().getProprietario().getId().equals(usuarioLogado.getId())) {
-            redirectAttributes.addFlashAttribute("erro", "Veículo inválido.");
-            return "redirect:/manutencao/cadastrar";
-        }
-        manutencao.setVeiculo(optVeiculo.get());
 
         manutencaoService.salvar(manutencao);
         redirectAttributes.addFlashAttribute("notificacao",
@@ -97,39 +115,45 @@ public class ManutencaoController {
         return "redirect:/manutencao/cadastrar";
     }
 
-    // @HxRequest
-    // @GetMapping("/listar")
-    // public String listar(ManutencaoFilter filtro, Model model,
-    // @PageableDefault(size = 7) @SortDefault(sort = "id", direction =
-    // Sort.Direction.ASC) Pageable pageable,
-    // HttpServletRequest request) {
+    @HxRequest
+    @GetMapping("/listar")
+    public String listar(ManutencaoFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
 
-    // Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
-    // PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
+        Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
 
-    // model.addAttribute("pagina", paginaWrapper);
-    // return "manutencao/listar :: tabela";
-    // }
+        model.addAttribute("pagina", paginaWrapper);
+        model.addAttribute("filtro", filtro);
+        return "manutencao/listar :: tabela";
+    }
 
     @HxRequest
     @GetMapping("/abrirpesquisar")
-    public String abrirPaginaPesquisa() {
+    public String abrirPaginaPesquisa(Model model) {
+
+        List<Veiculo> todosVeiculos = veiculoRepository.findAll();
+        List<Oficina> todasAsOficinas = oficinaRepository.findAll();
+        model.addAttribute("veiculos", todosVeiculos);
+        model.addAttribute("oficinas", todasAsOficinas);
+
         return "manutencao/pesquisar :: formulario";
     }
 
-    // @HxRequest
-    // @GetMapping("/pesquisar")
-    // public String pesquisar(ManutencaoFilter filtro, Model model,
-    // @PageableDefault(size = 5) @SortDefault(sort = "id", direction =
-    // Sort.Direction.ASC) Pageable pageable,
-    // HttpServletRequest request) {
+    @HxRequest
+    @GetMapping("/pesquisar")
+    public String pesquisar(ManutencaoFilter filtro, Model model,
+            @PageableDefault(size = 5) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
 
-    // Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
-    // PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
+        Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
 
-    // model.addAttribute("pagina", paginaWrapper);
-    // return "manutencao/listar :: tabela";
-    // }
+        model.addAttribute("pagina", paginaWrapper);
+
+        return "manutencao/listar :: tabela";
+    }
 
     @HxRequest
     @GetMapping("/pesquisar")
@@ -146,7 +170,7 @@ public class ManutencaoController {
 
  @HxRequest
     @GetMapping("/alterar/{id}")
-    public String abrirAlterar(@PathVariable("id") Long id, Model model) {
+    public String abrirAlterar(@PathVariable("id") Long id, Model model, Principal principal) {
         Optional<Manutencao> manutencao = manutencaoRepository.findById(id);
         if (manutencao.isPresent()) {
             List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioId(manutencao.get().getVeiculo().getProprietario().getId());
@@ -154,6 +178,16 @@ public class ManutencaoController {
         }
 
         if (manutencao != null) {
+            String email = principal.getName();
+            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+
+            if (proprietario == null) {
+                throw new IllegalStateException(
+                        "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+            }
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
+            model.addAttribute("oficinas", oficinaRepository.findAll());
+
             model.addAttribute("manutencao", manutencao);
             return "manutencao/alterar :: formulario";
         } else {
@@ -163,26 +197,38 @@ public class ManutencaoController {
     }
 
     @HxRequest
-     @PostMapping("/alterar")
-     public String alterar(@Valid Manutencao manutencao, BindingResult resultado,
-             RedirectAttributes redirectAttributes) {
-         if (resultado.hasErrors()) {
-             logger.info("A manutenção recebida para cadastrar não é válida.");
-             logger.info("Erros encontrados:");
-             for (FieldError erro : resultado.getFieldErrors()) {
-                 logger.info("{}", erro);
-             }
-             for (ObjectError erro : resultado.getGlobalErrors()) {
-                 logger.info("{}", erro);
-             }
-             return "manutencao/alterar :: formulario";
-         } else {
+    @PostMapping("/alterar")
+    public String alterar(@Valid Manutencao manutencao, BindingResult resultado,
+            RedirectAttributes redirectAttributes, Principal principal, Model model) {
+        if (resultado.hasErrors()) {
+            String email = principal.getName();
+            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
 
-             manutencaoService.alterar(manutencao);
-             redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2("Manutenção alterada com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
-             return "redirect:/manutencao/listar";
-         }
-     }
+            if (proprietario == null) {
+                throw new IllegalStateException(
+                        "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+            }
+
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
+            model.addAttribute("oficinas", oficinaRepository.findAll());
+
+            logger.info("A manutenção recebida para cadastrar não é válida.");
+            logger.info("Erros encontrados:");
+            for (FieldError erro : resultado.getFieldErrors()) {
+                logger.info("{}", erro);
+            }
+            for (ObjectError erro : resultado.getGlobalErrors()) {
+                logger.info("{}", erro);
+            }
+            return "manutencao/alterar :: formulario";
+        } else {
+
+            manutencaoService.alterar(manutencao);
+            redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2(
+                    "Manutenção alterada com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
+            return "redirect:/manutencao/listar";
+        }
+    }
 
     @HxRequest
     @HxLocation(path = "/mensagem", target = "#main", swap = "outerHTML")

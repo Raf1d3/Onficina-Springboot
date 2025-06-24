@@ -13,7 +13,6 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import web.onficina.service.CnpjOficinaUnicoService;
-import web.onficina.service.EmailUsuarioUnicoService;
 import web.onficina.validation.UniqueValueAttribute;
 
 @Entity

@@ -3,7 +3,7 @@ package web.onficina.filter;
 public class OficinaFilter {
     private String nome;
     private String telefone;
-    private String notaMedia;
+    private Double notaMedia;
 
     public String getNome() {
         return nome;
@@ -21,11 +21,11 @@ public class OficinaFilter {
         this.telefone = telefone;
     }
 
-    public String getNotaMedia() {
+    public Double getNotaMedia() {
         return notaMedia;
     }
 
-    public void setNotaMedia(String notaMedia) {
+    public void setNotaMedia(Double notaMedia) {
         this.notaMedia = notaMedia;
     }
 

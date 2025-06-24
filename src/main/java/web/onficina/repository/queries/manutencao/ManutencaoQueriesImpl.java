@@ -1,12 +1,12 @@
-package web.onficina.repository.queries.manutencao; 
+package web.onficina.repository.queries.manutencao;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,13 +24,12 @@ public class ManutencaoQueriesImpl implements ManutencaoQueries {
 
     @Override
     public Page<Manutencao> pesquisar(ManutencaoFilter filtro, Pageable pageable) {
-     
-        StringBuilder queryManutencoes = new StringBuilder("select m from Manutencao m left join m.veiculo v left join m.oficina o");
+        // Usa o alias 'm' para Manutencao
+        StringBuilder jpql = new StringBuilder("select m from Manutencao m");
         StringBuilder condicoes = new StringBuilder(" where 1=1");
 
-        if (StringUtils.hasText(filtro.getDescricao())) {
-            condicoes.append(" and lower(m.descricao) like :descricao");
-        }
+        // --- Adaptação dos Filtros ---
+        // Para Enums, verificamos se não são nulos, em vez de usar StringUtils.hasText
         if (filtro.getTipoManutencao() != null) {
             condicoes.append(" and m.tipoManutencao = :tipoManutencao");
         }
@@ -43,38 +42,25 @@ public class ManutencaoQueriesImpl implements ManutencaoQueries {
         if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
             condicoes.append(" and m.veiculo.id = :veiculoId");
         }
-        if (StringUtils.hasText(filtro.getVeiculoPlaca())) {
-            condicoes.append(" and lower(v.placa) like :veiculoPlaca");
-        }
         if (filtro.getOficinaId() != null && filtro.getOficinaId() > 0) {
             condicoes.append(" and m.oficina.id = :oficinaId");
         }
-         if (StringUtils.hasText(filtro.getOficinaNome())) {
-            condicoes.append(" and lower(o.nome) like :oficinaNome");
-        }
-        if (filtro.getDataInicioManutencaoApos() != null) {
-            condicoes.append(" and m.dataInicioManutencao >= :dataInicioManutencaoApos");
-        }
-        if (filtro.getDataInicioManutencaoAntes() != null) {
-            condicoes.append(" and m.dataInicioManutencao <= :dataInicioManutencaoAntes");
-        }
-        if (filtro.getDataProximaManutencaoApos() != null) {
-            condicoes.append(" and m.dataProximaManutencao >= :dataProximaManutencaoApos");
-        }
-        if (filtro.getDataProximaManutencaoAntes() != null) {
-            condicoes.append(" and m.dataProximaManutencao <= :dataProximaManutencaoAntes");
-        }
+        // Adiciona um filtro extra para buscar manutenções de um veículo específico, se
+        // necessário
+        // if (filtro.getVeiculo() != null) {
+        // condicoes.append(" and m.veiculo = :veiculo");
+        // }
 
+        jpql.append(condicoes);
+        // Prepara a ordenação (ex: ?sort=valorServico,desc)
+        PaginacaoUtil.prepararOrdemJPQL(jpql, "m", pageable);
 
-        queryManutencoes.append(condicoes);
-        PaginacaoUtil.prepararOrdemJPQL(queryManutencoes, "m", pageable); 
-
-        TypedQuery<Manutencao> query = em.createQuery(queryManutencoes.toString(), Manutencao.class);
+        TypedQuery<Manutencao> query = em.createQuery(jpql.toString(), Manutencao.class);
+        // Prepara o intervalo da paginação (quais registros buscar)
         PaginacaoUtil.prepararIntervalo(query, pageable);
 
-        if (StringUtils.hasText(filtro.getDescricao())) {
-            query.setParameter("descricao", "%" + filtro.getDescricao().toLowerCase() + "%");
-        }
+        // --- Adaptação dos Parâmetros ---
+        // Para Enums, passamos o objeto do enum diretamente, sem '%' ou toLowerCase()
         if (filtro.getTipoManutencao() != null) {
             query.setParameter("tipoManutencao", filtro.getTipoManutencao());
         }
@@ -87,38 +73,18 @@ public class ManutencaoQueriesImpl implements ManutencaoQueries {
         if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
             query.setParameter("veiculoId", filtro.getVeiculoId());
         }
-        if (StringUtils.hasText(filtro.getVeiculoPlaca())) {
-            query.setParameter("veiculoPlaca", "%" + filtro.getVeiculoPlaca().toLowerCase() + "%");
-        }
         if (filtro.getOficinaId() != null && filtro.getOficinaId() > 0) {
             query.setParameter("oficinaId", filtro.getOficinaId());
         }
-        if (StringUtils.hasText(filtro.getOficinaNome())) {
-            query.setParameter("oficinaNome", "%" + filtro.getOficinaNome().toLowerCase() + "%");
-        }
-        if (filtro.getDataInicioManutencaoApos() != null) {
-            query.setParameter("dataInicioManutencaoApos", filtro.getDataInicioManutencaoApos());
-        }
-        if (filtro.getDataInicioManutencaoAntes() != null) {
-            query.setParameter("dataInicioManutencaoAntes", filtro.getDataInicioManutencaoAntes());
-        }
-        if (filtro.getDataProximaManutencaoApos() != null) {
-            query.setParameter("dataProximaManutencaoApos", filtro.getDataProximaManutencaoApos());
-        }
-        if (filtro.getDataProximaManutencaoAntes() != null) {
-            query.setParameter("dataProximaManutencaoAntes", filtro.getDataProximaManutencaoAntes());
-        }
-
 
         List<Manutencao> resultado = query.getResultList();
 
-        StringBuilder jpqlCount = new StringBuilder("select count(m.id) from Manutencao m left join m.veiculo v left join m.oficina o");
-        jpqlCount.append(condicoes); 
+        // --- Query para Contagem Total de Registros (para a paginação) ---
+        StringBuilder jpqlCount = new StringBuilder("select count(m) from Manutencao m");
+        jpqlCount.append(condicoes);
         TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
 
-        if (StringUtils.hasText(filtro.getDescricao())) {
-            countQuery.setParameter("descricao", "%" + filtro.getDescricao().toLowerCase() + "%");
-        }
+        // Define os mesmos parâmetros para a query de contagem
         if (filtro.getTipoManutencao() != null) {
             countQuery.setParameter("tipoManutencao", filtro.getTipoManutencao());
         }
@@ -131,28 +97,9 @@ public class ManutencaoQueriesImpl implements ManutencaoQueries {
         if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
             countQuery.setParameter("veiculoId", filtro.getVeiculoId());
         }
-         if (StringUtils.hasText(filtro.getVeiculoPlaca())) {
-            countQuery.setParameter("veiculoPlaca", "%" + filtro.getVeiculoPlaca().toLowerCase() + "%");
-        }
         if (filtro.getOficinaId() != null && filtro.getOficinaId() > 0) {
             countQuery.setParameter("oficinaId", filtro.getOficinaId());
         }
-         if (StringUtils.hasText(filtro.getOficinaNome())) {
-            countQuery.setParameter("oficinaNome", "%" + filtro.getOficinaNome().toLowerCase() + "%");
-        }
-        if (filtro.getDataInicioManutencaoApos() != null) {
-            countQuery.setParameter("dataInicioManutencaoApos", filtro.getDataInicioManutencaoApos());
-        }
-        if (filtro.getDataInicioManutencaoAntes() != null) {
-            countQuery.setParameter("dataInicioManutencaoAntes", filtro.getDataInicioManutencaoAntes());
-        }
-        if (filtro.getDataProximaManutencaoApos() != null) {
-            countQuery.setParameter("dataProximaManutencaoApos", filtro.getDataProximaManutencaoApos());
-        }
-        if (filtro.getDataProximaManutencaoAntes() != null) {
-            countQuery.setParameter("dataProximaManutencaoAntes", filtro.getDataProximaManutencaoAntes());
-        }
-
         long total = countQuery.getSingleResult();
 
         return new PageImpl<>(resultado, pageable, total);

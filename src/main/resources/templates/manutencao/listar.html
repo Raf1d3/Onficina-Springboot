@@ -20,35 +20,48 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'veiculo.placa', 'Veículo', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'oficina.nome', 'Oficina', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'dataInicioManutencao', 'Data Início', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'tipoServico', 'Serviço', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'statusManutencao', 'Status', '')}"></th>
-                                    <th th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'valorServico', 'Valor', '')}"></th>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'veiculo.modelo', 'Veiculo', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'oficina.nome', 'Oficina', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'tipoServico', 'Serviço', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'statusManutencao', 'Status', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'valorServico', 'Valor', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'dataInicioManutencao', 'Data', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'dataProximaManutencao', 'Proxima Manutenção', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'tipoManutencao', 'Tipo', '')}"></div>
                                     <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr th:if="${pagina.vazia}">
-                                <td colspan="4" class="px-5">Nenhuma manutenção encontrada</td>
-                            </tr>
-                            <tr th:each="manutencao : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
-                                <td th:text="${manutencao.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"></td>
-                                <td th:text="${manutencao.veiculo?.placa}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td th:text="${manutencao.oficina?.nome}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td th:text="${manutencao.dataInicioManutencao != null ? #temporals.format(manutencao.dataInicioManutencao, 'dd/MM/yyyy HH:mm') : '-'}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td th:text="${manutencao.tipoServico}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td th:text="${manutencao.statusManutencao}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td th:text="${manutencao.valorServico != null ? #numbers.formatCurrency(manutencao.valorServico) : '-'}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
-                                    <a th:hx-get="@{/manutencao/alterar/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
-                                    <a th:hx-get="@{/manutencao/remover/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover a manutenção!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline>Remover">Remover</a>
-                                </td>
-                            </tr>
+                                <tr th:if="${pagina.vazia}">
+                                    <td colspan="4" class="px-5">Nenhuma manutenção encontrada</td>
+                                </tr>
+                                <tr th:each="manutencao : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
+                                    <td th:text="${manutencao.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
+                                    <td th:text="${manutencao.veiculo.modelo + ' - ' + manutencao.veiculo.placa}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Corolla - ABC1234</td>
+                                    <td th:text="${manutencao.oficina?.nome}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">ABC multimarcas</td>
+                                    
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <span th:if="${manutencao.tipoServico.name() != 'OUTRO'}"
+                                        th:text="${manutencao.tipoServico.toString().replace('_', ' ')}">
+                                    </span>
+                                    <span th:if="${manutencao.tipoServico.name() == 'OUTRO'}"
+                                        th:text="${manutencao.descricaoOutroServico}">
+                                    </span>
+                                    </td>
+
+                                    <td th:text="${manutencao.statusManutencao.toString().replace('_', ' ')}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Finalizada</td>
+                                    <td th:text="|R$ ${{manutencao.valorServico}}|" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">R$ 250,00</td>
+                                    <td th:text="${manutencao.dataInicioManutencao}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">...</td>
+                                    <td th:text="${manutencao.dataProximaManutencao}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">...</td>
+                                    <td th:text="${manutencao.tipoManutencao}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">...</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
+                                        <a th:hx-get="@{/manutencao/alterar/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
+                                        <a th:hx-get="@{/manutencao/remover/{id}(id=${manutencao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover o manutencao: ' + manutencao.descricao + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -64,6 +77,14 @@
                     <div class="border rounded-xl overflow-hidden shadow">
                         <div class="m-3">
                             <p th:text="${manutencao.id}"></p>
+                            <p th:text="${manutencao.veiculo.modelo + ' - ' + manutencao.veiculo.placa}"></p>
+                            <p th:text="${manutencao.tipoServico.toString().replace('_', ' ')}"></p>
+                            <p th:text="${manutencao.descricaoOutroServico}"></p>
+                            <p th:text="${manutencao.statusManutencao.toString().replace('_', ' ')}"></p>
+                            <p th:text="|R$ ${{manutencao.valorServico}}|"></p>
+                            <p th:text="${manutencao.dataInicioManutencao}"></p>
+                            <p th:text="${manutencao.dataProximaManutencao}"></p>
+                            <p th:text="${manutencao.tipoManutencao}"></p>
                         </div>
                     </div>
                 </div>
