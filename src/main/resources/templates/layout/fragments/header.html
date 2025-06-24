@@ -46,17 +46,19 @@
               Login </a>
           </div>
           <!-- nome do usuario -->
-          <div sec:authorize="isAuthenticated()"
-            th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
-            <button class="p-2 hover:bg-gray-700 rounded-full">
-              <div class="flex items-center">
-                <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-semibold uppercase"
-                  th:text="${nomeUsuario.substring(0,1)}">
-                </span>
-              </div>
-            </button>
-          </div>
+<div sec:authorize="isAuthenticated()"
+     th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
+
+    <a th:href="@{/usuario/perfil}" class="p-2 hover:bg-gray-700 rounded-full block">
+        <div class="flex items-center">
+            <span
+                class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-semibold uppercase"
+                th:text="${nomeUsuario.substring(0,1)}">
+            </span>
+        </div>
+    </a>
+</div>
+
           
           <!-- botao logout -->
           <div sec:authorize="isAuthenticated()">

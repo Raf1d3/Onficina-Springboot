@@ -141,19 +141,7 @@ public class ManutencaoController {
         return "manutencao/pesquisar :: formulario";
     }
 
-    @HxRequest
-    @GetMapping("/pesquisar")
-    public String pesquisar(ManutencaoFilter filtro, Model model,
-            @PageableDefault(size = 5) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-            HttpServletRequest request) {
 
-        Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
-        PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
-
-        model.addAttribute("pagina", paginaWrapper);
-
-        return "manutencao/listar :: tabela";
-    }
 
     @HxRequest
     @GetMapping("/pesquisar")
