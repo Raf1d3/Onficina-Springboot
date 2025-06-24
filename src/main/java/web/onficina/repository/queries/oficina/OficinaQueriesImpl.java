@@ -25,23 +25,25 @@ public class OficinaQueriesImpl implements OficinaQueries {
 
     @Override
     public Page<Oficina> pesquisar(OficinaFilter filtro, Pageable pageable) {
-        StringBuilder queryOficinas = new StringBuilder("select v from Oficina v");
+        StringBuilder queryOficinas = new StringBuilder("select o from Oficina o");
         StringBuilder condicoes = new StringBuilder(" where 1=1");
 
         if (StringUtils.hasText(filtro.getNome())) {
-            condicoes.append(" and lower(v.nome) like :nome");
+            condicoes.append(" and lower(o.nome) like :nome");
         }
 
-        if (StringUtils.hasText(filtro.getNotaMedia())) {
-            condicoes.append(" and lower(v.nota_media) like :nota_media");
+        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
+            // Exemplo: buscando por oficinas com nota maior ou igual à filtrada
+            condicoes.append(" and o.notaMedia >= :notaMedia"); 
         }
+
 
         if (StringUtils.hasText(filtro.getTelefone())) {
-            condicoes.append(" and lower(v.telefone) like :telefone");
+            condicoes.append(" and lower(o.telefone) like :telefone");
         }
 
         queryOficinas.append(condicoes);
-        PaginacaoUtil.prepararOrdemJPQL(queryOficinas, "v", pageable);
+        PaginacaoUtil.prepararOrdemJPQL(queryOficinas, "o", pageable);
 
         TypedQuery<Oficina> query = em.createQuery(queryOficinas.toString(), Oficina.class);
         PaginacaoUtil.prepararIntervalo(query, pageable);
@@ -49,25 +51,27 @@ public class OficinaQueriesImpl implements OficinaQueries {
         if (StringUtils.hasText(filtro.getNome())) {
             query.setParameter("nome", "%" + filtro.getNome().toLowerCase() + "%");
         }
-        if (StringUtils.hasText(filtro.getNotaMedia())) {
-            query.setParameter("nota_media", "%" + filtro.getNotaMedia().toLowerCase() + "%");
+        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
+            query.setParameter("notaMedia", filtro.getNotaMedia()); 
         }
+
         if (StringUtils.hasText(filtro.getTelefone())) {
             query.setParameter("telefone", "%" + filtro.getTelefone().toLowerCase() + "%");
         }
 
         List<Oficina> resultado = query.getResultList();
 
-        StringBuilder jpqlCount = new StringBuilder("select count(v) from Oficina v");
+        StringBuilder jpqlCount = new StringBuilder("select count(o) from Oficina o");
         jpqlCount.append(condicoes);
         TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
 
         if (StringUtils.hasText(filtro.getNome())) {
             countQuery.setParameter("nome", "%" + filtro.getNome().toLowerCase() + "%");
         }
-        if (StringUtils.hasText(filtro.getNotaMedia())) {
-            countQuery.setParameter("nota_media", "%" + filtro.getNotaMedia().toLowerCase() + "%");
+        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
+            countQuery.setParameter("notaMedia", filtro.getNotaMedia());
         }
+
         if (StringUtils.hasText(filtro.getTelefone())) {
             countQuery.setParameter("telefone", "%" + filtro.getTelefone().toLowerCase() + "%");
         }

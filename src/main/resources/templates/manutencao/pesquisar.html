@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Pesquisar Manutencao</title>
+</head>
+
+<body>
+    <!-- conteudo principal -->
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Pesquisar</h2>
+
+        <form th:hx-get="@{/manutencao/pesquisar}" hx-target="#main" hx-swap="outerHTML" class="w-2/3 mt-10">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
+                <div>
+                    <label for="veiculoId" class="block text-sm font-medium text-gray-700">Veículo</label>
+                    <select name="veiculoId" id="veiculoId" class="mt-1 block w-full ...">
+                        <option value="">Todos os Veículos</option>
+                        <th:block th:each="veiculo : ${veiculos}">
+                            <option th:value="${veiculo.id}" th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}">
+                            </option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="oficinaId" class="block text-sm font-medium text-gray-700">Oficina</label>
+                    <select name="oficinaId" id="oficinaId" class="mt-1 block w-full ...">
+                        <option value="">Todas as Oficinas</option>
+                        <th:block th:each="oficina : ${oficinas}">
+                            <option th:value="${oficina.id}" th:text="${oficina.nome}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="tipoManutencao" class="block text-sm font-medium text-gray-700">Tipo de
+                        Manutenção</label>
+                    <select id="tipoManutencao" name="tipoManutencao"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todos os Tipos</option>
+                        <option th:each="tipo : ${T(web.onficina.model.Manutencao.TipoManutencao).values()}"
+                            th:value="${tipo}" th:text="${tipo.toString().replace('_', ' ')}"
+                            th:selected="${filtro != null && filtro.tipoManutencao == tipo}">
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="statusManutencao" class="block text-sm font-medium text-gray-700">Status da
+                        Manutenção</label>
+                    <select id="statusManutencao" name="statusManutencao"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todos os Status</option>
+                        <option th:each="status : ${T(web.onficina.model.Manutencao.StatusManutencao).values()}"
+                            th:value="${status}" th:text="${status.toString().replace('_', ' ')}"
+                            th:selected="${filtro != null && filtro.statusManutencao == status}">
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="tipoServico" class="block text-sm font-medium text-gray-700">Tipo de Serviço</label>
+                    <select id="tipoServico" name="tipoServico"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todos os Serviços</option>
+                        <option th:each="servico : ${T(web.onficina.model.Manutencao.TipoServico).values()}"
+                            th:value="${servico}" th:text="${servico.toString().replace('_', ' ')}"
+                            th:selected="${filtro != null && filtro.tipoServico == servico}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit"
+                        class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">Pesquisar</button>
+                </div>
+
+            </div>
+        </form>
+
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+    <!-- !conteudo principal -->
+
+</body>
+
+</html>

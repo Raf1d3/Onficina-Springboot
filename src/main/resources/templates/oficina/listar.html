@@ -25,6 +25,7 @@
                                     <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'cnpj', 'CNPJ', '')}"></div>
                                     <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'endereco', 'Endereço', '')}"></div>
                                     <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'telefone', 'Telefone', '')}"></div>
+                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'notaMedia', 'Nota', '')}"></div>
                                     <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
                                 </tr>
                             </thead>
@@ -38,6 +39,7 @@
                                     <td th:text="${oficina.cnpj}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">12.345.678/9101-12</td>
                                     <td th:text="${oficina.endereco}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">rua x</td>
                                     <td th:text="${oficina.telefone}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">34 912345678</td>
+                                    <td th:text="${oficina.notaMedia}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">4.5</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
                                         <a th:hx-get="@{/oficina/alterar/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
                                     </td>
