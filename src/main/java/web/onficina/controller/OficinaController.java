@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,9 @@ import web.onficina.notificacao.TipoNotificaoSweetAlert2;
 import web.onficina.pagination.PageWrapper;
 import web.onficina.repository.OficinaRepository;
 import web.onficina.service.OficinaService;
+import web.onficina.service.RelatorioService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 
 
@@ -42,6 +47,8 @@ public class OficinaController {
 
     private OficinaRepository oficinaRepository;
     private OficinaService oficinaService;
+    @Autowired
+    private RelatorioService relatorioService;
 
     public OficinaController(OficinaRepository oficinaRepository, OficinaService oficinaService){
         this.oficinaRepository = oficinaRepository;
@@ -156,6 +163,23 @@ public class OficinaController {
                 new NotificacaoSweetAlert2("Oficina removida com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000));
         return "redirect:/oficina/listar";
     }
+
+
+@GetMapping("/{id}/relatorio")
+public ResponseEntity<byte[]> gerarRelatorio(@PathVariable Long id) {
+    try {
+        byte[] relatorio = relatorioService.gerarRelatorioOficina(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=relatorio_oficina_" + id + ".pdf")
+                .body(relatorio);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.internalServerError().build();
+    }
+}
 
 }
 

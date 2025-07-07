@@ -96,7 +96,7 @@ public class AvaliacaoQueriesImpl implements AvaliacaoQueries{
             countQuery.setParameter("nota", filtro.getNota());
         }
         if (filtro.getComentario() != null) {
-            countQuery.setParameter("comentario", filtro.getComentario());
+            countQuery.setParameter("comentario", "%" + filtro.getComentario() + "%");
         }
         long total = countQuery.getSingleResult();
 

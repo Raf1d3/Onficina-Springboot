@@ -6,9 +6,11 @@ import org.hibernate.validator.constraints.br.CNPJ;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +42,9 @@ public class Oficina {
 
     @Column(name = "nota_media")
     private Double notaMedia = 0.0;
+
+    @OneToMany(mappedBy = "oficina", fetch = FetchType.EAGER)
+    private java.util.List<Avaliacao> avaliacoes = new java.util.ArrayList<>();
 
     public long getId() {
         return id;
@@ -92,6 +97,14 @@ public class Oficina {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+     public java.util.List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(java.util.List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 
     @Override

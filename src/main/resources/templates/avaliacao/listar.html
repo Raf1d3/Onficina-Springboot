@@ -9,13 +9,24 @@
 
 <body>
     <!-- Conteúdo principal -->
-    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full">
         <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl mb-6">Avaliações</h2>
+           <div class="flex space-x-2 mb-12">
+                <a th:hx-get="@{/avaliacao/cadastrar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer">
+                    Cadastrar Avaliação
+                </a>
+                <a th:hx-get="@{/avalicao/abrirpesquisar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 cursor-pointer">
+                    Pesquisar Avaliação
+                </a>
+            </div>
 
-        <div th:if="${pagina.vazia}" class="text-center text-gray-400">Nenhuma avaliação encontrada.</div>
+        <div th:if="${pagina.vazia}" class="text-center text-gray-400 mb-2">Nenhuma avaliação encontrada.</div>
 
         <div th:each="avaliacao : ${pagina.conteudo}" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 mb-6">
+            
             <div class="flex items-center mb-3">
                 <div class="flex-shrink-0 mr-4">
                     <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold">
@@ -40,7 +51,7 @@
             <p class="text-gray-800 dark:text-gray-200" th:text="${avaliacao.comentario}"></p>
 
             <div class="text-sm text-gray-400 mt-2">
-                <span th:text="'Manutenção #' + ${avaliacao.manutencao.id} + ' - ' + ${avaliacao.manutencao.descricao}"></span>
+                <span th:text="'Manutenção ' + ${avaliacao.manutencao.veiculo.modelo} + ' - ' + ${avaliacao.manutencao.tipoServico.name() }"></span>
             </div>
 
             <div class="flex justify-end space-x-4 mt-4">
