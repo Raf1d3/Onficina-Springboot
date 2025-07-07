@@ -104,5 +104,4 @@ public class ManutencaoQueriesImpl implements ManutencaoQueries {
 
         return new PageImpl<>(resultado, pageable, total);
     }
-
 }

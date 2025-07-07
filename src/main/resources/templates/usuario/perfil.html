@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout/layoutpadrao}">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Perfil do Usuário</title>
+    <style>
+        .notification-enter {
+            animation: fadeIn 0.5s ease-in;
+        }
+        .notification-exit {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <main layout:fragment="conteudo" id="main">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+
+        <!-- Notificações -->
+        <div th:if="${notificacao != null}" th:object="${notificacao}" class="mb-6" x-data="{ show: true }" x-init="setTimeout(() => show = false, ${notificacao.intervalo})">
+            <div x-show="show" x-transition:enter="notification-enter" x-transition:leave="notification-exit"
+                 th:classappend="${notificacao.tipo == 'ERROR'} ? 'text-red-800 bg-red-100' : 'text-green-800 bg-green-100'"
+                 class="p-4 text-sm rounded-lg" role="alert">
+                <span class="font-medium" th:text="*{mensagem}"></span>
+            </div>
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+        <!-- Perfil -->
+        <div class="rounded-lg shadow-md bg-gray-800">
+            <!-- Cabeçalho com Avatar -->
+            <div class="flex items-center p-6 border-b border-gray-700">
+                <div sec:authorize="isAuthenticated()" class="mr-4">
+                    <a th:href="@{/perfil}" 
+                       class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white text-lg font-semibold uppercase transition-transform hover:scale-105"
+                       th:text="${usuario.nome != null ? usuario.nome.substring(0,1) : ''}"
+                       aria-label="Ver perfil do usuário" title="Perfil">
+                    </a>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Meu Perfil</h2>
+                    <p class="text-gray-300 text-sm">Visualize e gerencie as informações do seu perfil.</p>
+                </div>
+            </div>
+
+            <!-- Informações do Perfil -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                    <!-- Nome -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Nome</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                </svg>
+                            </div>
+                            <span class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white" th:text="${usuario.nome}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/>
+                                </svg>
+                            </div>
+                            <span class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white" th:text="${usuario.email}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações do Perfil -->
+                <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end space-x-4">
+                    <a th:href="@{/perfil/editar}"
+                       class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                       aria-label="Editar perfil" title="Editar Perfil">
+                        Editar Perfil
+                    </a>
+                    <a th:href="@{/logout}"
+                       class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                       aria-label="Sair do sistema" title="Sair">
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Veículos -->
+        <div class="mt-10 rounded-lg shadow-md bg-gray-800">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-white">Meus Veículos</h2>
+                <p class="text-gray-300 text-sm mb-6">Gerencie os veículos associados ao seu perfil.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div th:each="veiculo : ${veiculos}" class="bg-gray-700 rounded-xl shadow-sm overflow-hidden">
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-white" th:text="${veiculo.marca + ' ' + veiculo.modelo}"></h3>
+                            <span class="mt-1 text-gray-300 text-sm" th:text="'Placa: ' + ${veiculo.placa}"></span>
+                            <span class="mt-1 text-gray-300 text-sm block" th:text="'Ano: ' + ${veiculo.ano} + ' - Cor: ' + ${veiculo.cor}"></span>
+                            <div class="mt-4 flex justify-end space-x-2">
+                                <a th:href="@{/veiculo/alterar/{id}(id=${veiculo.id})}" th:hx-get="@{/veiculo/alterar/{id}(id=${veiculo.id})}" hx-target="#main" hx-swap="outerHTML"
+                                   class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                                   aria-label="Alterar veículo" title="Alterar Veículo">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" />
+                                    </svg>
+                                    Alterar
+                                </a>
+                                <a th:href="@{/veiculo/remover/{id}(id=${veiculo.id})}" th:hx-get="@{/veiculo/remover/{id}(id=${veiculo.id})}" th:hx-confirm="${'Você vai remover o veículo: ' + veiculo.modelo + ' (' + veiculo.placa + ')?'}" hx-target="closest div.grid > div" hx-swap="outerHTML"
+                                   class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                                   aria-label="Remover veículo" title="Remover Veículo">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    Remover
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(veiculos)}" class="col-span-full text-center text-gray-300 py-10">
+                        <p>Você ainda não cadastrou nenhum veículo.</p>
+                        <a th:href="@{/veiculo/cadastrar}" th:hx-get="@{/veiculo/cadastrar}" hx-target="#main" hx-swap="outerHTML"
+                           class="mt-4 inline-block py-2 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-300"
+                           aria-label="Cadastrar novo veículo" title="Cadastrar Veículo">
+                            Cadastrar Veículo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

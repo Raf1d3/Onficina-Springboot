@@ -1,85 +1,153 @@
 <!DOCTYPE html>
-<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Oficina</title>
+    <title>Oficinas</title>
 </head>
 
 <body>
-    <!-- conteudo principal -->
-    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
-        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
-        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Pesquisar</h2>
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full"
+        x-data="{ view: 'grid' }">
 
-        <div class="hidden md:flex flex-col mt-5">
-            <div class="overflow-x-auto">
-                <div class="min-w-full inline-block align-middle">
-                    <div class="border rounded-xl overflow-hidden shadow">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'id', 'Código', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'nome', 'Nome', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'cnpj', 'CNPJ', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'endereco', 'Endereço', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'telefone', 'Telefone', '')}"></div>
-                                    <div th:replace="~{layout/fragments/paginacao :: coluna(${pagina}, 'notaMedia', 'Nota', '')}"></div>
-                                    <th scope="col" colspan="2" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:if="${pagina.vazia}">
-                                    <td colspan="4" class="px-5">Nenhum oficina encontrada</td>
-                                </tr>
-                                <tr th:each="oficina : ${pagina.conteudo}" class="odd:bg-white even:bg-gray-100 hover:bg-gray-200">
-                                    <td th:text="${oficina.id}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">0</td>
-                                    <td th:text="${oficina.nome}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">ABC Multimarcas</td>
-                                    <td th:text="${oficina.cnpj}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">12.345.678/9101-12</td>
-                                    <td th:text="${oficina.endereco}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">rua x</td>
-                                    <td th:text="${oficina.telefone}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">34 912345678</td>
-                                    <td th:text="${oficina.notaMedia}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">4.5</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-blue-600 font-medium">
-                                        <a th:hx-get="@{/oficina/alterar/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML" class="cursor-pointer text-blue-600 hover:text-blue-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Alterar</a>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm text-red-600 font-medium">
-                                        <a th:hx-get="@{/oficina/remover/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover a oficina: ' + oficina.nome + '!'}" class="cursor-pointer text-red-600 hover:text-red-500 decoration-2 hover:underline focus:outline-hidden focus:underline">Remover</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Oficinas</h2>
+
+        <div class="flex justify-between items-center mb-4 mt-4">
+            <div class="flex space-x-2">
+                <a th:hx-get="@{/oficina/cadastrar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer">
+                    Cadastrar Oficina
+                </a>
+                <a th:hx-get="@{/oficina/abrirpesquisar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 cursor-pointer">
+                    Pesquisar Oficinas
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-2 p-1 rounded-lg bg-gray-800">
+                <button @click="view = 'grid'"
+                    :class="{ 'bg-blue-600 text-white': view === 'grid', 'text-gray-400 hover:bg-gray-700': view !== 'grid' }"
+                    class="p-2 rounded-md transition-colors duration-200" title="Visualização em Grade">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                        </path>
+                    </svg>
+                </button>
+                <button @click="view = 'row'"
+                    :class="{ 'bg-blue-600 text-white': view === 'row', 'text-gray-400 hover:bg-gray-700': view !== 'row' }"
+                    class="p-2 rounded-md transition-colors duration-200" title="Visualização em Linha">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div th:if="${pagina.vazia}" class="text-center text-gray-400 mt-10">
+            Nenhuma oficina encontrada.
+        </div>
+
+        <div x-show="view === 'grid'" th:unless="${pagina.vazia}"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
+            <div th:each="oficina : ${pagina.conteudo}"
+                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
+                <img th:src="@{/images/generic-oficina.png}" alt="Imagem da Oficina" class="w-full h-40 object-cover">
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="flex-grow">
+                        <p class="text-sm text-gray-400">Oficina &middot; id </p>
+                        <h3 class="text-xl font-semibold text-white mb-2"
+                            th:text="${oficina.nome} + ' &middot; ' + ${oficina.id}"></h3>
+                        <p class="text-sm text-gray-400">CNPJ</p>
+                        <p class="text-white mb-2" th:text="${oficina.cnpj}"></p>
+                        <p class="text-sm text-gray-400">Telefone</p>
+                        <p class="text-white mb-2" th:text="${oficina.telefone}"></p>
+                        <p class="text-sm text-gray-400">Nota</p>
+                        <span th:if="${oficina.notaMedia != null}" class="flex items-center">
+                            <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <span class="text-white font-semibold"
+                                th:text="${#numbers.formatDecimal(oficina.notaMedia, 1, 1)}"></span>
+                        </span>
+                    </div>
+                    <div class="mt-6 border-t border-gray-700 pt-4 flex justify-end items-center space-x-3">
+                        <div th:replace="~{:: oficinaActions(oficina=${oficina})}"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+        <div x-show="view === 'row'" th:unless="${pagina.vazia}" class="flex flex-col space-y-4 mt-5">
+            <div th:each="oficina : ${pagina.conteudo}"
+                class="bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4">
 
-        <div th:each="oficina : ${oficinas}" class="md:hidden flex flex-col mt-5">
-            <div class="overflow-x-auto">
-                <div class="min-w-full inline-block align-middle">
-                    <div class="border rounded-xl overflow-hidden shadow">
-                        <div class="m-3">
-                            <p th:text="${oficina.id}"></p>
-                            <p th:text="${oficina.nome}"></p>
-                            <p th:text="${oficina.cnpj}"></p>
-                            <p th:text="${oficina.endereco}"></p>
-                            <p th:text="${oficina.telefone}"></p>
-                        </div>
+                <img th:src="@{/images/generic-oficina.png}" alt="Imagem da Oficina"
+                    class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+
+                <div class="flex-grow">
+                    <p class="text-lg font-bold text-white" th:text="${oficina.nome}"></p>
+
+                    <p class="text-sm text-gray-400">
+                        <span th:text="${oficina.endereco}"></span>
+                        <span th:if="${oficina.telefone != null}" th:text="' &middot; ' + ${oficina.telefone}"></span>
+                    </p>
+
+                    <div class="flex items-center text-sm text-gray-500 mt-1">
+                        <span th:text="'CNPJ: ' + ${oficina.cnpj}"></span>
+
+                        <span th:if="${oficina.notaMedia != null}" class="flex items-center ml-4">
+                            <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <span class="text-white font-semibold"
+                                th:text="${#numbers.formatDecimal(oficina.notaMedia, 1, 1)}"></span>
+                        </span>
                     </div>
+                </div>
+
+                <div class="flex-shrink-0">
+                    <div th:replace="~{:: oficinaActions(oficina=${oficina})}"></div>
                 </div>
             </div>
         </div>
+
+        <div class="mt-8" th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
 
         <div th:if="${notificacao != null}" th:object="${notificacao}">
             <input type="hidden" id="mensagem" th:value="*{mensagem}">
             <input type="hidden" id="tipo" th:value="*{tipo}">
             <input type="hidden" id="intervalo" th:value="*{intervalo}">
         </div>
-
     </main>
-    <!-- !conteudo principal -->
+
+    <div th:fragment="oficinaActions(oficina)" class="flex items-center space-x-3">
+        <a th:hx-get="@{/oficina/alterar/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
+            class="cursor-pointer text-gray-400 hover:text-blue-400" title="Alterar Oficina">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" />
+            </svg>
+        </a>
+        <a th:hx-get="@{/oficina/remover/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
+            th:hx-confirm="${'Você vai remover a oficina: ' + oficina.nome + '?'}"
+            class="cursor-pointer text-gray-400 hover:text-red-500" title="Remover Oficina">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </a>
+    </div>
 
 </body>
 

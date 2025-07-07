@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.thymeleaf.org">
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -10,59 +9,100 @@
 
 <body>
     <!-- conteudo principal -->
-    <main layout:fragment="conteudo" th:fragment="formulario" id="main" class="flex flex-col align-middle w-full m-10">
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main">
         <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
-        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Cadastrar</h2>
+        <div>
+            <div class="rounded-lg shadow-xl ">
+                <h2 class="text-3xl font-bold text-white mb-4 pb-2">Cadastrar Oficina</h2>
+                <p class="text-gray-400 mb-6">Preencha as informações abaixo para adicionar uma nova oficina à sua conta.</p>
 
-        <form th:hx-post="@{/oficina/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${oficina}"
-            class="w-2/3 mt-10">
+                <div class="bg-gray-800 p-6 md:p-8 rounded-xl shadow-md">
+                    <form th:hx-post="@{/oficina/cadastrar}" hx-target="#main" hx-swap="outerHTML" th:object="${oficina}">
+                        <div th:if="${#fields.hasAnyErrors()}" class="p-4 mb-6 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+                            <span class="font-medium">Por favor, corrija os erros abaixo.</span>
+                        </div>
 
-            <div th:if="${#fields.hasAnyErrors()}" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
-                role="alert">
-                <span class="font-medium">Por favor, corrija os erros abaixo.</span>
-            </div>
+                        <div class="grid grid-cols-1  gap-x-6 gap-y-6">
+                            <div class="md:col-span-2">
+                                <label for="nome" class="block text-sm font-medium mb-2 text-gray-300">Nome</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2.5-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="text" th:field="${oficina.nome}" placeholder="Ex: Oficina Central"
+                                           class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                           th:classappend="${#fields.hasErrors('nome')} ? 'border-red-500' : 'border-gray-600'"/>
+                                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-sm text-red-600 mt-1"></p>
+                                </div>
+                            </div>
 
-            <div class="flex flex-col">
-                <label for="nome" class="block text-gray-700 font-medium mb-2">Nome</label>
-                <input type="text" th:field="${oficina.nome}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
-                    th:classappend="${#fields.hasErrors('nome')} ? 'border-red-500' : 'border-gray-300'"/>
-                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-sm text-red-600 mt-1"></p>
+                            <div>
+                                <label for="cnpj" class="block text-sm font-medium mb-2 text-gray-300">CNPJ</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2Zm0-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+                                            <path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5Zm8-6a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="text" th:field="${oficina.cnpj}" placeholder="Ex: 12.345.678/0001-90"
+                                           class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                           th:classappend="${#fields.hasErrors('cnpj')} ? 'border-red-500' : 'border-gray-600'"/>
+                                    <p th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="text-sm text-red-600 mt-1"></p>
+                                </div>
+                            </div>
 
-                <label for="cnpj" class="mt-5 block text-gray-700 font-medium mb-2">CNPJ</label>
-                <input type="text" th:field="${oficina.cnpj}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
-                    th:classappend="${#fields.hasErrors('cnpj')} ? 'border-red-500' : 'border-gray-300'"/>
-                    <p th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="text-sm text-red-600 mt-1"></p>
+                            <div class="md:col-span-2">
+                                <label for="endereco" class="block text-sm font-medium mb-2 text-gray-300">Endereço</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="text" th:field="${oficina.endereco}" placeholder="Ex: Rua Exemplo, 123"
+                                           class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                           th:classappend="${#fields.hasErrors('endereco')} ? 'border-red-500' : 'border-gray-600'"/>
+                                    <p th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="text-sm text-red-600 mt-1"></p>
+                                </div>
+                            </div>
 
-                <label for="endereco" class="mt-5 block text-gray-700 font-medium mb-2">Endereço</label>
-                <input type="text" th:field="${oficina.endereco}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
-                    th:classappend="${#fields.hasErrors('endereco')} ? 'border-red-500' : 'border-gray-300'"/>
-                    <p th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="text-sm text-red-600 mt-1"></p>
+                            <div>
+                                <label for="telefone" class="block text-sm font-medium mb-2 text-gray-300">Telefone</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="text" th:field="${oficina.telefone}" placeholder="Ex: (11) 98765-4321"
+                                           class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                           th:classappend="${#fields.hasErrors('telefone')} ? 'border-red-500' : 'border-gray-600'"/>
+                                    <p th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="text-sm text-red-600 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
 
-                <label for="telefone" class="mt-5 block text-gray-700 font-medium mb-2">Telefone</label>
-                <input type="text" th:field="${oficina.telefone}"
-                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" 
-                    th:classappend="${#fields.hasErrors('telefone')} ? 'border-red-500' : 'border-gray-300'"/>
-                    <p th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="text-sm text-red-600 mt-1"></p>
-                <div>
-                    <button type="submit"
-                        class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none">Cadastrar</button>
+                        <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end">
+                            <button type="submit"
+                                    class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200">
+                                Cadastrar Oficina
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
 
-
-        <div th:if="${notificacao != null}" th:object="${notificacao}">
-            <input type="hidden" id="mensagem" th:value="*{mensagem}">
-            <input type="hidden" id="tipo" th:value="*{tipo}">
-            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+            <div th:if="${notificacao != null}" th:object="${notificacao}" class="mt-6">
+                <input type="hidden" id="mensagem" th:value="*{mensagem}">
+                <input type="hidden" id="tipo" th:value="*{tipo}">
+                <input type="hidden" id="intervalo" th:value="*{intervalo}">
+            </div>
         </div>
-
     </main>
     <!-- !conteudo principal -->
-
 </body>
-
 </html>

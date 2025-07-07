@@ -86,5 +86,26 @@
       </div>
       <p th:if="${#fields.hasErrors('__${atributo}__')}" th:each="erro : ${#fields.errors('__${atributo}__')}" th:text="${erro} + '. '" class="text-sm text-red-600 mt-2"></p>
     </div>
-  </body>
+    <p th:if="${#fields.hasErrors('__${atributo}__')}" th:each="erro : ${#fields.errors('__${atributo}__')}" th:text="${erro} + '. '" class="text-sm text-red-600 mt-2"></p>
+  </div>
+
+  <div th:fragment="inputselectsimples(texto, atributo, itens, textoItem, valorItem)">
+  <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6"></label>
+  <select th:field="*{__${atributo}__}" class="w-1/2 py-3 px-4 border border-gray-300 rounded-lg">
+    <option value="">Selecione</option>
+    <option th:each="item : ${__${itens}__}" th:value="${item.__${valorItem}__}" th:text="${item.__${textoItem}__}"></option>
+  </select>
+</div>
+
+<div th:fragment="inputselectenum(texto, atributo, opcoes)">
+  <label th:for="${atributo}" th:text="${texto}" class="block text-gray-700 font-medium mb-2 mt-6"></label>
+  <select th:field="*{__${atributo}__}" class="w-1/2 py-3 px-4 border border-gray-300 rounded-lg">
+    <option value="">Selecione</option>
+    <option th:each="opcao : ${__${opcoes}__}" th:value="${opcao}" th:text="${opcao}"></option>
+  </select>
+</div>
+
+
+</body>
+
 </html>

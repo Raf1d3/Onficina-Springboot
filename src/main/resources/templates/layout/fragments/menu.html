@@ -11,135 +11,115 @@
 <body>
   <nav th:fragment="menu" class="mt-10">
     <!-- 1o Item Menu -->
-    <div x-data="{ open: false }">
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Perfil', ~{::#pessoa-icon})}"></button>
-
-      <!-- Opcoes do 1o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
-          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#cadastrar-icon})}">
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/perfil}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Editar', @{/emDesenvolvimento}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 2o Item Menu -->
-    <div x-data="{ open: false }">
+     <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Meu veiculo', @{/veiculo/listar}, ~{::#carro-icon})}"></div>
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Meu veiculo', ~{::#carro-icon})}"></button>
 
-      <!-- Opcoes do 2o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/veiculo/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/veiculo/listar}, ~{::#pesquisar-icon})}">
         </div>
-
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/veiculo/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 3o Item Menu -->
-    <div x-data="{ open: false }">
+     <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Oficinas', @{/manutencao/listar}, ~{::#manutencao-icon})}"></div>
+
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Manutenções', ~{::#manutencao-icon})}"></button>
-
-      <!-- Opcoes do 3o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/manutencao/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/manutencao/listar}, ~{::#pesquisar-icon})}">
         </div>
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Pesquisar', @{/manutencao/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 4o Item Menu -->
-    <div x-data="{ open: false }">
+      <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Oficinas', @{/oficina/listar}, ~{::#lote-icon})}"></div>
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Oficinas', ~{::#lote-icon})}"></button>
-
-      <!-- Opcoes do 4o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/oficina/cadastrar}, ~{::#cadastrar-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/oficina/listar}, ~{::#pesquisar-icon})}">
         </div>
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/oficina/abrirpesquisar}, ~{::#pesquisar-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- 5o Item Menu -->
-    <div x-data="{ open: false }">
+     <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Oficinas', @{/avaliacao/listar}, ~{::#pdf-icon})}"></div>
+     
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Avaliações', ~{::#pesquisar-icon})}"></button>
-
-      <!-- Opcoes do 5o Item Menu -->
       <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/avaliacao/cadastrar}, ~{::#pdf-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/avaliacao/listar}, ~{::#pdf-icon})}">
         </div>
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/avaliacao/abrirpesquisar}, ~{::#pdf-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- 5o Item Menu -->
-    <div x-data="{ open: false }">
+    <!-- <div x-data="{ open: false }">
       <button
         th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Relatórios', ~{::#relatorios-icon})}"></button>
 
-      <!-- Opcoes do 5o Item Menu -->
-      <div x-show="open" class="space-y-4 ps-10">
-        <!-- 1a Opcao -->
+      <div x-show="open" class="space-y-4 ps-10">>
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
-        <!-- 2a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Historico', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
-        <!-- 3a Opcao -->
         <div
           th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Mais', @{/emDesenvolvimento}, ~{::#pdf-icon})}">
         </div>
       </div>
-    </div>
+    </div> -->
+
+            <!-- <a th:href="@{/logout}" class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600"> Logout </a> -->
 
   </nav>
 
@@ -222,6 +202,8 @@
     <path
       d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M7 4.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047l1.888.974V7.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V7s1.54-1.274 1.639-1.208M5 9h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1" />
   </svg>
+
+  
 
 </body>
 

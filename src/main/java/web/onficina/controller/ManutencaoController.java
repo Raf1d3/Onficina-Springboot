@@ -111,7 +111,7 @@ public class ManutencaoController {
                 new NotificacaoSweetAlert2("Manutenção cadastrada com sucesso!",
                         TipoNotificaoSweetAlert2.SUCCESS, 4000));
 
-        return "redirect:/manutencao/listar";
+        return "redirect:/manutencao/cadastrar";
     }
 
     @HxRequest
@@ -140,6 +140,8 @@ public class ManutencaoController {
         return "manutencao/pesquisar :: formulario";
     }
 
+
+
     @HxRequest
     @GetMapping("/pesquisar")
     public String pesquisar(ManutencaoFilter filtro, Model model,
@@ -150,14 +152,18 @@ public class ManutencaoController {
         PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
 
         model.addAttribute("pagina", paginaWrapper);
-
         return "manutencao/listar :: tabela";
     }
 
-    @HxRequest
+ @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model, Principal principal) {
         Optional<Manutencao> manutencao = manutencaoRepository.findById(id);
+        if (manutencao.isPresent()) {
+            List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioId(manutencao.get().getVeiculo().getProprietario().getId());
+            model.addAttribute("veiculos", veiculos);
+        }
+
         if (manutencao != null) {
             String email = principal.getName();
             Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
