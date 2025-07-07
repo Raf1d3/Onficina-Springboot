@@ -1,6 +1,6 @@
 package web.onficina.filter;
 
-    public class VeiculoFilter {
+public class VeiculoFilter {
     private String placa;
     private String modelo;
     private String marca;
@@ -34,7 +34,5 @@ package web.onficina.filter;
     public String toString() {
         return "VeiculoFilter [placa=" + placa + ", modelo=" + modelo + ", marca=" + marca + "]";
     }
-
-    
 
 }

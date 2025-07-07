@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Avaliações</title>
+</head>
+
+<body>
+    <!-- Conteúdo principal -->
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full m-10">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl mb-6">Avaliações</h2>
+
+        <div th:if="${pagina.vazia}" class="text-center text-gray-400">Nenhuma avaliação encontrada.</div>
+
+        <div th:each="avaliacao : ${pagina.conteudo}" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 mb-6">
+            <div class="flex items-center mb-3">
+                <div class="flex-shrink-0 mr-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold">
+                        <span th:text="${avaliacao.proprietario.nome.substring(0,1)}"></span>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-gray-900 dark:text-white font-semibold" th:text="${avaliacao.proprietario.nome}"></p>
+                    <p class="text-sm text-gray-500" th:text="${avaliacao.oficina.nome}"></p>
+                </div>
+            </div>
+            
+            <div class="flex items-center mb-2">
+                <span th:each="i : ${#numbers.sequence(1, 5)}">
+                    <svg th:class="${i <= avaliacao.nota} ? 'text-yellow-400' : 'text-gray-300'" class="w-5 h-5 fill-current mr-1" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.2 3.674a1 1 0 00.95.69h3.862c.969 0 1.371 1.24.588 1.81l-3.124 2.27a1 1 0 00-.364 1.118l1.2 3.674c.3.921-.755 1.688-1.54 1.118L10 13.011l-3.124 2.27c-.784.57-1.838-.197-1.54-1.118l1.2-3.674a1 1 0 00-.364-1.118L3.048 9.101c-.783-.57-.38-1.81.588-1.81h3.862a1 1 0 00.95-.69l1.2-3.674z" />
+                    </svg>
+                </span>
+                <span class="ml-2 text-sm text-gray-500" th:text="${avaliacao.nota} + '/5'"></span>
+            </div>
+
+            <p class="text-gray-800 dark:text-gray-200" th:text="${avaliacao.comentario}"></p>
+
+            <div class="text-sm text-gray-400 mt-2">
+                <span th:text="'Manutenção #' + ${avaliacao.manutencao.id} + ' - ' + ${avaliacao.manutencao.descricao}"></span>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-4">
+                <a th:hx-get="@{/avaliacao/alterar/{id}(id=${avaliacao.id})}" hx-target="#main" hx-swap="outerHTML" class="text-sm text-blue-500 hover:underline">Alterar</a>
+                <a th:hx-get="@{/avaliacao/remover/{id}(id=${avaliacao.id})}" hx-target="#main" hx-swap="outerHTML" th:hx-confirm="${'Você vai remover a avaliação: ' + avaliacao.manutencao.id + ' - ' + avaliacao.manutencao.descricao + '!'}" class="text-sm text-red-500 hover:underline">Remover</a>
+            </div>
+        </div>
+
+        <div class="mt-6" th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}" />
+            <input type="hidden" id="tipo" th:value="*{tipo}" />
+            <input type="hidden" id="intervalo" th:value="*{intervalo}" />
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,47 +1,417 @@
 <!DOCTYPE html>
-<html lang="pt-BR" layout:decorate="~{layout/layoutmarketing}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+
+<html lang="pt-BR">
+
 <head>
-    <title>Sua Oficina Online</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnFicina - Sua Oficina Mais Perto de Você!</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --background-dark: #100E1A;
+            /* Roxo bem escuro do fundo */
+            --primary-purple: #7F56D9;
+            /* Roxo vibrante principal */
+            --primary-purple-hover: #6941C6;
+            --text-light: #FFFFFF;
+            --text-muted: #D0D5DD;
+            /* Cinza claro para textos secundários */
+            --border-color: #363441;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+        }
+
+        .bg-primary-purple {
+            background-color: var(--primary-purple);
+        }
+
+        .hover\:bg-primary-purple-hover:hover {
+            background-color: var(--primary-purple-hover);
+        }
+
+        .text-primary-purple {
+            color: var(--primary-purple);
+        }
+
+        .border-primary-purple {
+            border-color: var(--primary-purple);
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .border-muted {
+            border-color: var(--border-color);
+        }
+
+        .bg-section-dark {
+            background-color: #1A1823;
+        }
+
+        /* Tom um pouco mais claro para seções */
+
+        /* Estilos para o Swiper (Carrossel) */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary-purple);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-purple) !important;
+        }
+    </style>
 </head>
-<body>
 
-<section layout:fragment="conteudo">
-    <div class="text-center py-20 md:py-32 bg-white">
-        <div class="container mx-auto px-6">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-                Gerencie sua oficina e seus veículos com <span class="text-blue-600">facilidade</span>.
-            </h1>
-            <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                A plataforma completa para proprietários de veículos e donos de oficinas otimizarem o controle de manutenções e serviços.
-            </p>
-            <div class="mt-10">
-                <a th:href="@{/cadastrar}" class="py-3 px-8 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
-                    Comece Agora
-                </a>
+<body class="bg-gray-900 text-white">
+
+
+    <header class="bg-gray-900 py-4 sticky top-0 z-50 backdrop-blur-sm bg-opacity-80">
+        <nav class="container mx-auto flex justify-between items-center px-4">
+            <div class="text-2xl font-bold text-text-light">ONFICINA</div>
+            <!-- <ul class="hidden md:flex space-x-8">
+                <li><a href="#" class="text-muted hover:text-text-light transition-colors">Para Motoristas</a></li>
+                <li><a href="#" class="text-muted hover:text-text-light transition-colors">Para Oficinas</a></li>
+                <li><a href="#" class="text-muted hover:text-text-light transition-colors">Ajuda</a></li>
+            </ul> -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a th:href="@{/login}"
+                    class="text-muted px-5 py-2 rounded-lg hover:text-white transition-colors">Login</a>
+                <a th:href="@{/cadastrar}"
+                    class="bg-primary-purple text-white px-5 py-2 rounded-lg hover:bg-primary-purple-hover transition-colors font-semibold">Cadastre-se</a>
+            </div>
+            <button class="md:hidden text-white text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <section class="bg-gradient-onficina py-20 px-4">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2 text-center md:text-left">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6 text-text-light">Sua oficina mais<br>perto
+                    de você!</h1>
+                <p class="text-lg text-muted mb-8">Compare orçamentos, agende serviços e gerencie a manutenção do seu
+                    veículo de forma rápida, segura e transparente.</p>
+                <div
+                    class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a th:href="@{/cadastrar}"
+                        class="bg-primary-purple text-white px-8 py-3 rounded-lg hover:bg-primary-purple-hover transition-colors font-semibold">Buscar
+                        Serviços</a>
+                    <!-- <a href="#" class="bg-transparent border border-muted text-white px-8 py-3 rounded-lg hover:bg-white/10 transition-colors font-semibold">Sou uma Oficina</a> -->
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-end">
+                <img src="images/Desktop-App-Placeholder-1.png" alt="Plataforma OnFicina em um painel"
+                    class="max-w-full h-auto">
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="features" class="py-20">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">Tudo que você precisa em um só lugar</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-3">Controle de Manutenções</h3>
-                    <p class="text-gray-600">Registre cada serviço, troca de óleo ou reparo. Nunca mais perca uma data de revisão.</p>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-3">Histórico Completo do Veículo</h3>
-                    <p class="text-gray-600">Tenha todo o histórico do seu carro na palma da mão, valorizando-o na hora da venda.</p>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-3">Conexão com Oficinas</h3>
-                    <p class="text-gray-600">Encontre e avalie oficinas parceiras, agende serviços e receba orçamentos online.</p>
-                </div>
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-3xl font-bold mb-12">Oficinas parceiras que confiam na nossa plataforma</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-center">
+                <img src="images/Logo-grey.png" alt="Logo de Oficina Parceira"
+                    class="max-h-8 mx-auto filter grayscale opacity-60 hover:opacity-100 transition-opacity">
+                <img src="images/Logo-grey (1).png" alt="Logo de Oficina Parceira"
+                    class="max-h-8 mx-auto filter grayscale opacity-60 hover:opacity-100 transition-opacity">
+                <img src="images/Logo-grey (2).png" alt="Logo de Oficina Parceira"
+                    class="max-h-8 mx-auto filter grayscale opacity-60 hover:opacity-100 transition-opacity">
+                <img src="images/Logo-grey (3).png" alt="Logo de Oficina Parceira"
+                    class="max-h-8 mx-auto filter grayscale opacity-60 hover:opacity-100 transition-opacity">
+                <img src="images/Logo-grey (4).png" alt="Logo de Oficina Parceira"
+                    class="max-h-8 mx-auto filter grayscale opacity-60 hover:opacity-100 transition-opacity">
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+        <section class="py-20 px-4 bg-gray-900 ">
+        <div class="container mx-auto text-center flex flex-col items-center">
+            <div class="flex justify-center mb-10">
+                <img src="images/Macbook.png" alt="Painel de controle da OnFicina em um tablet"
+                    class="max-w-3xl h-auto">
+            </div>
+            <p class="text-sm uppercase text-primary-purple font-semibold mb-4">CONTROLE TOTAL</p>
+            <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Todo o histórico do seu veículo na palma da
+                mão</h2>
+            <p class="text-lg text-muted max-w-3xl mx-auto">Acesse serviços realizados, peças trocadas, custos
+                detalhados e notas fiscais. Tudo organizado em um só lugar, de forma simples e acessível.</p>
+        </div>
+    </section>
+
+
+
+    <section class="py-20 px-4 overflow-hidden">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2 text-center md:text-left">
+                <p class="text-sm uppercase text-primary-purple font-semibold mb-4">NUNCA MAIS ESQUEÇA</p>
+                 <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Receba notificações e<br>saiba quando
+                    realizar<br>manutenções</h2>
+                <p class="text-lg text-muted">Nosso sistema inteligente avisa sobre trocas de óleo, revisões e outros
+                    cuidados essenciais para manter seu carro seguro e valorizado.</p>
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-end">
+                <img src="images/Col.png" alt="Celular mostrando notificações de manutenção"
+                    class="max-w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="py-20 px-4 overflow-hidden">
+        <div class="container mx-auto flex flex-col md:flex-row-reverse items-center justify-between gap-12">
+            <div class="md:w-1/2 text-center md:text-left">
+                <p class="text-sm uppercase text-primary-purple font-semibold mb-4">MOBILIDADE</p>
+                  <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6"><span class="text-blue-500">Gerencie tudo pelo
+                  </span><br>app, onde estiver</h2>
+                <p class="text-lg text-muted mb-8">Nossa plataforma poderosa permite que você solicite orçamentos,
+                    aprove serviços e acompanhe o status do seu carro diretamente pelo celular.</p>
+                <a href="#"
+                    class="bg-primary-purple text-white px-8 py-3 rounded-lg hover:bg-primary-purple-hover transition-colors font-semibold">Conheça
+                    o App</a>   
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-start">
+                <img src="images/Col (1).png" alt="Mobile showing app builder" class="max-w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+   
+
+    <section class="bg-gray-900 py-20 px-4 relative">
+        <div class="container mx-auto text-center">
+            <p class="text-sm uppercase text-gray-400 font-semibold mb-4">Join other Sun harvesters</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-12">O que nossos usuarios dizem</h2>
+
+            <div class="swiper-container pb-12">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="bg-gray-800 p-6 rounded-lg text-left h-full flex flex-col justify-between">
+                            <div>
+                                <div class="text-yellow-400 mb-4">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <p class="text-gray-300 mb-4">Vehicula sit sit pharetra bibendum ut risus accumsan.
+                                    Purus, in metus, enim, ipsum morbí euismod pellentesque. Mattis pharetra accumsan
+                                    eget est mi enim, id. Sit quam tortor eu tellus non, in euismod integer.</p>
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <img src="images/ralph-edwards-avatar.png" alt="Ralph Edwards Avatar"
+                                    class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="font-semibold">Ralph Edwards</p>
+                                    <p class="text-sm text-gray-400">32KWh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-gray-800 p-6 rounded-lg text-left h-full flex flex-col justify-between">
+                            <div>
+                                <div class="text-blue-400 mb-4">
+                                    <i class="fas fa-cloud-bolt"></i>
+                                </div>
+                                <p class="text-gray-300 mb-4">Purus maecenas quis elit eu, aliquet. Tellus porttitor ut
+                                    sollicitudin sit non fringilla. Quam nunc volutpat senectus neque eget amet
+                                    pharetra, euismod. Tempus, nunc, molestie imperdiet curabitur commodo euismod.</p>
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <img src="images/jane-cooper-avatar.png" alt="Jane Cooper Avatar"
+                                    class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="font-semibold">Jane Cooper</p>
+                                    <p class="text-sm text-gray-400">10KWh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-gray-800 p-6 rounded-lg text-left h-full flex flex-col justify-between">
+                            <div>
+                                <div class="text-blue-400 mb-4">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <p class="text-gray-300 mb-4">Hendrerit augue ut nec, senectus quis integer netus.
+                                    Sagittis fusce rhoncus magnis habitant amet. Egestas amet habitasse amet risus
+                                    tellus ornare. Hendrerit augue ut nec, senectus. Mauris egestas feugiat leo vitae
+                                    praesent neque, et.</p>
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <img src="images/cameron-williamson-avatar.png" alt="Cameron Williamson Avatar"
+                                    class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="font-semibold">Cameron Williamson</p>
+                                    <p class="text-sm text-gray-400">12KWh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-gray-800 p-6 rounded-lg text-left h-full flex flex-col justify-between">
+                            <div>
+                                <div class="text-blue-400 mb-4">
+                                    <i class="fas fa-building-columns"></i>
+                                </div>
+                                <p class="text-gray-300 mb-4">Viverra lacus, at vitae, et, odio elementum velit, nisi,
+                                    aliquet vel. Blandit porttitor ut sollicitudin sit non fringilla. Quam nunc volutpat
+                                    senectus neque eget amet pharetra, euismod. Tempus, nunc, molestie imperdiet
+                                    curabitur commodo euismod.</p>
+                            </div>
+                            <div class="flex items-center mt-4">
+                                <img src="images/avatar-image.png" alt="Avatar"
+                                    class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="font-semibold">User Name</p>
+                                    <p class="text-sm text-gray-400">XXKWh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="bg-gray-900py-20 p-4">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                <p class="text-sm uppercase text-white opacity-75 font-semibold mb-4">CAPTION</p>
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Pronto para simplificar a<br>manutenção do
+                    seu carro?</h2>
+                <p class="text-lg text-white mb-8">Cadastre-se grátis e comece a economizar tempo e dinheiro. Seja você
+                    motorista ou dono de oficina, temos a solução certa.</p>
+                <div
+                    class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#" class="bg-white text-black px-8 py-3 rounded-lg font-semibold">Começar Agora</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-end">
+                <img src="images/Col (2).png" alt="Smartphone with gear icon" class="max-w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- <footer class="bg-white py-16 px-4">
+        <div class="container mx-auto grid grid-cols-2 md:grid-cols-6 gap-8 text-left">
+            <div class="col-span-2 md:col-span-6 lg:col-span-2 mb-8 lg:mb-0">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">ONFICINA</h3>
+                <p class="text-gray-600">Conectando motoristas e as melhores oficinas de forma inteligente.</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-gray-900">Plataforma</h3>
+                <ul class="space-y-3 text-gray-600">
+                    <li><a href="#" class="hover:text-primary-purple">Visão Geral</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Recursos</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Preços</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-gray-900">Soluções</h3>
+                <ul class="space-y-3 text-gray-600">
+                    <li><a href="#" class="hover:text-primary-purple">Para Motoristas</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Para Oficinas</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Para Frotas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-gray-900">Empresa</h3>
+                <ul class="space-y-3 text-gray-600">
+                    <li><a href="#" class="hover:text-primary-purple">Sobre Nós</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Blog</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Contato</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-gray-900">Legal</h3>
+                <ul class="space-y-3 text-gray-600">
+                    <li><a href="#" class="hover:text-primary-purple">Termos</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Privacidade</a></li>
+                    <li><a href="#" class="hover:text-primary-purple">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="container mx-auto border-t border-gray-200 mt-12 pt-8 text-gray-500 text-sm flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2024 OnFicina. Todos os direitos reservados.</p>
+            <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                <a href="#" class="text-gray-500 hover:text-primary-purple"><i class="fab fa-youtube text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-primary-purple"><i class="fab fa-instagram text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-primary-purple"><i
+                        class="fab fa-facebook-f text-xl"></i></a>
+            </div>
+        </div>
+    </footer> -->
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const swiper = new Swiper('.swiper-container', {
+                // Parâmetros do Swiper
+                slidesPerView: 1, // Quantos slides visíveis por vez
+                spaceBetween: 24, // Espaçamento entre os slides (equivalente ao gap-6 ou gap-8 do Tailwind)
+                loop: true, // Para ter um carrossel infinito
+
+                // Paginação (os pontinhos na parte inferior)
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+
+                // Navegação (setas de Próximo/Anterior)
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+
+                // Quebras de linha (Responsividade)
+                // Isso permite definir diferentes configurações para diferentes larguras de tela
+                breakpoints: {
+                    // Quando a largura da tela for >= 640px (sm breakpoint do Tailwind)
+                    640: {
+                        slidesPerView: 1.5,
+                        centeredSlides: true, // Centraliza o slide ativo, mostrando um pouco dos próximos
+                    },
+                    // Quando a largura da tela for >= 768px (md breakpoint do Tailwind)
+                    768: {
+                        slidesPerView: 2.5,
+                        centeredSlides: true,
+                    },
+                    // Quando a largura da tela for >= 1024px (lg breakpoint do Tailwind)
+                    1024: {
+                        slidesPerView: 3,
+                        centeredSlides: false, // Desativa centralização para telas maiores se preferir
+                    },
+                    // Quando a largura da tela for >= 1280px (xl breakpoint do Tailwind)
+                    1280: {
+                        slidesPerView: 4,
+                        centeredSlides: false,
+                    }
+                }
+            });
+        });
+    </script>
 
 </body>
+
 </html>

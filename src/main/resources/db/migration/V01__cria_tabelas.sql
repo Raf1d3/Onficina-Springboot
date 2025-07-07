@@ -55,7 +55,6 @@ CREATE TABLE public.manutencao (
 CREATE TABLE public.avaliacao (
     id BIGSERIAL PRIMARY KEY,
     nota DOUBLE PRECISION NOT NULL,
-    descricao TEXT,
     comentario TEXT,
     data_avaliacao DATE,
     oficina_id BIGINT NOT NULL,

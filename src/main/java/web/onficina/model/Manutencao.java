@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,13 +41,11 @@ public class Manutencao {
         OUTRO
     }
 
-    @Column(name = "descricao_outro_servico")
-    private String descricaoOutroServico;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "data_inicio_manutencao")
     private LocalDateTime dataInicioManutencao;
 
@@ -64,9 +64,13 @@ public class Manutencao {
     @Column(name = "tipo_servico", nullable = false)
     private TipoServico tipoServico;
 
+    @Column(name = "descricao_outro_servico")
+    private String descricaoOutroServico;
+
     @Column(name = "valor_servico", nullable = false)
     private BigDecimal valorServico;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "data_proxima_manutencao")
     private LocalDateTime dataProximaManutencao;
 
@@ -77,7 +81,6 @@ public class Manutencao {
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
-
 
     public long getId() {
         return id;
@@ -192,16 +195,15 @@ public class Manutencao {
         return Objects.equals(id, other.id);
     }
 
-@Override
-public String toString() {
-    return "Manutencao:\n" +
-           "tipo=" + tipoManutencao + "\n" +
-           "status=" + statusManutencao + "\n" +
-           "servico=" + tipoServico + "\n" +
-           "valor=" + valorServico + "\n" +
-           "veiculo=" + (veiculo != null ? veiculo.getId() : "null") + "\n" +
-           "oficina=" + (oficina != null ? oficina.getId() : "null");
-}
-
+    @Override
+    public String toString() {
+        return "Manutencao:\n" +
+                "tipo=" + tipoManutencao + "\n" +
+                "status=" + statusManutencao + "\n" +
+                "servico=" + tipoServico + "\n" +
+                "valor=" + valorServico + "\n" +
+                "veiculo=" + (veiculo != null ? veiculo.getId() : "null") + "\n" +
+                "oficina=" + (oficina != null ? oficina.getId() : "null");
+    }
 
 }
