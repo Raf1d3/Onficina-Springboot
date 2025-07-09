@@ -1,14 +1,22 @@
 package web.onficina.service;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import web.onficina.dto.AvaliacaoReportDTO;
+import web.onficina.dto.VeiculoReportDTO;
 import web.onficina.model.Avaliacao;
-import web.onficina.model.AvaliacaoReportDTO;
 import web.onficina.model.Oficina;
+import web.onficina.model.Status;
+import web.onficina.model.Usuario;
+import web.onficina.model.Veiculo;
 import web.onficina.repository.OficinaRepository;
+import web.onficina.repository.VeiculoRepository;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -20,6 +28,9 @@ public class RelatorioService {
 
     @Autowired
     private OficinaRepository oficinaRepository; 
+
+    @Autowired
+    private VeiculoRepository veiculoRepository;
 
 public byte[] gerarRelatorioOficina(Long oficinaId) throws JRException {
     InputStream relatorioCompilado = getClass().getResourceAsStream("/reports/relatorio_oficina.jasper");
@@ -51,4 +62,33 @@ public byte[] gerarRelatorioOficina(Long oficinaId) throws JRException {
 
     return JasperExportManager.exportReportToPdf(relatorioPreenchido);
 }
+
+// Adicione este método inteiro à sua classe RelatorioService.java
+
+// Em RelatorioService.java
+// Em RelatorioService.java
+
+public byte[] gerarRelatorioHistoricoVeiculos(Usuario clienteLogado) throws JRException {
+    InputStream relatorioCompilado = getClass().getResourceAsStream("/reports/relatorio_historico_veiculos.jasper");
+    if (relatorioCompilado == null) {
+        throw new JRException("Arquivo de relatório principal não encontrado: relatorio_historico_veiculos.jasper");
+    }
+
+    List<Veiculo> veiculosDoCliente = veiculoRepository.findAllByProprietarioIdAndStatus(clienteLogado.getId(), Status.ATIVO);
+    List<VeiculoReportDTO> veiculosDTO = new ArrayList<>();
+    for (Veiculo veiculo : veiculosDoCliente) {
+        veiculosDTO.add(new VeiculoReportDTO(veiculo));
+    }
+
+    JRBeanCollectionDataSource dataSourceVeiculos = new JRBeanCollectionDataSource(veiculosDTO);
+
+    Map<String, Object> parametros = new HashMap<>();
+    parametros.put("P_NOME_CLIENTE", clienteLogado.getNome());
+    // Use o caminho relativo ao classpath
+    parametros.put("SUBREPORT_DIR", "reports/"); // Ou "/reports/" se preferir
+
+    JasperPrint relatorioPreenchido = JasperFillManager.fillReport(relatorioCompilado, parametros, dataSourceVeiculos);
+    return JasperExportManager.exportReportToPdf(relatorioPreenchido);
+}
+
 }
