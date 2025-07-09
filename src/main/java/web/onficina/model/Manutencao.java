@@ -1,7 +1,7 @@
 package web.onficina.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,8 +48,8 @@ public class Manutencao {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "data_inicio_manutencao")
-    private LocalDateTime dataInicioManutencao;
-
+    private LocalDate dataInicioManutencao;
+    
     private String descricao;
     private String observacao;
 
@@ -73,7 +73,7 @@ public class Manutencao {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "data_proxima_manutencao")
-    private LocalDateTime dataProximaManutencao;
+    private LocalDate dataProximaManutencao;
 
     @ManyToOne
     @JoinColumn(name = "oficina_id", nullable = true)
@@ -82,6 +82,9 @@ public class Manutencao {
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
+    
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ATIVO;
 
     public long getId() {
         return id;
@@ -91,11 +94,11 @@ public class Manutencao {
         this.id = id;
     }
 
-    public LocalDateTime getDataInicioManutencao() {
+    public LocalDate getDataInicioManutencao() {
         return dataInicioManutencao;
     }
 
-    public void setDataInicioManutencao(LocalDateTime dataInicioManutencao) {
+    public void setDataInicioManutencao(LocalDate dataInicioManutencao) {
         this.dataInicioManutencao = dataInicioManutencao;
     }
 
@@ -155,11 +158,11 @@ public class Manutencao {
         this.valorServico = valorServico;
     }
 
-    public LocalDateTime getDataProximaManutencao() {
+    public LocalDate getDataProximaManutencao() {
         return dataProximaManutencao;
     }
 
-    public void setDataProximaManutencao(LocalDateTime dataProximaManutencao) {
+    public void setDataProximaManutencao(LocalDate dataProximaManutencao) {
         this.dataProximaManutencao = dataProximaManutencao;
     }
 
@@ -178,6 +181,14 @@ public class Manutencao {
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
     }
+
+    public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
     @Override
     public int hashCode() {

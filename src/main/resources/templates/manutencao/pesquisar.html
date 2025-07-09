@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -8,127 +9,175 @@
 </head>
 
 <body>
-<main layout:fragment="conteudo" th:fragment="formulario" id="main">
-    <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
 
-    <div class="rounded-lg shadow-xl">
-        <h2 class="text-3xl font-bold text-white">Pesquisar Manutenção</h2>
-        <p class="text-gray-400 mb-6">Use os filtros abaixo para encontrar uma manutenção cadastrada.</p>
+        <div class="rounded-lg shadow-xl">
+            <h2 class="text-3xl font-bold text-white">Pesquisar Manutenção</h2>
+            <p class="text-gray-400 mb-6">Use os filtros abaixo para encontrar uma manutenção cadastrada.</p>
 
-        <div class="bg-gray-800 p-6 md:p-8 rounded-xl shadow-md">
-            <form th:hx-get="@{/manutencao/pesquisar}" hx-target="#main" hx-swap="outerHTML" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-800 p-6 md:p-8 rounded-xl shadow-md">
+                <form th:hx-get="@{/manutencao/pesquisar}" hx-target="#main" hx-swap="outerHTML" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                    <!-- Veículo -->
-                    <div>
-                        <label for="veiculoId" class="block text-sm font-medium mb-2 text-gray-300">Veículo</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1Z"/>
-                                </svg>
+                        <div>
+                            <label for="id" class="block text-sm font-medium mb-2 text-gray-300">ID</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2.5-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                        <path
+                                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z" />
+                                    </svg>
+                                </div>
+                                <input type="number" id="id" name="id" placeholder="Ex: 123"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500" />
                             </div>
-                            <select name="veiculoId" id="veiculoId" class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Todos os Veículos</option>
-                                <th:block th:each="veiculo : ${veiculos}">
-                                    <option th:value="${veiculo.id}" th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}"></option>
-                                </th:block>
-                            </select>
                         </div>
-                    </div>
 
-                    <!-- Oficina -->
-                    <div>
-                        <label for="oficinaId" class="block text-sm font-medium mb-2 text-gray-300">Oficina</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                                </svg>
+                        <!-- Veículo -->
+                        <div>
+                            <label for="veiculoId" class="block text-sm font-medium mb-2 text-gray-300">Veículo</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1Z" />
+                                    </svg>
+                                </div>
+                                <select name="veiculoId" id="veiculoId"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Todos os Veículos</option>
+                                    <th:block th:each="veiculo : ${veiculos}">
+                                        <option th:value="${veiculo.id}"
+                                            th:text="${veiculo.modelo} + ' - ' + ${veiculo.placa}"></option>
+                                    </th:block>
+                                </select>
                             </div>
-                            <select name="oficinaId" id="oficinaId" class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Todas as Oficinas</option>
-                                <th:block th:each="oficina : ${oficinas}">
-                                    <option th:value="${oficina.id}" th:text="${oficina.nome}"></option>
-                                </th:block>
-                            </select>
                         </div>
-                    </div>
 
-                    <!-- Tipo de Manutenção -->
-                    <div>
-                        <label for="tipoManutencao" class="block text-sm font-medium mb-2 text-gray-300">Tipo de Manutenção</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M2 6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6z"/>
-                                </svg>
+                        <!-- Oficina -->
+                        <div>
+                            <label for="oficinaId" class="block text-sm font-medium mb-2 text-gray-300">Oficina</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zM8 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                                    </svg>
+                                </div>
+                                <select name="oficinaId" id="oficinaId"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Todas as Oficinas</option>
+                                    <th:block th:each="oficina : ${oficinas}">
+                                        <option th:value="${oficina.id}" th:text="${oficina.nome}"></option>
+                                    </th:block>
+                                </select>
                             </div>
-                            <select id="tipoManutencao" name="tipoManutencao" class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Todos os Tipos</option>
-                                <option th:each="tipo : ${T(web.onficina.model.Manutencao.TipoManutencao).values()}"
+                        </div>
+
+                        <!-- Tipo de Manutenção -->
+                        <div>
+                            <label for="tipoManutencao" class="block text-sm font-medium mb-2 text-gray-300">Tipo de
+                                Manutenção</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6z" />
+                                    </svg>
+                                </div>
+                                <select id="tipoManutencao" name="tipoManutencao"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Todos os Tipos</option>
+                                    <option th:each="tipo : ${T(web.onficina.model.Manutencao.TipoManutencao).values()}"
                                         th:value="${tipo}" th:text="${tipo.toString().replace('_', ' ')}"
                                         th:selected="${filtro != null && filtro.tipoManutencao == tipo}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Status da Manutenção -->
-                    <div>
-                        <label for="statusManutencao" class="block text-sm font-medium mb-2 text-gray-300">Status</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2z"/>
-                                </svg>
+                                    </option>
+                                </select>
                             </div>
-                            <select id="statusManutencao" name="statusManutencao" class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Todos os Status</option>
-                                <option th:each="status : ${T(web.onficina.model.Manutencao.StatusManutencao).values()}"
+                        </div>
+
+                        <!-- Status da Manutenção -->
+                        <div>
+                            <label for="statusManutencao"
+                                class="block text-sm font-medium mb-2 text-gray-300">Status</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2z" />
+                                    </svg>
+                                </div>
+                                <select id="statusManutencao" name="statusManutencao"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Todos os Status</option>
+                                    <option
+                                        th:each="status : ${T(web.onficina.model.Manutencao.StatusManutencao).values()}"
                                         th:value="${status}" th:text="${status.toString().replace('_', ' ')}"
                                         th:selected="${filtro != null && filtro.statusManutencao == status}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Tipo de Serviço -->
-                    <div>
-                        <label for="tipoServico" class="block text-sm font-medium mb-2 text-gray-300">Tipo de Serviço</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2z"/>
-                                </svg>
+                                    </option>
+                                </select>
                             </div>
-                            <select id="tipoServico" name="tipoServico" class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Todos os Serviços</option>
-                                <option th:each="servico : ${T(web.onficina.model.Manutencao.TipoServico).values()}"
+                        </div>
+
+                        <!-- Tipo de Serviço -->
+                        <div>
+                            <label for="tipoServico" class="block text-sm font-medium mb-2 text-gray-300">Tipo de
+                                Serviço</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2z" />
+                                    </svg>
+                                </div>
+                                <select id="tipoServico" name="tipoServico"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Todos os Serviços</option>
+                                    <option th:each="servico : ${T(web.onficina.model.Manutencao.TipoServico).values()}"
                                         th:value="${servico}" th:text="${servico.toString().replace('_', ' ')}"
                                         th:selected="${filtro != null && filtro.tipoServico == servico}">
-                                </option>
-                            </select>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Valor -->
+                        <div>
+                            <label for="valorServico" class="block text-sm font-medium mb-2 text-gray-300">Valor</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                     <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2z" />
+                                    </svg>
+                                </div>
+                                <input type="number" id="valorServico" name="valorServico" placeholder="Ex: 123"
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Botão -->
-                <div class="flex justify-end pt-6 border-t border-gray-700">
-                    <button type="submit"
+                    <!-- Botão -->
+                    <div class="flex justify-end pt-6 border-t border-gray-700">
+                        <button type="submit"
                             class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200">
-                        Pesquisar
-                    </button>
-                </div>
-            </form>
-        </div>
+                            Pesquisar
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-        <div th:if="${notificacao != null}" th:object="${notificacao}" class="mt-6">
-            <input type="hidden" id="mensagem" th:value="*{mensagem}">
-            <input type="hidden" id="tipo" th:value="*{tipo}">
-            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+            <div th:if="${notificacao != null}" th:object="${notificacao}" class="mt-6">
+                <input type="hidden" id="mensagem" th:value="*{mensagem}">
+                <input type="hidden" id="tipo" th:value="*{tipo}">
+                <input type="hidden" id="intervalo" th:value="*{intervalo}">
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 </body>
+
 </html>

@@ -16,9 +16,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,13 +33,15 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/", "/home.html", "/login", "/cadastrar").permitAll()
                         // Um usuário autenticado e com o papel ADMIN pode fazer requisições para essas
                         // URLs
-                        .requestMatchers("/veiculo/**").hasAnyRole("cliente", "oficina")
-                        .requestMatchers("/manutencao/**").hasAnyRole("cliente", "oficina")
-                        .requestMatchers("/oficina/**").hasAnyRole("cliente", "oficina")
-                        .requestMatchers("/perfil/**").hasAnyRole("cliente", "oficina")
-                        .requestMatchers("/avaliacao/**").hasAnyRole("cliente", "oficina")
-                        .requestMatchers("/relatorios/**").hasAnyRole("cliente", "oficina")
-                        
+                        .requestMatchers("/veiculo/**").hasAnyRole("cliente", "admin")
+                        .requestMatchers("/manutencao/**").hasAnyRole("cliente", "admin")
+                        .requestMatchers("/oficina/**").hasAnyRole("cliente", "admin")
+                        .requestMatchers("/perfil/**").hasAnyRole("cliente", "admin")
+                        .requestMatchers("/avaliacao/**").hasAnyRole("cliente", "admin")
+                        .requestMatchers("/usuario/alterar/{id}").authenticated()
+                        .requestMatchers("/usuario/**").hasRole("admin")
+                         .requestMatchers("/relatorios/**").hasAnyRole("cliente", "oficina")
+
                         // .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
                         .anyRequest().authenticated())
                         
@@ -43,7 +50,8 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("email")
                         // Define a URL para onde o usuário será redirecionado após o login
-                        .defaultSuccessUrl("/painel.html")
+                        //.defaultSuccessUrl("/painel.html")
+                        .successHandler(authenticationSuccessHandler)
                         // Define a URL para o caso de falha no login
                         // .failureUrl("/login-error")
                         .permitAll())

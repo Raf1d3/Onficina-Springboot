@@ -23,7 +23,13 @@ public class UsuarioService {
     }
 
     public void remover(Long id) {
-        usuarioRepository.deleteById(id);
+        Usuario usuario = usuarioRepository.findByIdAndAtivo(id, true);
+        if (usuario == null) {
+            throw new RuntimeException("Remoção do usuario com codigo inválido");
+        } else {
+            usuario.setAtivo(false);
+            usuarioRepository.save(usuario);
+        }
     }
 
     public String findNomeByEmail(String email) {
@@ -31,7 +37,7 @@ public class UsuarioService {
             return "Visitante";
         }
 
-        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario usuario = usuarioRepository.findByEmailAndAtivo(email, true);
 
         if (usuario != null) {
             return usuario.getNome();

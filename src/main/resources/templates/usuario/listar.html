@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Usuarios</title>
+</head>
+
+<body>
+
+    <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full"
+        x-data="{ view: 'grid' }">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+        <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Usuarios</h2>
+
+        <div class="flex justify-between items-center mb-4 mt-4">
+            <div class="flex space-x-2">
+                <a th:hx-get="@{/cadastrar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer">
+                    Cadastrar Usuario
+                </a>
+                <a th:hx-get="@{/usuario/abrirpesquisar}" hx-target="#main" hx-swap="outerHTML"
+                    class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 cursor-pointer">
+                    Nova Pesquisa
+                </a>
+            </div>
+
+            <div class="md:flex items-center gap-2 p-1 rounded-lg bg-gray-800">
+                <button @click="view = 'grid'"
+                    :class="{ 'bg-blue-600 text-white': view === 'grid', 'text-gray-400 hover:bg-gray-700': view !== 'grid' }"
+                    class="p-2 rounded-md transition-colors duration-200" title="Visualização em Grade">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                        </path>
+                    </svg>
+                </button>
+                <button @click="view = 'row'"
+                    :class="{ 'bg-blue-600 text-white': view === 'row', 'text-gray-400 hover:bg-gray-700': view !== 'row' }"
+                    class="p-2 rounded-md transition-colors duration-200" title="Visualização em Linha">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div th:if="${pagina.vazia}" class="text-center text-gray-400 mt-10">
+            Nenhum usuario encontrado.
+        </div>
+
+        <div x-show="view === 'grid'" th:unless="${pagina.vazia}"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
+            <div th:each="usuario : ${pagina.conteudo}"
+                class="bg-gray-800 rounded-xl shadow-lg overflow-hidden  flex flex-col p-6">
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <div th:if="${#strings.equalsIgnoreCase(usuario.papel?.nome, 'admin')}">
+                        <svg class="w-full h-40 object-cover" fill="#fff" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>administrator-line</title> <path d="M14.68,14.81a6.76,6.76,0,1,1,6.76-6.75A6.77,6.77,0,0,1,14.68,14.81Zm0-11.51a4.76,4.76,0,1,0,4.76,4.76A4.76,4.76,0,0,0,14.68,3.3Z" class="clr-i-outline clr-i-outline-path-1"></path><path d="M16.42,31.68A2.14,2.14,0,0,1,15.8,30H4V24.22a14.81,14.81,0,0,1,11.09-4.68l.72,0a2.2,2.2,0,0,1,.62-1.85l.12-.11c-.47,0-1-.06-1.46-.06A16.47,16.47,0,0,0,2.2,23.26a1,1,0,0,0-.2.6V30a2,2,0,0,0,2,2H16.7Z" class="clr-i-outline clr-i-outline-path-2"></path><path d="M26.87,16.29a.37.37,0,0,1,.15,0,.42.42,0,0,0-.15,0Z" class="clr-i-outline clr-i-outline-path-3"></path><path d="M33.68,23.32l-2-.61a7.21,7.21,0,0,0-.58-1.41l1-1.86A.38.38,0,0,0,32,19l-1.45-1.45a.36.36,0,0,0-.44-.07l-1.84,1a7.15,7.15,0,0,0-1.43-.61l-.61-2a.36.36,0,0,0-.36-.24H23.82a.36.36,0,0,0-.35.26l-.61,2a7,7,0,0,0-1.44.6l-1.82-1a.35.35,0,0,0-.43.07L17.69,19a.38.38,0,0,0-.06.44l1,1.82A6.77,6.77,0,0,0,18,22.69l-2,.6a.36.36,0,0,0-.26.35v2.05A.35.35,0,0,0,16,26l2,.61a7,7,0,0,0,.6,1.41l-1,1.91a.36.36,0,0,0,.06.43l1.45,1.45a.38.38,0,0,0,.44.07l1.87-1a7.09,7.09,0,0,0,1.4.57l.6,2a.38.38,0,0,0,.35.26h2.05a.37.37,0,0,0,.35-.26l.61-2.05a6.92,6.92,0,0,0,1.38-.57l1.89,1a.36.36,0,0,0,.43-.07L32,30.4A.35.35,0,0,0,32,30l-1-1.88a7,7,0,0,0,.58-1.39l2-.61a.36.36,0,0,0,.26-.35V23.67A.36.36,0,0,0,33.68,23.32ZM24.85,28a3.34,3.34,0,1,1,3.33-3.33A3.34,3.34,0,0,1,24.85,28Z" class="clr-i-outline clr-i-outline-path-4"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                    </div>
+                    <div th:if="${#strings.equalsIgnoreCase(usuario.papel?.nome, 'cliente')}">
+                        <svg class="w-full h-40 object-cover" fill="#fff" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>user-line</title> <path d="M18,17a7,7,0,1,0-7-7A7,7,0,0,0,18,17ZM18,5a5,5,0,1,1-5,5A5,5,0,0,1,18,5Z" class="clr-i-outline clr-i-outline-path-1"></path><path d="M30.47,24.37a17.16,17.16,0,0,0-24.93,0A2,2,0,0,0,5,25.74V31a2,2,0,0,0,2,2H29a2,2,0,0,0,2-2V25.74A2,2,0,0,0,30.47,24.37ZM29,31H7V25.73a15.17,15.17,0,0,1,22,0h0Z" class="clr-i-outline clr-i-outline-path-2"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                    </div>
+                </td>
+
+                <div class="flex flex-col flex-grow">
+                    <div class="flex-grow">
+                        <p class="text-sm text-gray-400">Nome &middot; id</p>
+                        <h3 class="text-xl font-semibold text-white mb-2"
+                            th:text="${usuario.nome} + ' &middot; ' + ${usuario.id}"></h3>
+                        <p class="text-sm text-gray-400">Email</p>
+                        <p class="text-white mb-2" th:text="${usuario.email}"></p>
+                        <p class="text-sm text-gray-400">Papel</p>
+                        <p class="text-white mb-2" th:text="${usuario.papel.nome}"></p>
+                        <p class="text-sm text-gray-400">Status</p>
+                        <p class="text-white" th:text="${usuario.ativo ? 'Ativo' : 'Inativo'}"></p>
+                    </div>
+                    <div class="mt-6 border-t border-gray-700 pt-4 flex justify-end items-center space-x-3">
+                        <div th:replace="~{:: usuarioActions(usuario=${usuario})}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="view === 'row'" th:unless="${pagina.vazia}" class="flex flex-col space-y-4 mt-5">
+            <div th:each="usuario : ${pagina.conteudo}"
+                class="bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4">
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <div th:if="${#strings.equalsIgnoreCase(usuario.papel?.nome, 'admin')}">
+                        <svg class="w-16 h-16 rounded-full object-cover flex-shrink-0" fill="#fff" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>administrator-line</title> <path d="M14.68,14.81a6.76,6.76,0,1,1,6.76-6.75A6.77,6.77,0,0,1,14.68,14.81Zm0-11.51a4.76,4.76,0,1,0,4.76,4.76A4.76,4.76,0,0,0,14.68,3.3Z" class="clr-i-outline clr-i-outline-path-1"></path><path d="M16.42,31.68A2.14,2.14,0,0,1,15.8,30H4V24.22a14.81,14.81,0,0,1,11.09-4.68l.72,0a2.2,2.2,0,0,1,.62-1.85l.12-.11c-.47,0-1-.06-1.46-.06A16.47,16.47,0,0,0,2.2,23.26a1,1,0,0,0-.2.6V30a2,2,0,0,0,2,2H16.7Z" class="clr-i-outline clr-i-outline-path-2"></path><path d="M26.87,16.29a.37.37,0,0,1,.15,0,.42.42,0,0,0-.15,0Z" class="clr-i-outline clr-i-outline-path-3"></path><path d="M33.68,23.32l-2-.61a7.21,7.21,0,0,0-.58-1.41l1-1.86A.38.38,0,0,0,32,19l-1.45-1.45a.36.36,0,0,0-.44-.07l-1.84,1a7.15,7.15,0,0,0-1.43-.61l-.61-2a.36.36,0,0,0-.36-.24H23.82a.36.36,0,0,0-.35.26l-.61,2a7,7,0,0,0-1.44.6l-1.82-1a.35.35,0,0,0-.43.07L17.69,19a.38.38,0,0,0-.06.44l1,1.82A6.77,6.77,0,0,0,18,22.69l-2,.6a.36.36,0,0,0-.26.35v2.05A.35.35,0,0,0,16,26l2,.61a7,7,0,0,0,.6,1.41l-1,1.91a.36.36,0,0,0,.06.43l1.45,1.45a.38.38,0,0,0,.44.07l1.87-1a7.09,7.09,0,0,0,1.4.57l.6,2a.38.38,0,0,0,.35.26h2.05a.37.37,0,0,0,.35-.26l.61-2.05a6.92,6.92,0,0,0,1.38-.57l1.89,1a.36.36,0,0,0,.43-.07L32,30.4A.35.35,0,0,0,32,30l-1-1.88a7,7,0,0,0,.58-1.39l2-.61a.36.36,0,0,0,.26-.35V23.67A.36.36,0,0,0,33.68,23.32ZM24.85,28a3.34,3.34,0,1,1,3.33-3.33A3.34,3.34,0,0,1,24.85,28Z" class="clr-i-outline clr-i-outline-path-4"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                    </div>
+                    <div th:if="${#strings.equalsIgnoreCase(usuario.papel?.nome, 'cliente')}">
+                        <svg class="w-16 h-16 rounded-full object-cover flex-shrink-0" fill="#fff" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>user-line</title> <path d="M18,17a7,7,0,1,0-7-7A7,7,0,0,0,18,17ZM18,5a5,5,0,1,1-5,5A5,5,0,0,1,18,5Z" class="clr-i-outline clr-i-outline-path-1"></path><path d="M30.47,24.37a17.16,17.16,0,0,0-24.93,0A2,2,0,0,0,5,25.74V31a2,2,0,0,0,2,2H29a2,2,0,0,0,2-2V25.74A2,2,0,0,0,30.47,24.37ZM29,31H7V25.73a15.17,15.17,0,0,1,22,0h0Z" class="clr-i-outline clr-i-outline-path-2"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                    </div>
+                </td>
+                <div class="flex-grow">
+                    <p class="text-lg font-bold text-white" th:text="${usuario.nome}"></p>
+                    <p class="text-sm text-gray-400"
+                        th:text="${usuario.id} + ' ' + ${usuario.email} + ' &middot; ' + ${usuario.papel} + ' &middot; ' + ${usuario.ativo}">
+                    </p>
+                </div>
+                <div class="flex-shrink-0">
+                    <div th:replace="~{:: usuarioActions(usuario=${usuario})}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+
+    <div th:fragment="usuarioActions(usuario)" class="flex items-center space-x-3">
+        <a th:hx-get="@{/usuario/alterar/{id}(id=${usuario.id})}" hx-target="#main" hx-swap="outerHTML"
+            class="cursor-pointer text-gray-400 hover:text-blue-400" title="Alterar usuario">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" />
+            </svg>
+        </a>
+        <a th:hx-get="@{/usuario/remover/{id}(id=${usuario.id})}" hx-target="#main" hx-swap="outerHTML"
+            th:hx-confirm="${'Você vai remover o usuario: ' + usuario.nome + ' ?'}"
+            class="cursor-pointer text-gray-400 hover:text-red-500" title="Remover usuario">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </a>
+    </div>
+
+</body>
+
+</html>

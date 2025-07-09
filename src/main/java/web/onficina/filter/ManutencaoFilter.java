@@ -1,15 +1,35 @@
 package web.onficina.filter;
 
+import java.math.BigDecimal;
+
 import web.onficina.model.Manutencao.StatusManutencao;
 import web.onficina.model.Manutencao.TipoManutencao;
 import web.onficina.model.Manutencao.TipoServico;
 
 public class ManutencaoFilter {
+    private Long id;
     private TipoManutencao tipoManutencao;
     private StatusManutencao statusManutencao;
     private TipoServico tipoServico;
     private Long veiculoId;
     private Long oficinaId;
+    private BigDecimal valorServico;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public BigDecimal getValorServico() {
+        return valorServico;
+    }
+
+    public void setValorServico(BigDecimal valorServico) {
+        this.valorServico = valorServico;
+    }
 
     public TipoManutencao getTipoManutencao() {
         return tipoManutencao;

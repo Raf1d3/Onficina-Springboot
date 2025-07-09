@@ -4,7 +4,7 @@ import web.onficina.model.Avaliacao;
 
 public class AvaliacaoReportDTO {
 
-    private Integer nota;
+    private Double nota;
     private String comentario;
     private String nomeCliente; 
 
@@ -15,7 +15,7 @@ public class AvaliacaoReportDTO {
     }
 
     // Getters
-    public Integer getNota() {
+    public Double getNota() {
         return nota;
     }
 

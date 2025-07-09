@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.FragmentsRendering;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
+import web.onficina.model.Status;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.repository.UsuarioRepository;
@@ -29,8 +30,8 @@ public class PerfilController {
      * Método privado para carregar os dados do perfil, evitando duplicação de código.
      */
     private void loadProfileData(Model model, Principal principal) {
-        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(principal.getName());
-        List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioId(usuario.getId());
+        Usuario usuario = usuarioRepository.findByEmailAndAtivo(principal.getName(), true);
+        List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioIdAndStatus(usuario.getId(), Status.ATIVO);
         model.addAttribute("usuario", usuario);
         model.addAttribute("veiculos", veiculos);
     }

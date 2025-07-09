@@ -28,17 +28,18 @@ public class EmailUsuarioUnicoServiceImpl implements EmailUsuarioUnicoService {
         }
         
         //Busca um usuario com esse nomeUsuario email
-        Usuario usuarioComEsseEmail = usuarioRepository.findByEmailIgnoreCase(novoUsuario.getEmail());
+        Usuario usuarioComEsseEmail = usuarioRepository.findByEmail(novoUsuario.getEmail());
         
         // Se não existe um usuário com esse email, o valor é único.
         if (usuarioComEsseEmail == null) {
             return true;
         } else {  // Existe um usuário com esse email.
             // Tentativa de criar um NOVO usuário com um email que já existe.
-            if (novoUsuario.getId() == null) {
+            if (novoUsuario.getId() == null || novoUsuario.getId() == 0) {
                 return false;
             } else {  // Tentativa de ATUALIZAR um usuário já existente.
-                Usuario usuarioAntigo = usuarioRepository.findById(novoUsuario.getId()).orElseThrow(() -> new InvalidParameterException("O código do usuário a validar não existe."));
+                Usuario usuarioAntigo = usuarioRepository.findById(novoUsuario.getId())
+                    .orElseThrow(() -> new InvalidParameterException("O código do usuário a validar não existe."));
                 // Se o usuário encontrado com o mesmo email é o próprio usuário que está sendo atualizado,
                 // então está tudo bem (ele pode manter o próprio email).
                 if (usuarioComEsseEmail.equals(usuarioAntigo)) {

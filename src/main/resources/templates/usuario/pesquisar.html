@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Pesquisar usuarios</title>
+</head>
+
+<body>
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main">
+
+        <div>
+            <h2 class="text-2xl font-semibold text-white md:text-3xl">Pesquisar Usuarios</h2>
+            <p class="mt-2 text-gray-400">Utilize os filtros abaixo para encontrar usuarios.</p>
+
+            <div class="mt-8 bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
+                <form th:hx-get="@{/usuario/pesquisar}" hx-target="#main" hx-swap="outerHTML">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+
+                        <div class="md:col-span-2">
+                            <label for="id" class="block text-sm font-medium mb-2 text-gray-300">Código (ID)</label>
+                            <input type="number" id="id" name="id" placeholder="Digite o código do Usuario"
+                                class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="nome" class="block text-sm font-medium mb-2 text-gray-300">Nome</label>
+                            <input type="text" id="nome" name="nome" placeholder="Digite o nome"
+                                class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                            <input type="text" id="email" name="email" placeholder="Digite o email"
+                                class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="papelId" class="block text-sm font-medium mb-2 text-gray-300">Código do papel
+                                (ID)</label>
+                            <input type="number" id="papelId" name="papelId" placeholder="Digite o código do papel"
+                                class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="ativo" class="block text-sm font-medium mb-2 text-gray-300">Status</label>
+                            <select name="ativo" id="ativo"
+                                class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Todos</option>
+                                <option value="true">Ativo</option>
+                                <option value="false">Inativo</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end gap-x-3">
+                        <button type="reset"
+                            class="py-2 px-5 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700">
+                            Limpar Filtros
+                        </button>
+                        <button type="submit"
+                            class="py-2 px-5 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+                            Pesquisar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${notificacao != null}" th:object="${notificacao}">
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+    </main>
+
+</body>
+
+</html>

@@ -141,7 +141,7 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- Adiciona a dependência do Spring Boot Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

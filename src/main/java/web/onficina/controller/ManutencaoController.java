@@ -36,6 +36,7 @@ import web.onficina.model.Veiculo;
 import web.onficina.filter.ManutencaoFilter;
 import web.onficina.model.Manutencao;
 import web.onficina.model.Oficina;
+import web.onficina.model.Status;
 import web.onficina.repository.ManutencaoRepository;
 import web.onficina.repository.OficinaRepository;
 import web.onficina.repository.UsuarioRepository;
@@ -68,15 +69,15 @@ public class ManutencaoController {
     public String mostrarFormularioCadastro(Model model, Principal principal) {
 
         String email = principal.getName();
-        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
         if (proprietario == null) {
             throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
-        List<Veiculo> veiculosDoUsuario = veiculoRepository.findAllByProprietarioId(proprietario.getId());
+        List<Veiculo> veiculosDoUsuario = veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO);
 
-        List<Oficina> todasAsOficinas = oficinaRepository.findAll();
+        List<Oficina> todasAsOficinas = oficinaRepository.findAllByStatus(Status.ATIVO);
 
         model.addAttribute("manutencao", new Manutencao());
         model.addAttribute("veiculos", veiculosDoUsuario);
@@ -92,15 +93,15 @@ public class ManutencaoController {
         if (result.hasErrors()) {
 
             String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
 
-            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
-            model.addAttribute("oficinas", oficinaRepository.findAll());
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO));
+            model.addAttribute("oficinas", oficinaRepository.findAllByStatus(Status.ATIVO));
 
             return "manutencao/cadastrar :: formulario";
 
@@ -111,7 +112,7 @@ public class ManutencaoController {
                 new NotificacaoSweetAlert2("Manutenção cadastrada com sucesso!",
                         TipoNotificaoSweetAlert2.SUCCESS, 4000));
 
-        return "redirect:/manutencao/cadastrar";
+        return "redirect:/manutencao/listar";
     }
 
     @HxRequest
@@ -132,8 +133,8 @@ public class ManutencaoController {
     @GetMapping("/abrirpesquisar")
     public String abrirPaginaPesquisa(Model model) {
 
-        List<Veiculo> todosVeiculos = veiculoRepository.findAll();
-        List<Oficina> todasAsOficinas = oficinaRepository.findAll();
+        List<Veiculo> todosVeiculos = veiculoRepository.findAllByStatus(Status.ATIVO);
+        List<Oficina> todasAsOficinas = oficinaRepository.findAllByStatus(Status.ATIVO);
         model.addAttribute("veiculos", todosVeiculos);
         model.addAttribute("oficinas", todasAsOficinas);
 
@@ -158,22 +159,22 @@ public class ManutencaoController {
  @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model, Principal principal) {
-        Optional<Manutencao> manutencao = manutencaoRepository.findById(id);
-        if (manutencao.isPresent()) {
-            List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioId(manutencao.get().getVeiculo().getProprietario().getId());
+        Manutencao manutencao = manutencaoRepository.findByIdAndStatus(id, Status.ATIVO);
+        if (manutencao != null) {
+            List<Veiculo> veiculos = veiculoRepository.findAllByProprietarioIdAndStatus(manutencao.getVeiculo().getProprietario().getId(), Status.ATIVO);
             model.addAttribute("veiculos", veiculos);
         }
 
         if (manutencao != null) {
             String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
-            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
-            model.addAttribute("oficinas", oficinaRepository.findAll());
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO));
+            model.addAttribute("oficinas", oficinaRepository.findAllByStatus(Status.ATIVO));
 
             model.addAttribute("manutencao", manutencao);
             return "manutencao/alterar :: formulario";
@@ -189,15 +190,15 @@ public class ManutencaoController {
             RedirectAttributes redirectAttributes, Principal principal, Model model) {
         if (resultado.hasErrors()) {
             String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
 
-            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioId(proprietario.getId()));
-            model.addAttribute("oficinas", oficinaRepository.findAll());
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO));
+            model.addAttribute("oficinas", oficinaRepository.findAllByStatus(Status.ATIVO));
 
             logger.info("A manutenção recebida para cadastrar não é válida.");
             logger.info("Erros encontrados:");

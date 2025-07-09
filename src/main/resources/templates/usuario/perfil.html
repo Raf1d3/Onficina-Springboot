@@ -86,7 +86,7 @@
 
                 <!-- Ações do Perfil -->
                 <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end space-x-4">
-                    <a th:href="@{/perfil/editar}"
+                    <a th:hx-get="@{/usuario/alterar/{id}(id=${usuario.id})}" hx-target="#main" hx-swap="outerHTML"
                        class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
                        aria-label="Editar perfil" title="Editar Perfil">
                         Editar Perfil

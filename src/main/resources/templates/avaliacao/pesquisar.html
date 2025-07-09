@@ -22,22 +22,33 @@
                 <input type="number" id="id" name="id"
                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none" />
 
-                <label for="manutencao" class="mt-5 block text-gray-700 font-medium mb-2">ID da Manutenção</label>
-                <input type="number" name="manutencao" id="manutencao"
+                <label for="oficinaId" class="mt-5 block text-gray-700 font-medium mb-2">ID da Oficina</label>
+                <input type="number" name="oficinaId" id="oficinaId"
                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
 
-                <label for="proprietario" class="mt-5 block text-gray-700 font-medium mb-2">ID do Proprietário</label>
-                <input type="number" name="proprietario" id="proprietario"
+                <label for="veiculoId" class="mt-5 block text-gray-700 font-medium mb-2">ID do Veiculo</label>
+                <input type="number" name="veiculoId" id="veiculoId"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
+
+                <label for="manutencaoId" class="mt-5 block text-gray-700 font-medium mb-2">ID da Manutenção</label>
+                <input type="number" name="manutencaoId" id="manutencaoId"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
+
+                <label for="proprietarioId" class="mt-5 block text-gray-700 font-medium mb-2">ID do Proprietário</label>
+                <input type="number" name="proprietarioId" id="proprietarioId"
                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
 
                 <label for="nota" class="mt-5 block text-gray-700 font-medium mb-2">Nota</label>
-                <input type="number" name="nota" id="nota" min="0" max="10"
+                <input type="number" name="nota" id="nota" min="0" max="5" placeholder="Ex: 4.5" step="any"
                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
 
                 <label for="comentario" class="mt-5 block text-gray-700 font-medium mb-2">Comentário</label>
                 <input type="text" name="comentario" id="comentario"
                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
 
+                <label for="dataAvaliacao" class="mt-5 block text-gray-700 font-medium mb-2">Data do Comentário</label>
+                <input type="datetime-local" name="dataAvaliacao" id="dataAvaliacao"
+                     class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
                 <div>
                     <button type="submit"
                         class="mt-5 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200">

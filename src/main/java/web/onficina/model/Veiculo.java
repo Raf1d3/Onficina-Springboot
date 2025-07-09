@@ -7,17 +7,22 @@ import org.hibernate.annotations.DynamicUpdate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import web.onficina.service.PlacaVeiculoUnicoService;
+import web.onficina.validation.UniqueValueAttribute;
 
 @Entity
 @Table(name = "veiculo")
 @DynamicUpdate
+@UniqueValueAttribute(attribute = "placa", service = PlacaVeiculoUnicoService.class, message = "Já existe um Veiculo com essa placa cadastrado")
 public class Veiculo {
 
     @Id
@@ -39,6 +44,8 @@ public class Veiculo {
 
     @OneToMany(mappedBy = "veiculo", fetch = FetchType.EAGER)
     private java.util.List<Manutencao> manutencoes = new java.util.ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ATIVO;
 
     public long getId() {
         return id;
@@ -95,6 +102,14 @@ public class Veiculo {
     public void setCor(String cor) {
         this.cor = cor;
     }
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
     @Override
     public int hashCode() {
