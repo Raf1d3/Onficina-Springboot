@@ -12,6 +12,7 @@ import web.onficina.dto.AvaliacaoReportDTO;
 import web.onficina.dto.VeiculoReportDTO;
 import web.onficina.model.Avaliacao;
 import web.onficina.model.Oficina;
+import web.onficina.model.Status;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.repository.OficinaRepository;
@@ -73,7 +74,7 @@ public byte[] gerarRelatorioHistoricoVeiculos(Usuario clienteLogado) throws JREx
         throw new JRException("Arquivo de relatório principal não encontrado: relatorio_historico_veiculos.jasper");
     }
 
-    List<Veiculo> veiculosDoCliente = veiculoRepository.findAllByProprietarioId(clienteLogado.getId());
+    List<Veiculo> veiculosDoCliente = veiculoRepository.findAllByProprietarioIdAndStatus(clienteLogado.getId(), Status.ATIVO);
     List<VeiculoReportDTO> veiculosDTO = new ArrayList<>();
     for (Veiculo veiculo : veiculosDoCliente) {
         veiculosDTO.add(new VeiculoReportDTO(veiculo));

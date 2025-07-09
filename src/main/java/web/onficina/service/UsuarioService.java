@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import web.onficina.model.Status;
 import web.onficina.model.Usuario;
 import web.onficina.repository.UsuarioRepository;
 
@@ -48,7 +49,7 @@ public class UsuarioService {
 
 
     public Usuario findByEmail(String email) {
-        return usuarioRepository.findByEmailIgnoreCase(email);
+        return usuarioRepository.findByEmailAndAtivo(email, true);
     }
 
 }
