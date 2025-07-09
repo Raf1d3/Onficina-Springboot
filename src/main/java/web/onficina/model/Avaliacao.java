@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,7 +42,7 @@ public class Avaliacao {
     @NotNull
     @Min(value = 0, message = "A nota mínima é 0.")
     @Max(value = 5, message = "A nota máxima é 5.")
-    private int nota;
+    private Double nota;
 
     @NotBlank(message = "Comentario é obrigatório")
     private String comentario;
@@ -48,6 +50,9 @@ public class Avaliacao {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "data_avaliacao")
     private LocalDateTime dataAvaliacao;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ATIVO;
 
     public long getId() {
         return id;
@@ -89,13 +94,21 @@ public class Avaliacao {
         this.comentario = comentario;
     }
 
-    public int getNota() {
+    public Double getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(Double nota) {
         this.nota = nota;
     }
+
+    public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
     @Override
     public int hashCode() {

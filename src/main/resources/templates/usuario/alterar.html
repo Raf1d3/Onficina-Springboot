@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    layout:decorate="~{layout/layoutpadrao}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Alterar Usuario</title>
+    <style>
+        .notification-enter {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .notification-exit {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main layout:fragment="conteudo" th:fragment="formulario" id="main">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
+
+        <!-- Notificações -->
+        <div th:if="${notificacao != null}" th:object="${notificacao}" class="mb-6" x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, ${notificacao.intervalo})">
+            <div x-show="show" x-transition:enter="notification-enter" x-transition:leave="notification-exit"
+                th:classappend="${notificacao.tipo == 'ERROR'} ? 'text-red-800 bg-red-100' : 'text-green-800 bg-green-100'"
+                class="p-4 text-sm rounded-lg" role="alert">
+                <span class="font-medium" th:text="*{mensagem}"></span>
+            </div>
+            <input type="hidden" id="mensagem" th:value="*{mensagem}">
+            <input type="hidden" id="tipo" th:value="*{tipo}">
+            <input type="hidden" id="intervalo" th:value="*{intervalo}">
+        </div>
+
+        <!-- Formulário -->
+        <div class="rounded-lg shadow-md bg-gray-800">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-white">Alterar usuario</h2>
+                <p class="text-gray-300 text-sm mb-6">Edite as informações do Usuario.</p>
+
+                <form th:hx-post="@{/usuario/alterar}" hx-target="#main" hx-swap="outerHTML" th:object="${usuario}">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                        <!-- ID -->
+                        <div>
+                            <label for="id" class="block text-sm font-medium mb-2 text-gray-300">ID</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm0 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-5 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                    </svg>
+                                </div>
+                                <input type="number" th:field="*{id}" id="id" disabled
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    aria-label="ID do Usuario (somente leitura)" />
+                                <input type="hidden" th:field="*{id}">
+                            </div>
+                        </div>
+
+                        <!-- Nome -->
+                        <div>
+                            <label for="nome" class="block text-sm font-medium mb-2 text-gray-300">Nome</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z" />
+                                    </svg>
+                                </div>
+                                <input type="text" th:field="*{nome}" id="nome" required
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                    aria-label="nome do usaurio" />
+                                <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"
+                                    class="text-red-500 text-sm mt-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z" />
+                                    </svg>
+                                </div>
+                                <input type="text" th:field="*{email}" id="email" required
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                                    aria-label="email do usaurio" />
+                                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                    class="text-red-500 text-sm mt-1"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Senha -->
+                        <input type="hidden" th:field="*{senha}">
+
+                        <!-- Ativo -->
+                        <div sec:authorize="hasRole('admin')">
+                            <label for="ativo" class="block text-sm font-medium mb-2 text-gray-300">Status</label>
+                            <div class="relative">
+                                <select name="ativo" th:field="*{ativo}" id="ativo" required
+                                    class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="true">Ativo</option>
+                                    <option value="false">Inativo</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('ativo')}" th:errors="*{ativo}"
+                                    class="text-red-500 text-sm mt-1"></div>
+                            </div>
+                        </div>
+                        <!-- Papel -->
+                        <div sec:authorize="hasRole('admin')">
+                            <label for="papel" class="block text-sm font-medium mb-2 text-gray-300">Papel</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                    </svg>
+                                </div>
+                                <select th:field="*{papel}" id="papel" required
+                                    class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Selecione um papel</option>
+                                    <option th:each="p : ${todosPapeis}" th:value="${p.id}" th:text="${p.nome}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('papel')}" th:errors="*{papel}"
+                                    class="text-red-500 text-sm mt-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- Ações -->
+                        <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end space-x-4">
+                            <button type="submit"
+                                class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                                aria-label="Salvar alterações do usuario" title="Salvar Alterações">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                Salvar
+                            </button>
+                            <a th:href="@{/perfil}" th:hx-get="@{/perfil}" hx-target="#main" hx-swap="outerHTML"
+                                class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                                aria-label="Cancelar edição do usuario" title="Cancelar">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Cancelar
+                            </a>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

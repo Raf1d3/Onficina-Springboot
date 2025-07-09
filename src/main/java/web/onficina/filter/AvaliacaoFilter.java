@@ -1,12 +1,37 @@
 package web.onficina.filter;
 
+import java.time.LocalDateTime;
+
 public class AvaliacaoFilter {
+
+    private Long id;
+    private Long oficinaId;
     private Long veiculoId;
     private Long proprietarioId;
     private Long manutencaoId;
-    private Integer nota;
+    private Double nota;
     private String comentario;
+    private LocalDateTime dataAvaliacao;
+
     
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getOficinaId() {
+        return oficinaId;
+    }
+    public void setOficinaId(Long oficinaId) {
+        this.oficinaId = oficinaId;
+    }
+    public LocalDateTime getDataAvaliacao() {
+        return dataAvaliacao;
+    }
+    public void setDataAvaliacao(LocalDateTime dataAvaliacao) {
+        this.dataAvaliacao = dataAvaliacao;
+    }
     public Long getVeiculoId() {
         return veiculoId;
     }
@@ -25,10 +50,10 @@ public class AvaliacaoFilter {
     public void setManutencaoId(Long manutencaoId) {
         this.manutencaoId = manutencaoId;
     }
-    public Integer getNota() {
+    public Double getNota() {
         return nota;
     }
-    public void setNota(Integer nota) {
+    public void setNota(Double nota) {
         this.nota = nota;
     }
     public String getComentario() {

@@ -3,6 +3,7 @@ package web.onficina.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import web.onficina.model.Status;
 import web.onficina.model.Veiculo;
 import web.onficina.repository.VeiculoRepository;
 
@@ -26,7 +27,14 @@ public class VeiculoService {
     }
 
     public void remover(Long id) {
-        veiculoRepository.deleteById(id);
+        Veiculo veiculo = veiculoRepository.findByIdAndStatus(id, Status.ATIVO);
+        if(veiculo == null){
+            throw new RuntimeException("Remoção de veiculo com codigo inválido");
+        }else{
+            veiculo.setStatus(Status.INATIVO);
+            veiculoRepository.save(veiculo);
+        }
+
     }
 
 

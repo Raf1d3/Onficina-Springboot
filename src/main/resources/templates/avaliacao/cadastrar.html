@@ -63,29 +63,8 @@
             <input type="hidden" id="tipo" th:value="*{tipo}">
             <input type="hidden" id="intervalo" th:value="*{intervalo}">
         </div>
-    <script th:inline="javascript">
-        
-        const manutencaoSelect = document.getElementById('manutencao');
-        const oficinaNomeInput = document.getElementById('oficina-nome');
-        const oficinaIdInput = document.getElementById('oficina-id');
-
-        manutencaoSelect.addEventListener('change', function () {
-            const selectedOption = this.options[this.selectedIndex];
-
-            const oficinaId = selectedOption.getAttribute('data-oficina-id');
-            const oficinaNome = selectedOption.getAttribute('data-oficina-nome');
-
-            if (oficinaNome && oficinaNome !== 'null' && oficinaNome.trim() !== '') {
-                oficinaNomeInput.value = oficinaNome;
-                oficinaIdInput.value = oficinaId;
-            } else {
-                oficinaNomeInput.value = '';
-                oficinaIdInput.value = '';
-                oficinaNomeInput.placeholder = 'Selecione uma manutenção para carregar a oficina';
-            }
-        });
-    </script>
     </main>
+
 </body>
 
 </html>

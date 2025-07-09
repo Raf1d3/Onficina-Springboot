@@ -28,6 +28,7 @@ import web.onficina.filter.AvaliacaoFilter;
 import web.onficina.model.Avaliacao;
 import web.onficina.model.Manutencao;
 import web.onficina.model.Oficina;
+import web.onficina.model.Status;
 import web.onficina.model.Usuario;
 import web.onficina.notificacao.NotificacaoSweetAlert2;
 import web.onficina.notificacao.TipoNotificaoSweetAlert2;
@@ -61,19 +62,20 @@ public class AvaliacaoController {
         this.avaliacaoService = avaliacaoService;
         this.manutencaoRepository = manutencaoRepository;
     }
+    
 
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model, Principal principal) {
 
         String email = principal.getName();
-        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
         if (proprietario == null) {
             throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
         List<Manutencao> manutencoesDoUsuario = manutencaoRepository
-                .findAllByVeiculo_Proprietario_Id(proprietario.getId());
+                .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
 
         model.addAttribute("manutencoes", manutencoesDoUsuario);
         model.addAttribute("avaliacao", new Avaliacao());
@@ -87,7 +89,7 @@ public class AvaliacaoController {
             Principal principal) {
 
         String email = principal.getName();
-        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
         if (result.hasErrors()) {
 
             if (proprietario == null) {
@@ -96,7 +98,7 @@ public class AvaliacaoController {
             }
 
             List<Manutencao> manutencoesDoUsuario = manutencaoRepository
-                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
+                    .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
 
             model.addAttribute("manutencoes", manutencoesDoUsuario);
 
@@ -133,15 +135,15 @@ public class AvaliacaoController {
     public String abrirPaginaPesquisa(Model model, Principal principal) {
 
         String email = principal.getName();
-        Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
         if (proprietario == null) {
             throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
 
-        List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_Id(proprietario.getId());
+        List<Manutencao> manutencoesDoUsuario = manutencaoRepository.findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
         model.addAttribute("manutencao", manutencoesDoUsuario);
-        model.addAttribute("proprietario", usuarioRepository.findAll());
+        model.addAttribute("proprietario", usuarioRepository.findAllByAtivo(true));
 
 
         return "avaliacao/pesquisar :: formulario";
@@ -164,19 +166,17 @@ public class AvaliacaoController {
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model, Principal principal) {
-        Optional<Avaliacao> avaliacaoOpt = avaliacaoRepository.findById(id);
-        if (avaliacaoOpt != null) {
+        Avaliacao avaliacao = avaliacaoRepository.findByIdAndStatus(id, Status.ATIVO);
+        if (avaliacao != null) {
             String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
-
-            Avaliacao avaliacao = avaliacaoOpt.get();
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
             if (proprietario == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
             }
             List<Manutencao> manutencoesDoUsuario = manutencaoRepository
-                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
+                    .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
 
             model.addAttribute("manutencoes", manutencoesDoUsuario);
             model.addAttribute("avaliacao", avaliacao);
@@ -193,7 +193,7 @@ public class AvaliacaoController {
             RedirectAttributes redirectAttributes, Principal principal, Model model) {
 
             String email = principal.getName();
-            Usuario proprietario = usuarioRepository.findByEmailIgnoreCase(email);
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
 
         if (resultado.hasErrors()) {
 
@@ -204,7 +204,7 @@ public class AvaliacaoController {
             }
 
             List<Manutencao> manutencoesDoUsuario = manutencaoRepository
-                    .findAllByVeiculo_Proprietario_Id(proprietario.getId());
+                    .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
             model.addAttribute("manutencoes", manutencoesDoUsuario);
             model.addAttribute("avaliacao", avaliacao);
             return "manutencao/alterar :: formulario";

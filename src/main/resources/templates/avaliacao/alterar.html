@@ -48,9 +48,9 @@
                     <input type="hidden" id="oficina-id" name="oficina.id" value="" />
                 </div>
 
-
-                <div th:replace="~{layout/fragments/forms :: inputtext('Nota', 'nota')}"></div>
-                <p th:if="${#fields.hasErrors('nota')}" th:errors="*{nota}" class="text-sm text-red-600 mt-1"></p>
+                <label for="nota" class="mt-5 block text-gray-700 font-medium mb-2">Nota (0 a 5)</label>
+                <input type="number" th:field="${avaliacao.nota}" name="nota" id="nota" min="0" max="5" placeholder="Ex: 4.5" step="any"
+                    class="w-1/2 py-3 px-4 text-gray-500 border-gray-300 rounded-lg" />
 
                 <div th:replace="~{layout/fragments/forms :: inputtext('Comentario', 'comentario')}"></div>
                 <p th:if="${#fields.hasErrors('comentario')}" th:errors="*{comentario}"
@@ -64,30 +64,6 @@
                 </div>
             </div>
         </form>
-
-
-        <script th:inline="javascript">
-
-            const manutencaoSelect = document.getElementById('manutencao');
-            const oficinaNomeInput = document.getElementById('oficina-nome');
-            const oficinaIdInput = document.getElementById('oficina-id');
-
-            manutencaoSelect.addEventListener('change', function () {
-                const selectedOption = this.options[this.selectedIndex];
-
-                const oficinaId = selectedOption.getAttribute('data-oficina-id');
-                const oficinaNome = selectedOption.getAttribute('data-oficina-nome');
-
-                if (oficinaNome && oficinaNome !== 'null' && oficinaNome.trim() !== '') {
-                    oficinaNomeInput.value = oficinaNome;
-                    oficinaIdInput.value = oficinaId;
-                } else {
-                    oficinaNomeInput.value = '';
-                    oficinaIdInput.value = '';
-                    oficinaNomeInput.placeholder = 'Selecione uma manutenção para carregar a oficina';
-                }
-            });
-        </script>
 
     </main>
 </body>

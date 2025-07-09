@@ -70,7 +70,7 @@
                                             <path d="M6.5 0a.5.5 0 0 0-.5.5V1h4V.5a.5.5 0 0 0-1 0V1H6.5V.5Zm-2 0A1.5 1.5 0 0 0 3 1.5v1A1.5 1.5 0 0 0 4.5 4h7A1.5 1.5 0 0 0 13 2.5v-1A1.5 1.5 0 0 0 11.5 0h-7Zm2 1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm-2 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5ZM3 4.5a.5.5 0 0 1-1 0V2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4.5Z"/>
                                         </svg>
                                     </div>
-                                    <input type="datetime-local" th:field="*{dataInicioManutencao}"
+                                    <input type="date" th:field="*{dataInicioManutencao}"
                                            class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"/>
                                     <p th:if="${#fields.hasErrors('dataInicioManutencao')}" th:errors="*{dataInicioManutencao}" class="text-sm text-red-600 mt-1"></p>
                                 </div>
@@ -84,7 +84,7 @@
                                             <path d="M6.5 0a.5.5 0 0 0-.5.5V1h4V.5a.5.5 0 0 0-1 0V1H6.5V.5Zm-2 0A1.5 1.5 0 0 0 3 1.5v1A1.5 1.5 0 0 0 4.5 4h7A1.5 1.5 0 0 0 13 2.5v-1A1.5 1.5 0 0 0 11.5 0h-7Zm2 1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm-2 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5ZM3 4.5a.5.5 0 0 1-1 0V2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4.5Z"/>
                                         </svg>
                                     </div>
-                                    <input type="datetime-local" th:field="*{dataProximaManutencao}"
+                                    <input type="date" th:field="*{dataProximaManutencao}"
                                            class="py-3 px-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"/>
                                     <p th:if="${#fields.hasErrors('dataProximaManutencao')}" th:errors="*{dataProximaManutencao}" class="text-sm text-red-600 mt-1"></p>
                                 </div>

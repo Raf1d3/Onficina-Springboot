@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import web.onficina.model.Manutencao;
+import web.onficina.model.Status;
 import web.onficina.repository.ManutencaoRepository;
 
 
@@ -27,6 +28,12 @@ public class ManutencaoService {
     }
 
     public void remover(Long codigo) {
-        manutencaoRepository.deleteById(codigo);
+        Manutencao manutencao = manutencaoRepository.findByIdAndStatus(codigo, Status.ATIVO);
+        if (manutencao == null) {
+            throw new RuntimeException("Remoção de manutenção com codigo inválido");
+        } else {
+            manutencao.setStatus(Status.INATIVO);
+            manutencaoRepository.save(manutencao);
+        }
     }
 }

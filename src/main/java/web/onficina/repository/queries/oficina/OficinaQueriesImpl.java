@@ -1,9 +1,9 @@
 package web.onficina.repository.queries.oficina;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,67 +18,76 @@ import web.onficina.pagination.PaginacaoUtil;
 
 public class OficinaQueriesImpl implements OficinaQueries {
 
-    private static final Logger logger = LoggerFactory.getLogger(OficinaQueriesImpl.class);
-
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public Page<Oficina> pesquisar(OficinaFilter filtro, Pageable pageable) {
-        StringBuilder queryOficinas = new StringBuilder("select o from Oficina o");
-        StringBuilder condicoes = new StringBuilder(" where 1=1");
+        StringBuilder queryOficinas = new StringBuilder("select distinct o from Oficina o");
+        StringBuilder condicoes = new StringBuilder();
 
-        if (StringUtils.hasText(filtro.getNome())) {
-            condicoes.append(" and lower(o.nome) like :nome");
-        }
+        Map<String, Object> parametros = new HashMap<>();
 
-        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
-            // Exemplo: buscando por oficinas com nota maior ou igual à filtrada
-            condicoes.append(" and o.notaMedia >= :notaMedia"); 
-        }
+        preencherCondicoesEParametros(filtro, condicoes, parametros);
 
-
-        if (StringUtils.hasText(filtro.getTelefone())) {
-            condicoes.append(" and lower(o.telefone) like :telefone");
+        if (condicoes.isEmpty()) {
+            condicoes.append(" where o.status = 'ATIVO'");
+        } else {
+            condicoes.append(" and o.status = 'ATIVO'");
         }
 
         queryOficinas.append(condicoes);
         PaginacaoUtil.prepararOrdemJPQL(queryOficinas, "o", pageable);
+        TypedQuery<Oficina> typedQuery = em.createQuery(queryOficinas.toString(), Oficina.class);
+        PaginacaoUtil.prepararIntervalo(typedQuery, pageable);
+        PaginacaoUtil.preencherParametros(parametros, typedQuery);
+        List<Oficina> Oficinas = typedQuery.getResultList();
 
-        TypedQuery<Oficina> query = em.createQuery(queryOficinas.toString(), Oficina.class);
-        PaginacaoUtil.prepararIntervalo(query, pageable);
+        long totalOficinas = PaginacaoUtil.getTotalRegistros("Oficina", "o", condicoes, parametros, em);
 
+        return new PageImpl<>(Oficinas, pageable, totalOficinas);
+    }
+
+    private void preencherCondicoesEParametros(OficinaFilter filtro, StringBuilder condicoes,
+            Map<String, Object> parametros) {
+        boolean condicao = false;
+
+        if (filtro.getId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("o.id = :id");
+            parametros.put("id", filtro.getId());
+            condicao = true;
+        }
         if (StringUtils.hasText(filtro.getNome())) {
-            query.setParameter("nome", "%" + filtro.getNome().toLowerCase() + "%");
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("lower(o.nome) like :nome");
+            parametros.put("nome", "%" + filtro.getNome().toLowerCase() + "%");
+            condicao = true;
         }
-        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
-            query.setParameter("notaMedia", filtro.getNotaMedia()); 
+        if (StringUtils.hasText(filtro.getCnpj())) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("o.cnpj like :cnpj");
+            parametros.put("cnpj", "%" + filtro.getCnpj() + "%");
+            condicao = true;
         }
-
+        if (StringUtils.hasText(filtro.getEndereco())) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("o.endereco like :endereco");
+            parametros.put("endereco", "%" + filtro.getEndereco() + "%");
+            condicao = true;
+        }
         if (StringUtils.hasText(filtro.getTelefone())) {
-            query.setParameter("telefone", "%" + filtro.getTelefone().toLowerCase() + "%");
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("o.telefone like :telefone");
+            parametros.put("telefone", "%" + filtro.getTelefone() + "%");
+            condicao = true;
         }
-
-        List<Oficina> resultado = query.getResultList();
-
-        StringBuilder jpqlCount = new StringBuilder("select count(o) from Oficina o");
-        jpqlCount.append(condicoes);
-        TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
-
-        if (StringUtils.hasText(filtro.getNome())) {
-            countQuery.setParameter("nome", "%" + filtro.getNome().toLowerCase() + "%");
+        if (filtro.getNotaMedia() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("o.notaMedia = :notaMedia");
+            parametros.put("notaMedia", filtro.getNotaMedia());
+            condicao = true;
         }
-        if (filtro.getNotaMedia() != null && filtro.getNotaMedia() > 0) {
-            countQuery.setParameter("notaMedia", filtro.getNotaMedia());
-        }
-
-        if (StringUtils.hasText(filtro.getTelefone())) {
-            countQuery.setParameter("telefone", "%" + filtro.getTelefone().toLowerCase() + "%");
-        }
-
-        long total = countQuery.getSingleResult();
-
-        return new PageImpl<>(resultado, pageable, total);
     }
 
 }

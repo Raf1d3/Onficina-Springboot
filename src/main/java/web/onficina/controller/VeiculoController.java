@@ -30,6 +30,7 @@ import web.onficina.notificacao.TipoNotificaoSweetAlert2;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import web.onficina.filter.VeiculoFilter;
+import web.onficina.model.Status;
 import web.onficina.model.Usuario;
 import web.onficina.model.Veiculo;
 import web.onficina.pagination.PageWrapper;
@@ -54,6 +55,7 @@ public class VeiculoController {
         this.usuarioRepository = usuarioRepository;
     }
 
+    @HxRequest
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model) {
         model.addAttribute("veiculo", new Veiculo());
@@ -61,6 +63,7 @@ public class VeiculoController {
         return "veiculo/cadastrar :: formulario";
     }
 
+    @HxRequest
     @PostMapping("/cadastrar")
     public String salvar(@Valid Veiculo veiculo, BindingResult result,
             Model model, RedirectAttributes redirectAttributes,
@@ -71,7 +74,7 @@ public class VeiculoController {
         }
 
         String email = principal.getName();
-        Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
+        Usuario usuarioLogado = usuarioRepository.findByEmailAndAtivo(email, true);
         if (usuarioLogado == null) {
             throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
         }
@@ -118,7 +121,7 @@ public class VeiculoController {
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model) {
-        Optional<Veiculo> veiculo = veiculoRepository.findById(id);
+        Veiculo veiculo = veiculoRepository.findByIdAndStatus(id, Status.ATIVO);
         if (veiculo != null) {
             model.addAttribute("veiculo", veiculo);
             return "veiculo/alterar :: formulario";
@@ -147,7 +150,7 @@ public class VeiculoController {
         } else {
 
             String email = principal.getName();
-            Usuario usuarioLogado = usuarioRepository.findByEmailIgnoreCase(email);
+            Usuario usuarioLogado = usuarioRepository.findByEmailAndAtivo(email, true);
             if (usuarioLogado == null) {
                 throw new IllegalStateException(
                         "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
