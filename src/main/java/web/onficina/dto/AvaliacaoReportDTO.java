@@ -1,4 +1,6 @@
-package web.onficina.model;
+package web.onficina.dto;
+
+import web.onficina.model.Avaliacao;
 
 public class AvaliacaoReportDTO {
 

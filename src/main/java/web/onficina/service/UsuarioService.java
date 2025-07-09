@@ -40,4 +40,9 @@ public class UsuarioService {
         }
     }
 
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmailIgnoreCase(email);
+    }
+
 }

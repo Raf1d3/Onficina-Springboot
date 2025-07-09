@@ -44,8 +44,9 @@ public class Manutencao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "data_inicio_manutencao")
     private LocalDateTime dataInicioManutencao;
 
@@ -70,7 +71,7 @@ public class Manutencao {
     @Column(name = "valor_servico", nullable = false)
     private BigDecimal valorServico;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "data_proxima_manutencao")
     private LocalDateTime dataProximaManutencao;
 
