@@ -11,7 +11,6 @@ import java.io.Serializable;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import web.onficina.service.EmailUsuarioUnicoService;
 import web.onficina.validation.UniqueValueAttribute;
@@ -24,9 +23,9 @@ public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name="geradorUsuario", sequenceName="usuario_id_seq", allocationSize=1)
-    @GeneratedValue(generator="geradorUsuario", strategy = GenerationType.SEQUENCE)
-    private long id;
+    @SequenceGenerator(name = "geradorUsuario", sequenceName = "usuario_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "geradorUsuario", strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
@@ -39,16 +38,18 @@ public class Usuario implements Serializable {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
-    private boolean ativo;
+    private Boolean ativo;
 
     @ManyToOne
     @JoinColumn(name = "id_papel")
-    @NotNull(message = "O usuário deve escolher um tipo")
     private Papel papel;
-    
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -76,20 +77,20 @@ public class Usuario implements Serializable {
     }
 
     public boolean isAtivo() {
-		return ativo;
-	}
+        return ativo;
+    }
 
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 
     public void setPapel(Papel papel) {
-		this.papel = papel;
-	}
+        this.papel = papel;
+    }
 
     public Papel getPapel() {
-		return papel;
-	}
+        return papel;
+    }
 
     @Override
     public int hashCode() {

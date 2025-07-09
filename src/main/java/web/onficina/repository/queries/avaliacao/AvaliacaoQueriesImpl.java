@@ -1,6 +1,8 @@
 package web.onficina.repository.queries.avaliacao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,92 +16,92 @@ import web.onficina.filter.AvaliacaoFilter;
 import web.onficina.model.Avaliacao;
 import web.onficina.pagination.PaginacaoUtil;
 
-public class AvaliacaoQueriesImpl implements AvaliacaoQueries{
+public class AvaliacaoQueriesImpl implements AvaliacaoQueries {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public Page<Avaliacao> pesquisar(AvaliacaoFilter filtro, Pageable pageable) {
-        // Usa o alias 'a' para Avaliacao
-        StringBuilder jpql = new StringBuilder("select a from Avaliacao a");
-        StringBuilder condicoes = new StringBuilder(" where 1=1");
+        StringBuilder queryAvaliacao = new StringBuilder("select distinct a from Avaliacao a");
+        StringBuilder condicoes = new StringBuilder();
 
-        // --- Adaptação dos Filtros ---
-        // Para Enums, verificamos se não são nulos, em vez de usar StringUtils.hasText
+        Map<String, Object> parametros = new HashMap<>();
 
-        if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
-            condicoes.append(" and a.veiculo.id = :veiculoId");
+        preencherCondicoesEParametros(filtro, condicoes, parametros);
+
+        if (condicoes.isEmpty()) {
+            condicoes.append(" where a.status = 'ATIVO'");
+        } else {
+            condicoes.append(" and a.status = 'ATIVO'");
         }
-        if (filtro.getProprietarioId() != null && filtro.getProprietarioId() > 0) {
-            condicoes.append(" and a.proprietario.id = :proprietarioId");
+
+        queryAvaliacao.append(condicoes);
+        PaginacaoUtil.prepararOrdemJPQL(queryAvaliacao, "a", pageable);
+        TypedQuery<Avaliacao> typedQuery = em.createQuery(queryAvaliacao.toString(), Avaliacao.class);
+        PaginacaoUtil.prepararIntervalo(typedQuery, pageable);
+        PaginacaoUtil.preencherParametros(parametros, typedQuery);
+        List<Avaliacao> avaliacao = typedQuery.getResultList();
+
+        long totalAvaliacao = PaginacaoUtil.getTotalRegistros("Avaliacao", "a", condicoes, parametros, em);
+
+        return new PageImpl<>(avaliacao, pageable, totalAvaliacao);
+    }
+
+    private void preencherCondicoesEParametros(AvaliacaoFilter filtro, StringBuilder condicoes,
+            Map<String, Object> parametros) {
+        boolean condicao = false;
+
+        if (filtro.getId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.id = :id");
+            parametros.put("id", filtro.getId());
+            condicao = true;
         }
-        if (filtro.getManutencaoId() != null && filtro.getManutencaoId() > 0) {
-            condicoes.append(" and a.manutencao.id = :manutencaoId");
+
+        if (filtro.getOficinaId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.oficina.id = :oficinaId");
+            parametros.put("oficinaId", filtro.getOficinaId());
+            condicao = true;
+        }
+        if (filtro.getVeiculoId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.manutencao.veiculo.id = :veiculoId");
+            parametros.put("veiculoId", filtro.getVeiculoId());
+            condicao = true;
+        }
+        if (filtro.getManutencaoId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.manutencao.id = :manutencaoId");
+            parametros.put("manutencaoId", filtro.getManutencaoId());
+            condicao = true;
+        }
+        if (filtro.getProprietarioId() != null) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.manutencao.veiculo.proprietario.id = :proprietarioId");
+            parametros.put("proprietarioId", filtro.getProprietarioId());
+            condicao = true;
         }
         if (filtro.getNota() != null) {
-            condicoes.append(" and a.nota = :nota");
-        }
-        if (filtro.getComentario() != null) {
-            condicoes.append(" and lower(a.comentario) like lower(:comentario)");
-        }
-        // Adiciona um filtro extra para buscar manutenções de um veículo específico, se
-        // necessário
-        // if (filtro.getVeiculo() != null) {
-        // condicoes.append(" and a.veiculo = :veiculo");
-        // }
-
-        jpql.append(condicoes);
-        // Prepara a ordenação (ex: ?sort=valorServico,desc)
-        PaginacaoUtil.prepararOrdemJPQL(jpql, "a", pageable);
-
-        TypedQuery<Avaliacao> query = em.createQuery(jpql.toString(), Avaliacao.class);
-        // Prepara o intervalo da paginação (quais registros buscar)
-        PaginacaoUtil.prepararIntervalo(query, pageable);
-
-        // --- Adaptação dos Parâmetros ---
-        // Para Enums, passamos o objeto do enum diretamente, sem '%' ou toLowerCase()
-        if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
-            query.setParameter("veiculoId", filtro.getVeiculoId());
-        }
-        if (filtro.getProprietarioId() != null && filtro.getProprietarioId() > 0) {
-            query.setParameter("proprietarioId", filtro.getProprietarioId());
-        }
-        if (filtro.getManutencaoId() != null && filtro.getManutencaoId() > 0) {
-            query.setParameter("manutencaoId", filtro.getManutencaoId());
-        }
-        if (filtro.getNota() != null) {
-            query.setParameter("nota", filtro.getNota());
-        }
-        if (filtro.getComentario() != null) {
-            query.setParameter("comentario", "%" + filtro.getComentario() + "%");
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("a.nota = :nota");
+            parametros.put("nota", filtro.getNota());
+            condicao = true;
         }
 
-        List<Avaliacao> resultado = query.getResultList();
+        if (StringUtils.hasText(filtro.getComentario())) {
+            PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+            condicoes.append("lower(a.comentario) like :comentario");
+            parametros.put("comentario", "%" + filtro.getComentario().toLowerCase() + "%");
+            condicao = true;
+        }
 
-        // --- Query para Contagem Total de Registros (para a paginação) ---
-        StringBuilder jpqlCount = new StringBuilder("select count(a) from Avaliacao a");
-        jpqlCount.append(condicoes);
-        TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
-
-        // Define os mesmos parâmetros para a query de contagem
-        if (filtro.getVeiculoId() != null && filtro.getVeiculoId() > 0) {
-            countQuery.setParameter("veiculoId", filtro.getVeiculoId());
-        }
-        if (filtro.getProprietarioId() != null && filtro.getProprietarioId() > 0) {
-            countQuery.setParameter("proprietarioId", filtro.getProprietarioId());
-        }
-        if (filtro.getManutencaoId() != null && filtro.getManutencaoId() > 0) {
-            countQuery.setParameter("manutencaoId", filtro.getManutencaoId());
-        }
-        if (filtro.getNota() != null) {
-            countQuery.setParameter("nota", filtro.getNota());
-        }
-        if (filtro.getComentario() != null) {
-            countQuery.setParameter("comentario", "%" + filtro.getComentario() + "%");
-        }
-        long total = countQuery.getSingleResult();
-
-        return new PageImpl<>(resultado, pageable, total);
+        if (filtro.getDataAvaliacao() != null) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("a.dataAvaliacao >= :dataAvaliacao");
+			parametros.put("dataAvaliacao", filtro.getDataAvaliacao());
+			condicao = true;
+		}
     }
 }

@@ -10,6 +10,26 @@
 
 <body>
   <nav th:fragment="menu" class="mt-10">
+
+    <!-- 0o Item Menu -->
+     <div sec:authorize="hasRole('admin')" th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Usuarios', @{/usuario/listar}, ~{::#pessoa-icon})}"></div>
+     
+    <!-- <div x-data="{ open: false }">
+      <button
+        th:replace="~{layout/fragments/menu-item-button :: menu-item-button('Avaliações', ~{::#pesquisar-icon})}"></button>
+      <div x-show="open" class="space-y-4 ps-10">
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Cadastrar', @{/avaliacao/cadastrar}, ~{::#pdf-icon})}">
+        </div>
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Ver todos', @{/avaliacao/listar}, ~{::#pdf-icon})}">
+        </div>
+        <div
+          th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Buscar', @{/avaliacao/abrirpesquisar}, ~{::#pdf-icon})}">
+        </div>
+      </div>
+    </div> -->
+
     <!-- 1o Item Menu -->
     <!-- <div x-data="{ open: false }">
       <button
@@ -80,8 +100,8 @@
       </div>
     </div> -->
 
-
-    <!-- 5o Item Menu -->
+    
+        <!-- 5o Item Menu -->
      <div th:replace="~{layout/fragments/menu-item-option :: menu-item-option('Avaliações', @{/avaliacao/listar}, ~{::#pdf-icon})}"></div>
      
     <!-- <div x-data="{ open: false }">

@@ -1,9 +1,9 @@
 package web.onficina.repository.queries.veiculo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,62 +18,69 @@ import web.onficina.pagination.PaginacaoUtil;
 
 public class VeiculoQueriesImpl implements VeiculoQueries {
 
-    private static final Logger logger = LoggerFactory.getLogger(VeiculoQueriesImpl.class);
+	@PersistenceContext
+	private EntityManager em;
 
-    @PersistenceContext
-    private EntityManager em;
+	@Override
+	public Page<Veiculo> pesquisar(VeiculoFilter filtro, Pageable pageable) {
+		StringBuilder queryVeiculos = new StringBuilder("select distinct v from Veiculo v");
+		StringBuilder condicoes = new StringBuilder();
 
-    @Override
-    public Page<Veiculo> pesquisar(VeiculoFilter filtro, Pageable pageable) {
-        StringBuilder queryVeiculos = new StringBuilder("select v from Veiculo v");
-        StringBuilder condicoes = new StringBuilder(" where 1=1");
+		Map<String, Object> parametros = new HashMap<>();
 
-        if (StringUtils.hasText(filtro.getPlaca())) {
-            condicoes.append(" and lower(v.placa) like :placa");
-        }
+		preencherCondicoesEParametros(filtro, condicoes, parametros);
 
-        if (StringUtils.hasText(filtro.getModelo())) {
-            condicoes.append(" and lower(v.modelo) like :modelo");
-        }
+		if (condicoes.isEmpty()) {
+			condicoes.append(" where v.status = 'ATIVO'");
+		} else {
+			condicoes.append(" and v.status = 'ATIVO'");
+		}
 
-        if (StringUtils.hasText(filtro.getMarca())) {
-            condicoes.append(" and lower(v.marca) like :marca");
-        }
+		queryVeiculos.append(condicoes);
+		PaginacaoUtil.prepararOrdemJPQL(queryVeiculos, "v", pageable);
+		TypedQuery<Veiculo> typedQuery = em.createQuery(queryVeiculos.toString(), Veiculo.class);
+		PaginacaoUtil.prepararIntervalo(typedQuery, pageable);
+		PaginacaoUtil.preencherParametros(parametros, typedQuery);
+		List<Veiculo> veiculos = typedQuery.getResultList();
 
-        queryVeiculos.append(condicoes);
-        PaginacaoUtil.prepararOrdemJPQL(queryVeiculos, "v", pageable);
+		long totalVeiculos = PaginacaoUtil.getTotalRegistros("Veiculo", "v", condicoes, parametros, em);
 
-        TypedQuery<Veiculo> query = em.createQuery(queryVeiculos.toString(), Veiculo.class);
-        PaginacaoUtil.prepararIntervalo(query, pageable);
+		return new PageImpl<>(veiculos, pageable, totalVeiculos);
+	}
 
-        if (StringUtils.hasText(filtro.getPlaca())) {
-            query.setParameter("placa", "%" + filtro.getPlaca().toLowerCase() + "%");
-        }
-        if (StringUtils.hasText(filtro.getModelo())) {
-            query.setParameter("modelo", "%" + filtro.getModelo().toLowerCase() + "%");
-        }
-        if (StringUtils.hasText(filtro.getMarca())) {
-            query.setParameter("marca", "%" + filtro.getMarca().toLowerCase() + "%");
-        }
+	private void preencherCondicoesEParametros(VeiculoFilter filtro, StringBuilder condicoes,
+			Map<String, Object> parametros) {
+		boolean condicao = false;
 
-        List<Veiculo> resultado = query.getResultList();
-
-        StringBuilder jpqlCount = new StringBuilder("select count(v) from Veiculo v");
-        jpqlCount.append(condicoes);
-        TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
-
-        if (StringUtils.hasText(filtro.getPlaca())) {
-            countQuery.setParameter("placa", "%" + filtro.getPlaca().toLowerCase() + "%");
-        }
-        if (StringUtils.hasText(filtro.getModelo())) {
-            countQuery.setParameter("modelo", "%" + filtro.getModelo().toLowerCase() + "%");
-        }
-        if (StringUtils.hasText(filtro.getMarca())) {
-            countQuery.setParameter("marca", "%" + filtro.getMarca().toLowerCase() + "%");
-        }
-
-        long total = countQuery.getSingleResult();
-
-        return new PageImpl<>(resultado, pageable, total);
-    }
+		if (filtro.getId() != null) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("v.id = :id");
+			parametros.put("id", filtro.getId());
+			condicao = true;
+		}
+		if (StringUtils.hasText(filtro.getMarca())) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("lower(v.marca) like :marca");
+			parametros.put("marca", "%" + filtro.getMarca().toLowerCase() + "%");
+			condicao = true;
+		}
+		if (StringUtils.hasText(filtro.getModelo())) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("v.modelo like :modelo");
+			parametros.put("modelo", "%" + filtro.getModelo() + "%");
+			condicao = true;
+		}
+		if (StringUtils.hasText(filtro.getPlaca())) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("v.placa like :placa");
+			parametros.put("placa", "%" + filtro.getPlaca() + "%");
+			condicao = true;
+		}
+		if (filtro.getAno() != null) {
+			PaginacaoUtil.fazerLigacaoCondicoes(condicoes, condicao);
+			condicoes.append("v.ano = :ano");
+			parametros.put("ano", filtro.getAno());
+			condicao = true;
+		}
+	}
 }

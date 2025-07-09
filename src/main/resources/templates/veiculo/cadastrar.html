@@ -29,28 +29,38 @@
                                     <path d="M2 1a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-1H2Zm12 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12Z"/>
                                 </svg>
                             </div>
-                            <input type="text" th:field="*{placa}" placeholder="ABC-1234" class="py-3 px-4 ps-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" th:field="*{placa}" placeholder="ABC-1234" class="py-3 px-4 ps-12 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                            th:classappend="${#fields.hasErrors('placa')} ? 'border-red-500' : 'border-gray-600'">
+                            <p th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}" class="text-sm text-red-600 mt-1"></p>
                         </div>
                     </div>
 
                     <div>
                         <label for="marca" class="block text-sm font-medium mb-2 text-gray-300">Marca</label>
-                        <input type="text" th:field="*{marca}" placeholder="Ex: Chevrolet" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        <input type="text" th:field="*{marca}" placeholder="Ex: Chevrolet" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                        th:classappend="${#fields.hasErrors('marca')} ? 'border-red-500' : 'border-gray-600'">
+                        <p th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}" class="text-sm text-red-600 mt-1"></p>
                     </div>
 
                     <div>
                         <label for="modelo" class="block text-sm font-medium mb-2 text-gray-300">Modelo</label>
-                        <input type="text" th:field="*{modelo}" placeholder="Ex: Onix" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        <input type="text" th:field="*{modelo}" placeholder="Ex: Onix" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                        th:classappend="${#fields.hasErrors('modelo')} ? 'border-red-500' : 'border-gray-600'">
+                        <p th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}" class="text-sm text-red-600 mt-1"></p>
                     </div>
 
                     <div>
                         <label for="ano" class="block text-sm font-medium mb-2 text-gray-300">Ano</label>
-                        <input type="number" th:field="*{ano}" placeholder="Ex: 2023" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        <input type="number" th:field="*{ano}" placeholder="Ex: 2023" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                        th:classappend="${#fields.hasErrors('ano')} ? 'border-red-500' : 'border-gray-600'">
+                        <p th:if="${#fields.hasErrors('ano')}" th:errors="*{ano}" class="text-sm text-red-600 mt-1"></p>
                     </div>
                     
                     <div>
                         <label for="cor" class="block text-sm font-medium mb-2 text-gray-300">Cor</label>
-                        <input type="text" th:field="*{cor}" placeholder="Ex: Preto" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500">
+                        <input type="text" th:field="*{cor}" placeholder="Ex: Preto" class="py-3 px-4 block w-full bg-gray-700 border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-blue-500"
+                        th:classappend="${#fields.hasErrors('cor')} ? 'border-red-500' : 'border-gray-600'">
+                        <p th:if="${#fields.hasErrors('cor')}" th:errors="*{cor}" class="text-sm text-red-600 mt-1"></p>
                     </div>
                 </div>
 

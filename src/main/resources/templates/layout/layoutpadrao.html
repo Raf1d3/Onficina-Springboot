@@ -47,27 +47,53 @@
     th:src="@{/js/vendors/sweetalert2/sweetalert2.all.min.js}" defer></script>
   <!-- Script para o codigo ninja do Godoi -->
   <script src="../../static/js/codigoninjadogodoi.js" th:src="@{/js/codigoninjadogodoi.js}" defer></script>
-
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-900 text-white" x-data="{ sidebarOpen: false }">
   <div class="min-h-screen flex flex-col">
     <div th:replace="~{layout/fragments/header :: header}"></div>
-   <section class="flex flex-1 py-16 "> 
-  <div th:replace="~{layout/fragments/sidebar :: sidebar}"></div>
+    <section class="flex flex-1 py-16 ">
+      <div th:replace="~{layout/fragments/sidebar :: sidebar}"></div>
 
-  <main class="flex-1 mx-10 transition-all duration-300"
-         :class="sidebarOpen ? 'ml-72' : 'ml-20'">
-    
-    <th:block layout:fragment="conteudo"></th:block>
+      <main class="flex-1 mx-10 transition-all duration-300" :class="sidebarOpen ? 'ml-72' : 'ml-20'">
 
-  </main>
+        <th:block layout:fragment="conteudo"></th:block>
 
-</section>
+      </main>
+
+    </section>
   </div>
   <th:block layout:fragment="scripts"></th:block>
+  <script>
+    document.body.addEventListener('change', function (event) {
+
+      if (event.target && event.target.id === 'manutencao') {
+
+        // 'event.target' é o próprio <select> que foi modificado
+        const manutencaoSelect = event.target;
+        const oficinaNomeInput = document.getElementById('oficina-nome');
+        const oficinaIdInput = document.getElementById('oficina-id');
+
+        // Garante que os inputs de oficina existam antes de tentar usá-los
+        if (!oficinaNomeInput || !oficinaIdInput) return;
+
+        const selectedOption = manutencaoSelect.options[manutencaoSelect.selectedIndex];
+
+        const oficinaId = selectedOption.getAttribute('data-oficina-id');
+        const oficinaNome = selectedOption.getAttribute('data-oficina-nome');
+
+        if (oficinaNome && oficinaNome !== 'null' && oficinaNome.trim() !== '') {
+          oficinaNomeInput.value = oficinaNome;
+          oficinaIdInput.value = oficinaId;
+        } else {
+          oficinaNomeInput.value = '';
+          oficinaIdInput.value = '';
+          oficinaNomeInput.placeholder = 'Nenhuma oficina associada a esta manutenção';
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>
-

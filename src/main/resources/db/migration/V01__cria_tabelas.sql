@@ -23,6 +23,7 @@ CREATE TABLE public.veiculo (
     cor TEXT NOT NULL,
     ano INT NOT NULL,
     usuario_id BIGINT NOT NULL,
+    status TEXT DEFAULT 'ATIVO',
     CONSTRAINT fk_usuario FOREIGN KEY(usuario_id) REFERENCES public.usuario(id)
 );
 
@@ -32,7 +33,8 @@ CREATE TABLE public.oficina (
     cnpj TEXT NOT NULL,
     endereco TEXT NOT NULL,
     telefone TEXT NOT NULL,
-    nota_media DOUBLE PRECISION
+    nota_media DOUBLE PRECISION,
+    status TEXT DEFAULT 'ATIVO'
 );
 
 CREATE TABLE public.manutencao (
@@ -48,6 +50,7 @@ CREATE TABLE public.manutencao (
     data_proxima_manutencao DATE,
     veiculo_id BIGINT NOT NULL,
     oficina_id BIGINT,
+    status TEXT DEFAULT 'ATIVO',
     CONSTRAINT fk_veiculo FOREIGN KEY(veiculo_id) REFERENCES public.veiculo(id),
     CONSTRAINT fk_oficina FOREIGN KEY(oficina_id) REFERENCES public.oficina(id)
 );
@@ -60,6 +63,7 @@ CREATE TABLE public.avaliacao (
     oficina_id BIGINT NOT NULL,
     usuario_id BIGINT NOT NULL,
     manutencao_id BIGINT NOT NULL,
+    status TEXT DEFAULT 'ATIVO',
     CONSTRAINT fk_oficina FOREIGN KEY(oficina_id) REFERENCES public.oficina(id),
     CONSTRAINT fk_usuario FOREIGN KEY(usuario_id) REFERENCES public.usuario(id), 
     CONSTRAINT fk_manutencao FOREIGN KEY(manutencao_id) REFERENCES public.manutencao(id)

@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import web.onficina.filter.OficinaFilter;
 import web.onficina.model.Oficina;
+import web.onficina.model.Status;
 import web.onficina.notificacao.NotificacaoSweetAlert2;
 import web.onficina.notificacao.TipoNotificaoSweetAlert2;
 import web.onficina.pagination.PageWrapper;
@@ -116,10 +117,9 @@ public class OficinaController {
     @HxRequest
     @GetMapping("/alterar/{id}")
     public String abrirAlterar(@PathVariable("id") Long id, Model model) {
-        Optional<Oficina> oficinaOpt = oficinaRepository.findById(id);
+        Oficina oficina = oficinaRepository.findByIdAndStatus(id, Status.ATIVO);
         
-        if (oficinaOpt.isPresent()) {
-            Oficina oficina = oficinaOpt.get();
+        if (oficina != null) {
             model.addAttribute("oficina", oficina);
             return "oficina/alterar :: formulario";
         } else {

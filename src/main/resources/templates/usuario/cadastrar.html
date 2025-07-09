@@ -3,10 +3,10 @@
   xmlns:layout="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" th:href="@{/images/logo.svg}" />
-    <title>Onficina - Cadastro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}" />
+  <title>Onficina - Cadastro</title>
 </head>
 
 <body>
@@ -23,33 +23,22 @@
       <div>
         <label for="nome" class="block text-sm font-medium text-gray-700">Nome</label>
         <input type="text" th:field="*{nome}" required
-          class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-sm text-red-600 mt-1"></p>
       </div>
 
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <input type="email" th:field="*{email}" required
-          class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-sm text-red-600 mt-1"></p>
       </div>
 
       <div>
         <label for="senha" class="block text-sm font-medium text-gray-700">Senha</label>
         <input type="password" th:field="*{senha}" required
-          class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" class="text-sm text-red-600 mt-1"></p>
-      </div>
-
-      <div>
-        <label for="papel" class="block text-sm font-medium text-gray-700">Tipo de Conta</label>
-        <select id="papel" th:field="*{papel}" required
-          class="mt-1 block w-full px-4 py-3 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-          <option value="">Selecione um papel...</option>
-          <option th:each="p : ${todosPapeis}" th:value="${p.id}" th:text="${p.nome}"></option>
-        </select>
-        <p th:if="${#fields.hasErrors('papel')}" th:each="erro : ${#fields.errors('papel')}" th:text="${erro} + '. '"
-          class="text-sm text-red-600 mt-1"></p>
       </div>
 
       <button type="submit"
@@ -58,7 +47,7 @@
       </button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-gray-600">
+    <p class="mt-6 text-center text-sm text-gray-600" sec:authorize="isAnonymous()">
       Já tem uma conta?
       <a th:href="@{/login}" class="font-medium text-blue-600 hover:text-blue-500">
         Faça login
