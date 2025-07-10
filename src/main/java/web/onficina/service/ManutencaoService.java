@@ -1,10 +1,14 @@
 package web.onficina.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import web.onficina.model.Avaliacao;
 import web.onficina.model.Manutencao;
 import web.onficina.model.Status;
+import web.onficina.repository.AvaliacaoRepository;
 import web.onficina.repository.ManutencaoRepository;
 
 
@@ -14,8 +18,13 @@ public class ManutencaoService {
 
 
     private ManutencaoRepository manutencaoRepository;
+    private AvaliacaoRepository avaliacaoRepository;
+    private AvaliacaoService avaliacaoService;
+    
 
-    public ManutencaoService(ManutencaoRepository manutencaoRepository) {
+    public ManutencaoService(ManutencaoRepository manutencaoRepository, AvaliacaoRepository avaliacaoRepository, AvaliacaoService avaliacaoService) {
+        this.avaliacaoRepository = avaliacaoRepository;
+        this.avaliacaoService = avaliacaoService;
         this.manutencaoRepository = manutencaoRepository;
     }
 
@@ -34,6 +43,14 @@ public class ManutencaoService {
         } else {
             manutencao.setStatus(Status.INATIVO);
             manutencaoRepository.save(manutencao);
+
+            List<Avaliacao> avaliacoesAtivas = avaliacaoRepository.findByManutencaoIdAndStatus(manutencao.getId(), Status.ATIVO);
+
+            for (Avaliacao avaliacao : avaliacoesAtivas) {
+                avaliacaoService.remover(avaliacao.getId());
+            }
+
+
         }
     }
 }

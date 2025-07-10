@@ -45,7 +45,7 @@ public class Oficina {
     @Column(name = "nota_media")
     private Double notaMedia = 0.0;
 
-    @OneToMany(mappedBy = "oficina", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "oficina", fetch = FetchType.LAZY)
     private java.util.List<Avaliacao> avaliacoes = new java.util.ArrayList<>();
     
     @Enumerated(EnumType.STRING)

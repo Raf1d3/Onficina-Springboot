@@ -1,5 +1,7 @@
 package web.onficina.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import web.onficina.model.Usuario;
@@ -11,5 +13,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, Usuario
     Usuario findByEmailAndAtivo(String email, Boolean ativo);
     Usuario findByEmail(String email);
     Usuario findByIdAndAtivo(Long id, Boolean ativo);
-    Usuario findAllByAtivo(Boolean ativo);
+    List<Usuario> findAllByAtivo(Boolean ativo);
 }
