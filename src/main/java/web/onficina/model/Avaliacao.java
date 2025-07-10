@@ -1,5 +1,6 @@
 package web.onficina.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -15,6 +16,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -109,6 +112,21 @@ public class Avaliacao {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+    @PrePersist
+    @PreUpdate
+    public void preSalvarAtualizar() {
+        setDataAvaliacao(LocalDateTime.now());
+    }
+
+    public LocalDateTime getDataAvaliacao() {
+        return dataAvaliacao;
+    }
+
+    public void setDataAvaliacao(LocalDateTime dataAvaliacao) {
+        this.dataAvaliacao = dataAvaliacao;
+    }
+
 
     @Override
     public int hashCode() {
