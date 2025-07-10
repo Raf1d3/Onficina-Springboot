@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,8 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/perfil/**").hasAnyRole("cliente", "admin")
                         .requestMatchers("/avaliacao/**").hasAnyRole("cliente", "admin")
                         .requestMatchers("/usuario/alterar/{id}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/usuario/alterar").authenticated()
                         .requestMatchers("/usuario/**").hasRole("admin")
-                         .requestMatchers("/relatorios/**").hasAnyRole("cliente", "oficina")
+                        .requestMatchers("/relatorios/**").hasAnyRole("cliente", "oficina")
 
                         // .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
                         .anyRequest().authenticated())

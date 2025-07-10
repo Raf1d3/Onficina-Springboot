@@ -184,6 +184,7 @@ public class UsuarioController {
 			}
 		} else {
 			Usuario usuarioLogado = usuarioRepository.findByEmail(principal.getName());
+
 			if (usuarioLogado.getPapel().getNome().equals("admin")) {
 				usuarioService.alterar(usuario);
 				redirectAttributes.addFlashAttribute("notificacao", new NotificacaoSweetAlert2(
