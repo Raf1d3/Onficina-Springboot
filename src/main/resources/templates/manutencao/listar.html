@@ -11,6 +11,7 @@
 <body>
     <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full"
         x-data="{ view: 'grid' }">
+        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
 
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Manutenções</h2>
 

@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuario/alterar").authenticated()
                         .requestMatchers("/usuario/**").hasRole("admin")
                          .requestMatchers("/relatorios/**").hasAnyRole("cliente", "admin")
+                          .requestMatchers("/relatorios/**").hasAnyRole("cliente", "admin")
 
                         // .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
                         .anyRequest().authenticated())
