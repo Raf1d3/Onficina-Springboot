@@ -57,6 +57,7 @@ public class OficinaController {
     }
 
 
+    @HxRequest
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model) {
         model.addAttribute("oficina", new Oficina());
@@ -164,22 +165,43 @@ public class OficinaController {
         return "redirect:/oficina/listar";
     }
 
-
-@GetMapping("/{id}/relatorio")
-public ResponseEntity<byte[]> gerarRelatorio(@PathVariable Long id) {
-    try {
-        byte[] relatorio = relatorioService.gerarRelatorioOficina(id);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=relatorio_oficina_" + id + ".pdf")
-                .body(relatorio);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.internalServerError().build();
+    //recarregar
+  @GetMapping("/cadastrar")
+    public String mostrarFormularioCadastro2(Model model) {
+        model.addAttribute("oficina", new Oficina());
+        return "oficina/cadastrar"; // Retorna apenas o fragmento
     }
-}
 
+        @GetMapping("/listar")
+    public String listar2(OficinaFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+        Page<Oficina> pagina = oficinaRepository.pesquisar(filtro, pageable);
+        PageWrapper<Oficina> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        return "oficina/listar"; // Retorna a página completa
+    }
+
+        @GetMapping("/pesquisar")
+    public String pesquisar2(OficinaFilter filtro, Model model,
+            @PageableDefault(size = 5) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+        Page<Oficina> pagina = oficinaRepository.pesquisar(filtro, pageable);
+        PageWrapper<Oficina> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        return "oficina/listar";
+    }
+
+      @GetMapping("/alterar/{id}")
+    public String abrirAlterar2(@PathVariable("id") Long id, Model model) {
+        Oficina oficina = oficinaRepository.findByIdAndStatus(id, Status.ATIVO);
+        if (oficina != null) {
+            model.addAttribute("oficina", oficina);
+            return "oficina/alterar"; // Retorna a página completa
+        } else {
+            // Lógica para oficina não encontrada, redireciona para a listagem
+            return "redirect:/oficina/listar";
+        }
+    }
 }
 

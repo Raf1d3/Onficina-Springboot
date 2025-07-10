@@ -12,19 +12,19 @@
 <body>
   <div th:fragment="header">
     <!-- Header -->
-<header
-  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-gradient-to-r from-bg-gray-900/50 to-[#1B1F27]/90 backdrop-blur-lg px-4 transition-all duration-300 h-14"
-  :class="sidebarOpen ? 'md:ml-0' : 'md:ml-0'">
+    <header
+      class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-gradient-to-r from-bg-gray-900/50 to-[#1B1F27]/90 backdrop-blur-lg px-4 transition-all duration-300 h-14"
+      :class="sidebarOpen ? 'md:ml-0' : 'md:ml-0'">
 
       <!-- Botao Hamburger -->
       <div id="start" class="flex items-center space-x-4">
-        
-      <button @click="sidebarOpen = !sidebarOpen" type="button"
-  class="p-2 text-gray-300 hover:bg-gray-700 rounded-full">
-  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-  </svg>
-</button>
+
+        <button @click="sidebarOpen = !sidebarOpen" type="button"
+          class="p-2 text-gray-300 hover:bg-gray-700 rounded-full">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+          </svg>
+        </button>
 
         <!-- Icone e nome sistema -->
         <a th:href="@{/painel}">
@@ -45,21 +45,31 @@
               class="ml-5 rounded-lg border-2 border-gray-600 bg-gray-600 px-8 py-2 text-white shadow-md hover:bg-white hover:text-gray-600">
               Login </a>
           </div>
+
+          <a th:href="@{/relatorios/meu-historico-veiculos}" target="_blank" class="hover:text-red-500"
+            title="Baixar Histórico de Veículos">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-file-earmark-arrow-down-fill w-5 h-5" viewBox="0 0 16 16">
+              <path
+                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 6.5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 10.793V7a.5.5 0 0 1 .5-.5" />
+            </svg>
+          </a>
+
           <!-- nome do usuario -->
-<div sec:authorize="isAuthenticated()"
-     th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
+          <div sec:authorize="isAuthenticated()"
+            th:with="nomeUsuario = ${@usuarioService.findNomeByEmail(#authentication.principal.username)}">
 
-    <a th:href="@{/perfil}" class="p-2 hover:bg-gray-700 rounded-full block">
-        <div class="flex items-center">
-            <span
-                class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-semibold uppercase"
-                th:text="${nomeUsuario.substring(0,1)}">
-            </span>
-        </div>
-    </a>
-</div>
+            <a th:href="@{/perfil}" class="p-2 hover:bg-gray-700 rounded-full block ml-5">
+              <div class="flex items-center">
+                <span
+                  class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm font-semibold uppercase"
+                  th:text="${nomeUsuario.substring(0,1)}">
+                </span>
+              </div>
+            </a>
+          </div>
 
-          
           <!-- botao logout -->
           <div sec:authorize="isAuthenticated()">
             <a th:hx-post="@{/logout}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
@@ -82,4 +92,5 @@
     </header>
   </div>
 </body>
+
 </html>

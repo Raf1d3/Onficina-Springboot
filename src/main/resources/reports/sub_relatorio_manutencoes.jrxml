@@ -14,7 +14,7 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="data" class="java.time.LocalDateTime"/>
+	<field name="data" class="java.time.LocalDate"/>
 	<field name="servicoRealizado" class="java.lang.String"/>
 	<field name="valor" class="java.math.BigDecimal"/>
 	<field name="nomeOficina" class="java.lang.String"/>

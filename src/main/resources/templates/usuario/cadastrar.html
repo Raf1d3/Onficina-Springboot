@@ -11,8 +11,8 @@
 
 <body>
 
-  <div layout:fragment="conteudo" th:fragment="formulario" id="main">
-    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Crie sua Conta</h1>
+  <div layout:fragment="conteudo" th:fragment="formulario" id="main" class="w-full max-w-md p-8 space-y-6 bg-gray-800  rounded-xl shadow-lg ">
+    <h1 class="text-2xl font-bold text-center text-gray-200 mb-6">Cadastre um Usuario</h1>
 
 
     <form th:action="@{/cadastrar}" th:object="${usuario}" method="post" hx-target="#main" hx-swap="outerHTML"
@@ -21,38 +21,45 @@
       <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
 
       <div>
-        <label for="nome" class="block text-sm font-medium text-gray-700">Nome</label>
+        <label for="nome" class="block text-sm font-medium text-gray-200">Nome</label>
         <input type="text" th:field="*{nome}" required
           class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="text-sm text-red-600 mt-1"></p>
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <label for="email" class="block text-sm font-medium text-gray-200">Email</label>
         <input type="email" th:field="*{email}" required
           class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-sm text-red-600 mt-1"></p>
       </div>
 
       <div>
-        <label for="senha" class="block text-sm font-medium text-gray-700">Senha</label>
+        <label for="senha" class="block text-sm font-medium text-gray-200">Senha</label>
         <input type="password" th:field="*{senha}" required
           class="mt-1 block w-full px-4 py-3 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
         <p th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" class="text-sm text-red-600 mt-1"></p>
       </div>
 
+      <div class="mt-8 pt-6  flex justify-end gap-x-3">
       <button type="submit"
         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#6941C6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300">
         Cadastrar
       </button>
+        <a th:href="@{/usuario/listar}"
+                            class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
+                            aria-label="Cancelar edição do veículo" title="Cancelar">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        </div>
     </form>
 
-    <p class="mt-6 text-center text-sm text-gray-600" sec:authorize="isAnonymous()">
-      Já tem uma conta?
-      <a th:href="@{/login}" class="font-medium text-blue-600 hover:text-blue-500">
-        Faça login
-      </a>
-    </p>
+
 
     <div th:if="${notificacao != null}" th:object="${notificacao}">
       <input type="hidden" id="mensagem" th:value="*{mensagem}" />

@@ -76,9 +76,9 @@
                         <p class="text-sm text-gray-400">Valor</p>
                         <p class="text-white mb-2" th:text="|R$ ${{manutencao.valorServico}}|"></p>
                         <p class="text-sm text-gray-400">Data Início</p>
-                        <p class="text-white mb-2" th:text="${manutencao.dataInicioManutencao}"></p>
+                        <p class="text-white mb-2" th:text="${#temporals.format(manutencao.dataInicioManutencao, 'dd/MM/yyyy')}"></p>
                         <p class="text-sm text-gray-400">Próxima</p>
-                        <p class="text-white mb-2" th:text="${manutencao.dataProximaManutencao}"></p>
+                        <p class="text-white mb-2" th:text="${#temporals.format(manutencao.dataProximaManutencao, 'dd/MM/yyyy')}"></p>
                         <p class="text-sm text-gray-400">Tipo</p>
                         <p class="text-white" th:text="${manutencao.tipoManutencao}"></p>
                     </div>

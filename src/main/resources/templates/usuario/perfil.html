@@ -91,11 +91,11 @@
                        aria-label="Editar perfil" title="Editar Perfil">
                         Editar Perfil
                     </a>
-                    <a th:href="@{/logout}"
-                       class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
-                       aria-label="Sair do sistema" title="Sair">
-                        Sair
-                    </a>
+                    <div sec:authorize="isAuthenticated()">
+            <a th:hx-post="@{/logout}" hx-target="#main" hx-swap="outerHTML" hx-push-url="true"
+                       class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200">
+              Sair </a>
+          </div>
                 </div>
             </div>
         </div>

@@ -175,4 +175,20 @@ public class VeiculoController {
         return "redirect:/veiculo/listar";
     }
 
+
+    //Recarregar
+    @GetMapping("/listar")
+    public String listar2(VeiculoFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+
+        Page<Veiculo> pagina = veiculoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Veiculo> paginaWrapper = new PageWrapper<>(pagina, request);
+
+        model.addAttribute("pagina", paginaWrapper);
+        return "veiculo/listar";
+    }
+
+
+
 }

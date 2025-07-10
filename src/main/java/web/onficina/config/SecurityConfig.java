@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/avaliacao/**").hasAnyRole("cliente", "admin")
                         .requestMatchers("/usuario/alterar/{id}").authenticated()
                         .requestMatchers("/usuario/**").hasRole("admin")
-                         .requestMatchers("/relatorios/**").hasAnyRole("cliente", "oficina")
+                         .requestMatchers("/relatorios/**").hasAnyRole("cliente", "admin")
 
                         // .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
                         .anyRequest().authenticated())

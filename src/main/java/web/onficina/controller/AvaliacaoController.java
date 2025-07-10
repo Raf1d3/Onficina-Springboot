@@ -64,6 +64,7 @@ public class AvaliacaoController {
     }
     
 
+     @HxRequest
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model, Principal principal) {
 
@@ -115,6 +116,7 @@ public class AvaliacaoController {
 
         return "redirect:/avaliacao/listar";
     }
+
 
     @HxRequest
     @GetMapping("/listar")
@@ -227,5 +229,77 @@ public class AvaliacaoController {
                 new NotificacaoSweetAlert2("Avaliação removida com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000)); // redirect
         return "redirect:/avaliacao/listar";
     }
+
+    //recarregar
+        @GetMapping("/cadastrar")
+    public String mostrarFormularioCadastro2(Model model, Principal principal) {
+
+        String email = principal.getName();
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
+
+        if (proprietario == null) {
+            throw new IllegalStateException("Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+        }
+
+        List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
+
+        model.addAttribute("manutencoes", manutencoesDoUsuario);
+        model.addAttribute("avaliacao", new Avaliacao());
+
+        return "avaliacao/listar";
+    }
+
+        @GetMapping("/listar")
+    public String listar2(AvaliacaoFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+
+        Page<Avaliacao> pagina = avaliacaoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Avaliacao> paginaWrapper = new PageWrapper<>(pagina, request);
+
+        model.addAttribute("pagina", paginaWrapper);
+        model.addAttribute("filtro", filtro);
+        return "avaliacao/listar";
+    }
+
+        @GetMapping("/pesquisar")
+    public String pesquisar2(AvaliacaoFilter filtro, Model model,
+            @PageableDefault(size = 5) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+
+        Page<Avaliacao> pagina = avaliacaoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Avaliacao> paginaWrapper = new PageWrapper<>(pagina, request);
+
+        model.addAttribute("pagina", paginaWrapper);
+
+        return "avaliacao/listar";
+    }
+
+
+        @GetMapping("/alterar/{id}")
+    public String abrirAlterar2(@PathVariable("id") Long id, Model model, Principal principal) {
+        Avaliacao avaliacao = avaliacaoRepository.findByIdAndStatus(id, Status.ATIVO);
+        if (avaliacao != null) {
+            String email = principal.getName();
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
+
+            if (proprietario == null) {
+                throw new IllegalStateException(
+                        "Usuário autenticado não pôde ser encontrado no banco de dados: " + email);
+            }
+            List<Manutencao> manutencoesDoUsuario = manutencaoRepository
+                    .findAllByVeiculo_Proprietario_IdAndStatus(proprietario.getId(), Status.ATIVO);
+
+            model.addAttribute("manutencoes", manutencoesDoUsuario);
+            model.addAttribute("avaliacao", avaliacao);
+            return "avaliacao/alterar";   
+        } else {
+            model.addAttribute("mensagem", "Não existe uma avaliação com esse código");
+            return "mensagem :: texto";
+        }
+    }
+
+
 
 }

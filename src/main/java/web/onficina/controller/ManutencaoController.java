@@ -65,6 +65,7 @@ public class ManutencaoController {
         this.oficinaRepository = oficinaRepository;
     }
 
+    @HxRequest
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model, Principal principal) {
 
@@ -226,6 +227,44 @@ public class ManutencaoController {
         attributes.addFlashAttribute("notificacao",
                 new NotificacaoSweetAlert2("Manutenção removida com sucesso!", TipoNotificaoSweetAlert2.SUCCESS, 4000)); // redirect
         return "redirect:/manutencao/listar";
+    }
+
+
+    //Recarregar
+        @GetMapping("/cadastrar")
+    public String abrirFormularioCadastro(Model model, Principal principal) {
+        String email = principal.getName();
+        Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
+        model.addAttribute("manutencao", new Manutencao());
+        model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO));
+        model.addAttribute("oficinas", oficinaRepository.findAllByStatus(Status.ATIVO));
+        return "manutencao/cadastrar"; 
+    }
+
+        @GetMapping("/listar")
+    public String abrirListagem(ManutencaoFilter filtro, Model model,
+            @PageableDefault(size = 7) @SortDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            HttpServletRequest request) {
+        Page<Manutencao> pagina = manutencaoRepository.pesquisar(filtro, pageable);
+        PageWrapper<Manutencao> paginaWrapper = new PageWrapper<>(pagina, request);
+        model.addAttribute("pagina", paginaWrapper);
+        model.addAttribute("filtro", filtro);
+        return "manutencao/listar"; 
+    }
+
+    @GetMapping("/alterar/{id}")
+    public String abrirAlterarPaginaCompleta(@PathVariable("id") Long id, Model model, Principal principal) {
+        Manutencao manutencao = manutencaoRepository.findByIdAndStatus(id, Status.ATIVO);
+        if (manutencao != null) {
+            String email = principal.getName();
+            Usuario proprietario = usuarioRepository.findByEmailAndAtivo(email, true);
+            model.addAttribute("veiculos", veiculoRepository.findAllByProprietarioIdAndStatus(proprietario.getId(), Status.ATIVO));
+            model.addAttribute("oficinas", oficinaRepository.findAllByStatus(Status.ATIVO));
+            model.addAttribute("manutencao", manutencao);
+            return "manutencao/alterar"; 
+        } else {
+            return "redirect:/manutencao/listar";
+        }
     }
 
 }
