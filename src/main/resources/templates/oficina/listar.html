@@ -11,7 +11,6 @@
 <body>
     <main layout:fragment="conteudo" th:fragment="tabela" id="main" class="flex flex-col align-middle w-full"
         x-data="{ view: 'grid' }">
-        <div th:replace="~{layout/fragments/csrf :: csrf}"></div>
 
         <h2 class="text-xl font-semibold text-gray-400 md:text-3xl">Oficinas</h2>
 
@@ -27,7 +26,7 @@
                 </a>
                 <div class="my-4">
 
-</div>
+                </div>
 
             </div>
 
@@ -57,11 +56,69 @@
             Nenhuma oficina encontrada.
         </div>
 
+        <th:block th:with="logos=${{
+            '/images/logo_oficinas/oficina3.png',
+            '/images/logo_oficinas/oficina8.jpg',
+            '/images/logo_oficinas/oficina10.jpg',
+            '/images/logo_oficinas/oficina11.jpeg',
+            '/images/logo_oficinas/oficina12.png',
+            '/images/logo_oficinas/oficina14.png',
+            '/images/logo_oficinas/oficina15.png',
+            '/images/logo_oficinas/oficina16.png',
+            '/images/logo_oficinas/oficina19.png',
+            '/images/logo_oficinas/oficina20.jpeg',
+            '/images/logo_oficinas/oficina21.png',
+            '/images/logo_oficinas/oficina6.avif',
+            '/images/logo_oficinas/oficina7.avif',
+            '/images/logo_oficinas/oficina13.avif',
+            '/images/logo_oficinas/oficina17.avif',
+            '/images/logo_oficinas/oficina18.avif'
+        } }" />
+
+        <!-- Array de URLs de imagens de logo de oficinas -->
+<script>
+    const logos = [
+        '/images/logo_oficinas/oficina3.png',
+        '/images/logo_oficinas/oficina8.jpg',
+        '/images/logo_oficinas/oficina10.jpg',
+        '/images/logo_oficinas/oficina11.jpeg',
+        '/images/logo_oficinas/oficina12.png',
+        '/images/logo_oficinas/oficina14.png',
+        '/images/logo_oficinas/oficina15.png',
+        '/images/logo_oficinas/oficina16.png',
+        '/images/logo_oficinas/oficina20.jpeg',
+        '/images/logo_oficinas/oficina21.png',
+        '/images/logo_oficinas/oficina6.avif',
+        '/images/logo_oficinas/oficina7.avif',
+        '/images/logo_oficinas/oficina13.avif',
+        '/images/logo_oficinas/oficina17.avif',
+        '/images/logo_oficinas/oficina18.avif'
+    ];
+
+    let logosDisponiveis = [...logos]; 
+
+    function getRandomLogo() {
+        if (logosDisponiveis.length === 0) {
+            logosDisponiveis = [...logos]; 
+        }
+        const indice = Math.floor(Math.random() * logosDisponiveis.length);
+        const logo = logosDisponiveis.splice(indice, 1)[0]; 
+        return logo;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.oficina-img').forEach(img => {
+            img.src = getRandomLogo();
+        });
+    });
+</script>
+
         <div x-show="view === 'grid'" th:unless="${pagina.vazia}"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
             <div th:each="oficina : ${pagina.conteudo}"
                 class="bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
-                <img th:src="@{/images/generic-oficina.png}" alt="Imagem da Oficina" class="w-full h-40 object-cover">
+                <img :src="getRandomLogo()" alt="Imagem da Oficina" class="w-full h-40 object-cover">
+
                 <div class="p-6 flex flex-col flex-grow">
                     <div class="flex-grow">
                         <p class="text-sm text-gray-400">Oficina &middot; id </p>
@@ -91,10 +148,11 @@
 
         <div x-show="view === 'row'" th:unless="${pagina.vazia}" class="flex flex-col space-y-4 mt-5">
             <div th:each="oficina : ${pagina.conteudo}"
-                class="bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4">
+                class="bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4 mb-0">
 
-                <img th:src="@{/images/generic-oficina.png}" alt="Imagem da Oficina"
+                <img :src="getRandomLogo()"  alt="Imagem da Oficina"
                     class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                    
 
                 <div class="flex-grow">
                     <p class="text-lg font-bold text-white" th:text="${oficina.nome}"></p>
@@ -134,24 +192,26 @@
         </div>
     </main>
 
-<div th:fragment="oficinaActions(oficina)" class="flex items-center space-x-3">
+    <div th:fragment="oficinaActions(oficina)" class="flex items-center space-x-3">
 
-    <a th:hx-get="@{/oficina/alterar/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
-        class="cursor-pointer text-gray-400 hover:text-blue-400" title="Alterar Oficina">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" />
-        </svg>
-    </a>
-    <a th:hx-get="@{/oficina/remover/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
-        th:hx-confirm="${'Você vai remover a oficina: ' + oficina.nome + '?'}"
-        class="cursor-pointer text-gray-400 hover:text-red-500" title="Remover Oficina">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-    </a>
-</div>
+        <a th:hx-get="@{/oficina/alterar/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
+            class="cursor-pointer text-gray-400 hover:text-blue-400" title="Alterar Oficina">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z" />
+            </svg>
+        </a>
+        <a th:hx-get="@{/oficina/remover/{id}(id=${oficina.id})}" hx-target="#main" hx-swap="outerHTML"
+            th:hx-confirm="${'Você vai remover a oficina: ' + oficina.nome + '?'}"
+            class="cursor-pointer text-gray-400 hover:text-red-500" title="Remover Oficina">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </a>
+    </div>
 
 </body>
 
